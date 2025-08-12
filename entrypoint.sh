@@ -1,4 +1,4 @@
-
+#!/bin/bash
 set -e
 
 # Esta variable la paso en 'docker run' con -e USE_GPU=true/false

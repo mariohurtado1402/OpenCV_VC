@@ -54,6 +54,7 @@ RUN locale-gen en_US.UTF-8
 
 # 7) Creamos el usuario "user" con UID 1000 y sudo sin contraseña
 ARG USER=user
+ENV USER=${USER}
 ARG UID=1000
 RUN useradd -m -u ${UID} -s /bin/bash ${USER} \
   && echo "${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
@@ -63,7 +64,8 @@ WORKDIR /home/${USER}
 
 # 8) Copiamos entrypoint.sh e imponemos permisos (si tienes un entrypoint.sh, copia este archivo al contenedor)
 COPY --chown=${USER}:${USER} entrypoint.sh /home/${USER}/entrypoint.sh
-RUN sudo chmod +x /home/${USER}/entrypoint.sh
+RUN chmod +x /home/${USER}/entrypoint.sh
+
 
 # 9) Definimos variables de entorno para ROS2
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
@@ -73,5 +75,6 @@ RUN echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >> 
 WORKDIR /home/${USER}/vc_ws
 
 # 11) Punto de entrada y comando por defecto
-ENTRYPOINT ["/home/${USER}/entrypoint.sh"]
+ENTRYPOINT ["/home/user/entrypoint.sh"]
 CMD ["bash"]
+
