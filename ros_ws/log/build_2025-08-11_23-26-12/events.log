@@ -1,0 +1,60 @@
+[0.000000] (-) TimerEvent: {}
+[0.000490] (slam_pkg) JobQueued: {'identifier': 'slam_pkg', 'dependencies': OrderedDict()}
+[0.000555] (slam_pkg) JobStarted: {'identifier': 'slam_pkg'}
+[0.100574] (-) TimerEvent: {}
+[0.201354] (-) TimerEvent: {}
+[0.301896] (-) TimerEvent: {}
+[0.402796] (-) TimerEvent: {}
+[0.503816] (-) TimerEvent: {}
+[0.604392] (-) TimerEvent: {}
+[0.705045] (-) TimerEvent: {}
+[0.805999] (-) TimerEvent: {}
+[0.906580] (-) TimerEvent: {}
+[1.007055] (-) TimerEvent: {}
+[1.107507] (-) TimerEvent: {}
+[1.208224] (-) TimerEvent: {}
+[1.308666] (-) TimerEvent: {}
+[1.410124] (-) TimerEvent: {}
+[1.513507] (-) TimerEvent: {}
+[1.616939] (-) TimerEvent: {}
+[1.720165] (-) TimerEvent: {}
+[1.822621] (-) TimerEvent: {}
+[1.909165] (slam_pkg) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/slam_pkg', 'build', '--build-base', '/home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build', 'install', '--record', '/home/mario/OpenCV_VC/ros_ws/build/slam_pkg/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/mario/OpenCV_VC/ros_ws/src/slam_pkg', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mario', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'WT_PROFILE_ID': '{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}', 'HOME': '/home/mario', 'OLDPWD': '/home/mario/OpenCV_VC/ros_ws/src', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'WSL_DISTRO_NAME': 'Ubuntu-22.04', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'mario', 'NAME': 'MarioHP', 'WSL_INTEROP': '/run/WSL/2357_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/usr/lib/ccache:/home/mario/GazeboSimulations/ardupilot_airhive/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mario/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/MinGW/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Siemens/NXStudentEdition2212/CAPITALINTEGRATION/capitalnxremote/:/mnt/c/Program Files/MATLAB/R2023b/bin:/mnt/c/Program Files/HP/HP One Agent:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/MATLAB/R2024b/bin:/mnt/c/Program Files/Git/cmd:/Docker/host/bin:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Microchip/xc8/v2.32/bin:/mnt/c/Users/mario/anaconda3:/mnt/c/Users/mario/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/mario/anaconda3/Library/usr/bin:/mnt/c/Users/mario/anaconda3/Library/bin:/mnt/c/Users/mario/anaconda3/Scripts:/mnt/c/Users/mario/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mario/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Users/mario/go/bin:/mnt/c/Users/mario/AppData/Roaming/npm:/snap/bin', 'WT_SESSION': '1814cc0c-6c07-45e3-9a62-3a98c3362197', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'PWD': '/home/mario/OpenCV_VC/ros_ws/build/slam_pkg', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mario/OpenCV_VC/ros_ws/build/slam_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mario/OpenCV_VC/ros_ws/install/slam_pkg/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'WSLENV': 'WT_SESSION:WT_PROFILE_ID:'}, 'shell': False}
+[1.922976] (-) TimerEvent: {}
+[2.023573] (-) TimerEvent: {}
+[2.126548] (slam_pkg) StdoutLine: {'line': b'running egg_info\n'}
+[2.126812] (-) TimerEvent: {}
+[2.127429] (slam_pkg) StdoutLine: {'line': b'creating ../../build/slam_pkg/slam_pkg.egg-info\n'}
+[2.138619] (slam_pkg) StdoutLine: {'line': b'writing ../../build/slam_pkg/slam_pkg.egg-info/PKG-INFO\n'}
+[2.139800] (slam_pkg) StdoutLine: {'line': b'writing dependency_links to ../../build/slam_pkg/slam_pkg.egg-info/dependency_links.txt\n'}
+[2.140957] (slam_pkg) StdoutLine: {'line': b'writing requirements to ../../build/slam_pkg/slam_pkg.egg-info/requires.txt\n'}
+[2.141205] (slam_pkg) StdoutLine: {'line': b'writing top-level names to ../../build/slam_pkg/slam_pkg.egg-info/top_level.txt\n'}
+[2.141642] (slam_pkg) StdoutLine: {'line': b"writing manifest file '../../build/slam_pkg/slam_pkg.egg-info/SOURCES.txt'\n"}
+[2.166911] (slam_pkg) StdoutLine: {'line': b"reading manifest file '../../build/slam_pkg/slam_pkg.egg-info/SOURCES.txt'\n"}
+[2.167730] (slam_pkg) StdoutLine: {'line': b"writing manifest file '../../build/slam_pkg/slam_pkg.egg-info/SOURCES.txt'\n"}
+[2.168431] (slam_pkg) StdoutLine: {'line': b'running build\n'}
+[2.168567] (slam_pkg) StdoutLine: {'line': b'running build_py\n'}
+[2.168790] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build\n'}
+[2.169283] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build/lib\n'}
+[2.170309] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build/lib/slam_pkg\n'}
+[2.173303] (slam_pkg) StdoutLine: {'line': b'copying slam_pkg/__init__.py -> /home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build/lib/slam_pkg\n'}
+[2.173925] (slam_pkg) StdoutLine: {'line': b'running install\n'}
+[2.178450] (slam_pkg) StdoutLine: {'line': b'running install_lib\n'}
+[2.190172] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/lib/python3.10/site-packages/slam_pkg\n'}
+[2.191677] (slam_pkg) StdoutLine: {'line': b'copying /home/mario/OpenCV_VC/ros_ws/build/slam_pkg/build/lib/slam_pkg/__init__.py -> /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/lib/python3.10/site-packages/slam_pkg\n'}
+[2.192263] (slam_pkg) StdoutLine: {'line': b'byte-compiling /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/lib/python3.10/site-packages/slam_pkg/__init__.py to __init__.cpython-310.pyc\n'}
+[2.193995] (slam_pkg) StdoutLine: {'line': b'running install_data\n'}
+[2.194378] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/share/ament_index\n'}
+[2.194598] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/share/ament_index/resource_index\n'}
+[2.195763] (slam_pkg) StdoutLine: {'line': b'creating /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/share/ament_index/resource_index/packages\n'}
+[2.196928] (slam_pkg) StdoutLine: {'line': b'copying resource/slam_pkg -> /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/share/ament_index/resource_index/packages\n'}
+[2.197372] (slam_pkg) StdoutLine: {'line': b'copying package.xml -> /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/share/slam_pkg\n'}
+[2.197722] (slam_pkg) StdoutLine: {'line': b'running install_egg_info\n'}
+[2.210060] (slam_pkg) StdoutLine: {'line': b'Copying ../../build/slam_pkg/slam_pkg.egg-info to /home/mario/OpenCV_VC/ros_ws/install/slam_pkg/lib/python3.10/site-packages/slam_pkg-0.0.0-py3.10.egg-info\n'}
+[2.212437] (slam_pkg) StdoutLine: {'line': b'running install_scripts\n'}
+[2.227491] (-) TimerEvent: {}
+[2.329373] (-) TimerEvent: {}
+[2.339746] (slam_pkg) StdoutLine: {'line': b"writing list of installed files to '/home/mario/OpenCV_VC/ros_ws/build/slam_pkg/install.log'\n"}
+[2.366366] (slam_pkg) CommandEnded: {'returncode': 0}
+[2.409816] (slam_pkg) JobEnded: {'identifier': 'slam_pkg', 'rc': 0}
+[2.410930] (-) EventReactorShutdown: {}

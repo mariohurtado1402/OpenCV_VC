@@ -1,0 +1,2 @@
+[console_scripts]
+slam_node = lidar_slam_pkg.slam_node:main
