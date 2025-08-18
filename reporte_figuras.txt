@@ -1,0 +1,4 @@
+Figura 1: Frame 1, Tipo: Rectángulo, Color: Verde, Posición: (320, 218)
+Figura 2: Frame 2, Tipo: Polígono 5, Color: Naranja, Posición: (119, 462)
+Figura 3: Frame 2, Tipo: Rectángulo, Color: Amarillo, Posición: (120, 25)
+Figura 4: Frame 2, Tipo: Polígono 5, Color: Verde, Posición: (327, 214)
