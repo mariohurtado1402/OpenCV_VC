@@ -1,0 +1,4 @@
+clear
+ls
+clear
+exit

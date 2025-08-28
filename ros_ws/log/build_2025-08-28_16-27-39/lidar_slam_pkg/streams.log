@@ -1,0 +1,17 @@
+[1.285s] Invoking command in '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg': PYTHONPATH=/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/build --no-deps symlink_data
+[1.594s] running develop
+[1.790s] running egg_info
+[1.802s] writing lidar_slam_pkg.egg-info/PKG-INFO
+[1.804s] writing dependency_links to lidar_slam_pkg.egg-info/dependency_links.txt
+[1.804s] writing entry points to lidar_slam_pkg.egg-info/entry_points.txt
+[1.805s] writing requirements to lidar_slam_pkg.egg-info/requires.txt
+[1.805s] writing top-level names to lidar_slam_pkg.egg-info/top_level.txt
+[1.850s] reading manifest file 'lidar_slam_pkg.egg-info/SOURCES.txt'
+[1.851s] writing manifest file 'lidar_slam_pkg.egg-info/SOURCES.txt'
+[1.872s] running build_ext
+[1.873s] Creating /home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/python3.10/site-packages/lidar-slam-pkg.egg-link (link to .)
+[1.874s] Installing slam_node script to /home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/lidar_slam_pkg
+[1.874s] 
+[1.875s] Installed /home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg
+[1.875s] running symlink_data
+[1.909s] Invoked command in '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg' returned '0': PYTHONPATH=/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/build --no-deps symlink_data

@@ -1,0 +1,855 @@
+[0.000000] (-) TimerEvent: {}
+[0.000464] (lidar_slam_pkg) JobQueued: {'identifier': 'lidar_slam_pkg', 'dependencies': OrderedDict()}
+[0.001671] (sllidar_ros2) JobQueued: {'identifier': 'sllidar_ros2', 'dependencies': OrderedDict()}
+[0.002423] (lidar_slam_pkg) JobStarted: {'identifier': 'lidar_slam_pkg'}
+[0.023418] (sllidar_ros2) JobStarted: {'identifier': 'sllidar_ros2'}
+[0.100006] (-) TimerEvent: {}
+[0.203576] (-) TimerEvent: {}
+[0.221935] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'cmake'}
+[0.224349] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2', '-DAMENT_CMAKE_SYMLINK_INSTALL=1', '-DCMAKE_INSTALL_PREFIX=/home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2'], 'cwd': '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'mario'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('WT_PROFILE_ID', '{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}'), ('HOME', '/home/mario'), ('OLDPWD', '/home/mario/OpenCV_VC/ros_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mario'), ('NAME', 'MarioHP'), ('WSL_INTEROP', '/run/WSL/289_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/ccache:/home/mario/GazeboSimulations/ardupilot_airhive/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mario/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/MinGW/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Siemens/NXStudentEdition2212/CAPITALINTEGRATION/capitalnxremote/:/mnt/c/Program Files/MATLAB/R2023b/bin:/mnt/c/Program Files/HP/HP One Agent:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/MATLAB/R2024b/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Microchip/xc8/v2.32/bin:/mnt/c/Users/mario/anaconda3:/mnt/c/Users/mario/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/mario/anaconda3/Library/usr/bin:/mnt/c/Users/mario/anaconda3/Library/bin:/mnt/c/Users/mario/anaconda3/Scripts:/mnt/c/Users/mario/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mario/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Users/mario/go/bin:/mnt/c/Users/mario/AppData/Roaming/npm:/snap/bin'), ('WT_SESSION', 'aca4951c-ee9f-4645-a140-07d3dfd96baf'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'WT_SESSION:WT_PROFILE_ID:'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.304071] (-) TimerEvent: {}
+[0.404860] (-) TimerEvent: {}
+[0.505290] (-) TimerEvent: {}
+[0.605946] (sllidar_ros2) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.606165] (-) TimerEvent: {}
+[0.706587] (-) TimerEvent: {}
+[0.806955] (-) TimerEvent: {}
+[0.907462] (-) TimerEvent: {}
+[1.012673] (-) TimerEvent: {}
+[1.113929] (-) TimerEvent: {}
+[1.215220] (-) TimerEvent: {}
+[1.284726] (lidar_slam_pkg) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/build', '--no-deps', 'symlink_data'], 'cwd': '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'mario', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'WT_PROFILE_ID': '{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}', 'HOME': '/home/mario', 'OLDPWD': '/home/mario/OpenCV_VC/ros_ws/src', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'WSL_DISTRO_NAME': 'Ubuntu-22.04', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'mario', 'NAME': 'MarioHP', 'WSL_INTEROP': '/run/WSL/289_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/usr/lib/ccache:/home/mario/GazeboSimulations/ardupilot_airhive/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mario/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/MinGW/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Siemens/NXStudentEdition2212/CAPITALINTEGRATION/capitalnxremote/:/mnt/c/Program Files/MATLAB/R2023b/bin:/mnt/c/Program Files/HP/HP One Agent:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/MATLAB/R2024b/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Microchip/xc8/v2.32/bin:/mnt/c/Users/mario/anaconda3:/mnt/c/Users/mario/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/mario/anaconda3/Library/usr/bin:/mnt/c/Users/mario/anaconda3/Library/bin:/mnt/c/Users/mario/anaconda3/Scripts:/mnt/c/Users/mario/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mario/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Users/mario/go/bin:/mnt/c/Users/mario/AppData/Roaming/npm:/snap/bin', 'WT_SESSION': 'aca4951c-ee9f-4645-a140-07d3dfd96baf', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'PWD': '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'WSLENV': 'WT_SESSION:WT_PROFILE_ID:'}, 'shell': False}
+[1.315420] (-) TimerEvent: {}
+[1.415815] (-) TimerEvent: {}
+[1.516192] (-) TimerEvent: {}
+[1.560051] (sllidar_ros2) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[1.595896] (lidar_slam_pkg) StdoutLine: {'line': b'running develop\n'}
+[1.616796] (-) TimerEvent: {}
+[1.717316] (-) TimerEvent: {}
+[1.792081] (lidar_slam_pkg) StdoutLine: {'line': b'running egg_info\n'}
+[1.803942] (lidar_slam_pkg) StdoutLine: {'line': b'writing lidar_slam_pkg.egg-info/PKG-INFO\n'}
+[1.806174] (lidar_slam_pkg) StdoutLine: {'line': b'writing dependency_links to lidar_slam_pkg.egg-info/dependency_links.txt\n'}
+[1.806531] (lidar_slam_pkg) StdoutLine: {'line': b'writing entry points to lidar_slam_pkg.egg-info/entry_points.txt\n'}
+[1.807202] (lidar_slam_pkg) StdoutLine: {'line': b'writing requirements to lidar_slam_pkg.egg-info/requires.txt\n'}
+[1.807847] (lidar_slam_pkg) StdoutLine: {'line': b'writing top-level names to lidar_slam_pkg.egg-info/top_level.txt\n'}
+[1.817499] (-) TimerEvent: {}
+[1.851925] (lidar_slam_pkg) StdoutLine: {'line': b"reading manifest file 'lidar_slam_pkg.egg-info/SOURCES.txt'\n"}
+[1.853476] (lidar_slam_pkg) StdoutLine: {'line': b"writing manifest file 'lidar_slam_pkg.egg-info/SOURCES.txt'\n"}
+[1.874078] (lidar_slam_pkg) StdoutLine: {'line': b'running build_ext\n'}
+[1.874965] (lidar_slam_pkg) StdoutLine: {'line': b'Creating /home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/python3.10/site-packages/lidar-slam-pkg.egg-link (link to .)\n'}
+[1.876390] (lidar_slam_pkg) StdoutLine: {'line': b'Installing slam_node script to /home/mario/OpenCV_VC/ros_ws/install/lidar_slam_pkg/lib/lidar_slam_pkg\n'}
+[1.876781] (lidar_slam_pkg) StdoutLine: {'line': b'\n'}
+[1.876970] (lidar_slam_pkg) StdoutLine: {'line': b'Installed /home/mario/OpenCV_VC/ros_ws/build/lidar_slam_pkg\n'}
+[1.877030] (lidar_slam_pkg) StdoutLine: {'line': b'running symlink_data\n'}
+[1.911259] (lidar_slam_pkg) CommandEnded: {'returncode': 0}
+[1.917767] (-) TimerEvent: {}
+[1.936931] (lidar_slam_pkg) JobEnded: {'identifier': 'lidar_slam_pkg', 'rc': 0}
+[2.018422] (-) TimerEvent: {}
+[2.099362] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[2.119313] (-) TimerEvent: {}
+[2.219958] (-) TimerEvent: {}
+[2.320528] (-) TimerEvent: {}
+[2.382410] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[2.388842] (sllidar_ros2) StdoutLine: {'line': b'-- Check for working C compiler: /usr/lib/ccache/cc - skipped\n'}
+[2.389794] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[2.391158] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[2.395531] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[2.420883] (-) TimerEvent: {}
+[2.521771] (-) TimerEvent: {}
+[2.583263] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[2.590680] (sllidar_ros2) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/lib/ccache/c++ - skipped\n'}
+[2.591039] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[2.591550] (sllidar_ros2) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[2.607310] (sllidar_ros2) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.11 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[2.622190] (-) TimerEvent: {}
+[2.722872] (-) TimerEvent: {}
+[2.823649] (-) TimerEvent: {}
+[2.924905] (-) TimerEvent: {}
+[2.939885] (sllidar_ros2) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[3.025039] (-) TimerEvent: {}
+[3.025912] (sllidar_ros2) StdoutLine: {'line': b'-- Override CMake install command with custom implementation using symlinks instead of copying resources\n'}
+[3.066704] (sllidar_ros2) StdoutLine: {'line': b'-- Found rclcpp: 16.0.12 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[3.127699] (-) TimerEvent: {}
+[3.232591] (-) TimerEvent: {}
+[3.337200] (-) TimerEvent: {}
+[3.412794] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.6 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[3.422477] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.6 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[3.435795] (sllidar_ros2) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.6 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[3.437355] (-) TimerEvent: {}
+[3.457507] (sllidar_ros2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[3.480204] (sllidar_ros2) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[3.540156] (-) TimerEvent: {}
+[3.546788] (sllidar_ros2) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[3.550880] (sllidar_ros2) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[3.644490] (-) TimerEvent: {}
+[3.749617] (-) TimerEvent: {}
+[3.854929] (-) TimerEvent: {}
+[3.960035] (-) TimerEvent: {}
+[4.064491] (-) TimerEvent: {}
+[4.169796] (-) TimerEvent: {}
+[4.275066] (-) TimerEvent: {}
+[4.380279] (-) TimerEvent: {}
+[4.485402] (-) TimerEvent: {}
+[4.590566] (-) TimerEvent: {}
+[4.695676] (-) TimerEvent: {}
+[4.800776] (-) TimerEvent: {}
+[4.905891] (-) TimerEvent: {}
+[5.011037] (-) TimerEvent: {}
+[5.115538] (-) TimerEvent: {}
+[5.220623] (-) TimerEvent: {}
+[5.325748] (-) TimerEvent: {}
+[5.430937] (-) TimerEvent: {}
+[5.536127] (-) TimerEvent: {}
+[5.641198] (-) TimerEvent: {}
+[5.660800] (sllidar_ros2) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[5.745104] (-) TimerEvent: {}
+[5.850240] (-) TimerEvent: {}
+[5.955371] (-) TimerEvent: {}
+[6.060483] (-) TimerEvent: {}
+[6.165605] (-) TimerEvent: {}
+[6.270762] (-) TimerEvent: {}
+[6.375829] (-) TimerEvent: {}
+[6.480971] (-) TimerEvent: {}
+[6.583616] (-) TimerEvent: {}
+[6.688769] (-) TimerEvent: {}
+[6.793118] (-) TimerEvent: {}
+[6.898225] (-) TimerEvent: {}
+[7.003339] (-) TimerEvent: {}
+[7.108497] (-) TimerEvent: {}
+[7.213619] (-) TimerEvent: {}
+[7.318803] (-) TimerEvent: {}
+[7.423916] (-) TimerEvent: {}
+[7.529032] (-) TimerEvent: {}
+[7.634232] (-) TimerEvent: {}
+[7.739395] (-) TimerEvent: {}
+[7.843802] (-) TimerEvent: {}
+[7.949024] (-) TimerEvent: {}
+[7.979662] (sllidar_ros2) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[8.052406] (-) TimerEvent: {}
+[8.157445] (-) TimerEvent: {}
+[8.262603] (-) TimerEvent: {}
+[8.367750] (-) TimerEvent: {}
+[8.473017] (-) TimerEvent: {}
+[8.578185] (-) TimerEvent: {}
+[8.683270] (-) TimerEvent: {}
+[8.787937] (-) TimerEvent: {}
+[8.892722] (-) TimerEvent: {}
+[8.997850] (-) TimerEvent: {}
+[9.103039] (-) TimerEvent: {}
+[9.207857] (-) TimerEvent: {}
+[9.313045] (-) TimerEvent: {}
+[9.417155] (-) TimerEvent: {}
+[9.522330] (-) TimerEvent: {}
+[9.627549] (-) TimerEvent: {}
+[9.732652] (-) TimerEvent: {}
+[9.837752] (-) TimerEvent: {}
+[9.942638] (-) TimerEvent: {}
+[10.047715] (-) TimerEvent: {}
+[10.152786] (-) TimerEvent: {}
+[10.257895] (-) TimerEvent: {}
+[10.362996] (-) TimerEvent: {}
+[10.468092] (-) TimerEvent: {}
+[10.573193] (-) TimerEvent: {}
+[10.678292] (-) TimerEvent: {}
+[10.783363] (-) TimerEvent: {}
+[10.888466] (-) TimerEvent: {}
+[10.992761] (-) TimerEvent: {}
+[11.097845] (-) TimerEvent: {}
+[11.202909] (-) TimerEvent: {}
+[11.307968] (-) TimerEvent: {}
+[11.413028] (-) TimerEvent: {}
+[11.518166] (-) TimerEvent: {}
+[11.623283] (-) TimerEvent: {}
+[11.728276] (-) TimerEvent: {}
+[11.833294] (-) TimerEvent: {}
+[11.938190] (-) TimerEvent: {}
+[12.042785] (-) TimerEvent: {}
+[12.083545] (sllidar_ros2) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[12.106345] (sllidar_ros2) StdoutLine: {'line': b'-- Looking for pthread.h\n'}
+[12.143354] (-) TimerEvent: {}
+[12.244125] (-) TimerEvent: {}
+[12.344987] (-) TimerEvent: {}
+[12.356194] (sllidar_ros2) StdoutLine: {'line': b'-- Looking for pthread.h - found\n'}
+[12.356670] (sllidar_ros2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[12.445440] (-) TimerEvent: {}
+[12.546056] (-) TimerEvent: {}
+[12.552418] (sllidar_ros2) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[12.553714] (sllidar_ros2) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[12.644569] (sllidar_ros2) StdoutLine: {'line': b'-- Found sensor_msgs: 4.9.0 (/opt/ros/humble/share/sensor_msgs/cmake)\n'}
+[12.646232] (-) TimerEvent: {}
+[12.688578] (sllidar_ros2) StdoutLine: {'line': b'-- Found std_srvs: 4.9.0 (/opt/ros/humble/share/std_srvs/cmake)\n'}
+[12.748979] (-) TimerEvent: {}
+[12.780328] (sllidar_ros2) StdoutLine: {'line': b'-- Configuring done\n'}
+[12.798581] (sllidar_ros2) StdoutLine: {'line': b'-- Generating done\n'}
+[12.803377] (sllidar_ros2) StdoutLine: {'line': b'-- Build files have been written to: /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2\n'}
+[12.812022] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[12.812716] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'build'}
+[12.814398] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2', '--', '-j12', '-l12'], 'cwd': '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'mario'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('WT_PROFILE_ID', '{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}'), ('HOME', '/home/mario'), ('OLDPWD', '/home/mario/OpenCV_VC/ros_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mario'), ('NAME', 'MarioHP'), ('WSL_INTEROP', '/run/WSL/289_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/ccache:/home/mario/GazeboSimulations/ardupilot_airhive/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mario/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/MinGW/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Siemens/NXStudentEdition2212/CAPITALINTEGRATION/capitalnxremote/:/mnt/c/Program Files/MATLAB/R2023b/bin:/mnt/c/Program Files/HP/HP One Agent:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/MATLAB/R2024b/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Microchip/xc8/v2.32/bin:/mnt/c/Users/mario/anaconda3:/mnt/c/Users/mario/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/mario/anaconda3/Library/usr/bin:/mnt/c/Users/mario/anaconda3/Library/bin:/mnt/c/Users/mario/anaconda3/Scripts:/mnt/c/Users/mario/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mario/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Users/mario/go/bin:/mnt/c/Users/mario/AppData/Roaming/npm:/snap/bin'), ('WT_SESSION', 'aca4951c-ee9f-4645-a140-07d3dfd96baf'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'WT_SESSION:WT_PROFILE_ID:'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[12.850715] (-) TimerEvent: {}
+[12.861705] (sllidar_ros2) StdoutLine: {'line': b'[  5%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/net_serial.cpp.o\x1b[0m\n'}
+[12.867151] (sllidar_ros2) StdoutLine: {'line': b'[ 10%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/src/sllidar_node.cpp.o\x1b[0m\n'}
+[12.867344] (sllidar_ros2) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o\x1b[0m\n'}
+[12.869830] (sllidar_ros2) StdoutLine: {'line': b'[ 20%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/dataunpacker.cpp.o\x1b[0m\n'}
+[12.878068] (sllidar_ros2) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp.o\x1b[0m\n'}
+[12.879882] (sllidar_ros2) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp.o\x1b[0m\n'}
+[12.884874] (sllidar_ros2) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_async_transceiver.cpp.o\x1b[0m\n'}
+[12.885201] (sllidar_ros2) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/rplidar_driver.cpp.o\x1b[0m\n'}
+[12.885565] (sllidar_ros2) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/hal/thread.cpp.o\x1b[0m\n'}
+[12.889665] (sllidar_ros2) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/timer.cpp.o\x1b[0m\n'}
+[12.890101] (sllidar_ros2) StdoutLine: {'line': b'[ 55%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/arch/linux/net_socket.cpp.o\x1b[0m\n'}
+[12.894368] (sllidar_ros2) StdoutLine: {'line': b'[ 60%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/dataunpacker/unpacker/handler_capsules.cpp.o\x1b[0m\n'}
+[12.951985] (-) TimerEvent: {}
+[13.052865] (-) TimerEvent: {}
+[13.153678] (-) TimerEvent: {}
+[13.254516] (-) TimerEvent: {}
+[13.355359] (-) TimerEvent: {}
+[13.455967] (-) TimerEvent: {}
+[13.556419] (-) TimerEvent: {}
+[13.657097] (-) TimerEvent: {}
+[13.757685] (-) TimerEvent: {}
+[13.858236] (-) TimerEvent: {}
+[13.958745] (-) TimerEvent: {}
+[14.034123] (sllidar_ros2) StdoutLine: {'line': b'[ 65%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_crc.cpp.o\x1b[0m\n'}
+[14.059041] (-) TimerEvent: {}
+[14.072859] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.073139] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.073241] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.073317] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:35\x1b[m\x1b[K:\n'}
+[14.073388] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.073471] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.073557] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.073620] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.073684] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.073750] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.073823] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:35\x1b[m\x1b[K:\n'}
+[14.073969] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.074059] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.074126] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.074188] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/hal/thread.cpp:43\x1b[m\x1b[K:\n'}
+[14.074245] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:\x1b[m\x1b[K In static member function \xe2\x80\x98\x1b[01m\x1b[Kstatic rp::hal::Thread rp::hal::Thread::create(thread_proc_t, void*)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.074308] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:52:57:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcast between incompatible function types from \xe2\x80\x98\x1b[01m\x1b[Kthread_proc_t\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int (*)(void*)\x1b[m\x1b[K\xe2\x80\x99} to \xe2\x80\x98\x1b[01m\x1b[Kvoid* (*)(void*)\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wcast-function-type\x1b[m\x1b[K]\n'}
+[14.074373] (sllidar_ros2) StderrLine: {'line': b'   52 |     pthread_create((pthread_t *)&newborn._handle, NULL, \x1b[01;35m\x1b[K(void * (*)(void *))proc\x1b[m\x1b[K, data);\n'}
+[14.074433] (sllidar_ros2) StderrLine: {'line': b'      |                                                         \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.074492] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Ku_result rp::hal::Thread::join(long unsigned int)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.074563] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/arch/linux/thread.hpp:176:37:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimeout\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.074625] (sllidar_ros2) StderrLine: {'line': b'  176 | u_result Thread::join(\x1b[01;35m\x1b[Kunsigned long timeout\x1b[m\x1b[K)\n'}
+[14.074687] (sllidar_ros2) StderrLine: {'line': b'      |                       \x1b[01;35m\x1b[K~~~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.084164] (sllidar_ros2) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_lidar_driver.cpp.o\x1b[0m\n'}
+[14.120460] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41\x1b[m\x1b[K,\n'}
+[14.120903] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_crc.h:36\x1b[m\x1b[K,\n'}
+[14.121100] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_crc.cpp:33\x1b[m\x1b[K:\n'}
+[14.121224] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.121332] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.121435] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.121526] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_crc.h:36\x1b[m\x1b[K,\n'}
+[14.121617] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_crc.cpp:33\x1b[m\x1b[K:\n'}
+[14.121705] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.121797] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.121888] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.137071] (sllidar_ros2) StdoutLine: {'line': b'[ 75%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_lidarprotocol_codec.cpp.o\x1b[0m\n'}
+[14.159376] (-) TimerEvent: {}
+[14.260066] (-) TimerEvent: {}
+[14.360724] (-) TimerEvent: {}
+[14.365880] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.366098] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.366175] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.366234] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10\x1b[m\x1b[K:\n'}
+[14.366290] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.366353] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.366408] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.366460] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.366511] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.366564] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.366614] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10\x1b[m\x1b[K:\n'}
+[14.366662] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.366718] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.366770] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.366822] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/arch/linux/arch_linux.h:42\x1b[m\x1b[K,\n'}
+[14.366874] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:41\x1b[m\x1b[K,\n'}
+[14.366936] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:10\x1b[m\x1b[K:\n'}
+[14.366991] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual u_result rp::arch::net::DGramSocketImpl::sendTo(const rp::net::SocketAddress*, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.367056] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_socket.cpp:733:24:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kcomparison of integer expressions of different signedness: \xe2\x80\x98\x1b[01m\x1b[Kint\x1b[m\x1b[K\xe2\x80\x99 and \xe2\x80\x98\x1b[01m\x1b[Ksize_t\x1b[m\x1b[K\xe2\x80\x99 {aka \xe2\x80\x98\x1b[01m\x1b[Klong unsigned int\x1b[m\x1b[K\xe2\x80\x99} [\x1b[01;35m\x1b[K-Wsign-compare\x1b[m\x1b[K]\n'}
+[14.367184] (sllidar_ros2) StderrLine: {'line': b'  733 |             assert(\x1b[01;35m\x1b[Kans == len\x1b[m\x1b[K);\n'}
+[14.367256] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[14.385437] (sllidar_ros2) StdoutLine: {'line': b'[ 80%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_serial_channel.cpp.o\x1b[0m\n'}
+[14.387452] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.387778] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.387948] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.388089] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:35\x1b[m\x1b[K:\n'}
+[14.388220] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.388338] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.388511] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.388604] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.388692] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.388777] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.388865] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:35\x1b[m\x1b[K:\n'}
+[14.388952] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.389045] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.389147] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.389296] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.cpp:44\x1b[m\x1b[K:\n'}
+[14.389421] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.389546] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.389678] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(\x1b[01;35m\x1b[Ku_result errCode\x1b[m\x1b[K) {}\n'}
+[14.389953] (sllidar_ros2) StderrLine: {'line': b'      |                                       \x1b[01;35m\x1b[K~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.390801] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.390956] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.391117] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.391271] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:33\x1b[m\x1b[K:\n'}
+[14.391391] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.391498] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.391613] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.391725] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.391858] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.391988] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.392123] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:33\x1b[m\x1b[K:\n'}
+[14.392248] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.392378] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.392476] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.392587] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Ku_result rp::standalone::rplidar::RPlidarDriver::connect(const char*, _u32, _u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.392709] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:67:77:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kflag\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.392924] (sllidar_ros2) StderrLine: {'line': b'   67 |     u_result RPlidarDriver::connect(const char *path, _u32 portOrBaud, \x1b[01;35m\x1b[K_u32 flag\x1b[m\x1b[K)\n'}
+[14.393052] (sllidar_ros2) StderrLine: {'line': b'      |                                                                        \x1b[01;35m\x1b[K~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.393169] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Ku_result rp::standalone::rplidar::RPlidarDriver::reset(_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.393361] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:101:40:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimeout\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.393493] (sllidar_ros2) StderrLine: {'line': b'  101 |     u_result RPlidarDriver::reset(\x1b[01;35m\x1b[K_u32 timeout\x1b[m\x1b[K)\n'}
+[14.393613] (sllidar_ros2) StderrLine: {'line': b'      |                                   \x1b[01;35m\x1b[K~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.393729] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Ku_result rp::standalone::rplidar::RPlidarDriver::getScanDataWithInterval(rplidar_response_measurement_node_t*, size_t&)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.393862] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:180:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Knodebuffer\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.393981] (sllidar_ros2) StderrLine: {'line': b'  180 |     u_result RPlidarDriver::getScanDataWithInterval(\x1b[01;35m\x1b[Krplidar_response_measurement_node_t * nodebuffer\x1b[m\x1b[K, size_t & count)\n'}
+[14.394097] (sllidar_ros2) StderrLine: {'line': b'      |                                                     \x1b[01;35m\x1b[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.394214] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/rplidar_driver.cpp:180:112:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kcount\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.394338] (sllidar_ros2) StderrLine: {'line': b'  180 |     u_result RPlidarDriver::getScanDataWithInterval(rplidar_response_measurement_node_t * nodebuffer, \x1b[01;35m\x1b[Ksize_t & count\x1b[m\x1b[K)\n'}
+[14.394460] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                       \x1b[01;35m\x1b[K~~~~~~~~~^~~~~\x1b[m\x1b[K\n'}
+[14.394579] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kbool rp::arch::net::raw_serial::open(const char*, uint32_t, uint32_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.394828] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:97:74:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kflags\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.394949] (sllidar_ros2) StderrLine: {'line': b'   97 | bool raw_serial::open(const char * portname, uint32_t baudrate, \x1b[01;35m\x1b[Kuint32_t flags\x1b[m\x1b[K)\n'}
+[14.397349] (sllidar_ros2) StderrLine: {'line': b'      |                                                                 \x1b[01;35m\x1b[K~~~~~~~~~^~~~~\x1b[m\x1b[K\n'}
+[14.397536] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void rp::arch::net::raw_serial::flush(_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.397680] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:281:30:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kflags\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.397804] (sllidar_ros2) StderrLine: {'line': b'  281 | void raw_serial::flush( \x1b[01;35m\x1b[K_u32 flags\x1b[m\x1b[K)\n'}
+[14.398066] (sllidar_ros2) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~~~~^~~~~\x1b[m\x1b[K\n'}
+[14.398178] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual int rp::arch::net::raw_serial::waitforsent(_u32, size_t*)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.398300] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:286:34:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimeout\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.398417] (sllidar_ros2) StderrLine: {'line': b'  286 | int raw_serial::waitforsent(\x1b[01;35m\x1b[K_u32 timeout\x1b[m\x1b[K, size_t * returned_size)\n'}
+[14.398513] (sllidar_ros2) StderrLine: {'line': b'      |                             \x1b[01;35m\x1b[K~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.398938] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual int rp::arch::net::raw_serial::waitforrecv(_u32, size_t*)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.399148] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:292:34:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimeout\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.399432] (sllidar_ros2) StderrLine: {'line': b'  292 | int raw_serial::waitforrecv(\x1b[01;35m\x1b[K_u32 timeout\x1b[m\x1b[K, size_t * returned_size)\n'}
+[14.399639] (sllidar_ros2) StderrLine: {'line': b'      |                             \x1b[01;35m\x1b[K~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.399762] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void rp::arch::net::raw_serial::cancelOperation()\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.399873] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/arch/linux/net_serial.cpp:427:5:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kvalue computed is not used [\x1b[01;35m\x1b[K-Wunused-value\x1b[m\x1b[K]\n'}
+[14.399985] (sllidar_ros2) StderrLine: {'line': b'  427 |     \x1b[01;35m\x1b[K(int)::write(_selfpipe[1], "x", 1)\x1b[m\x1b[K;\n'}
+[14.400102] (sllidar_ros2) StderrLine: {'line': b'      |     \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.400254] (sllidar_ros2) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_tcp_channel.cpp.o\x1b[0m\n'}
+[14.408632] (sllidar_ros2) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding CXX object CMakeFiles/sllidar_node.dir/sdk/src/sl_udp_channel.cpp.o\x1b[0m\n'}
+[14.414552] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.414809] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.414929] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.415031] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.415130] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:39\x1b[m\x1b[K:\n'}
+[14.415269] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.415393] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.415484] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.415570] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.415670] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.415769] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.415856] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.415941] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:39\x1b[m\x1b[K:\n'}
+[14.416025] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.416113] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.416198] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.416284] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_normalnode.cpp:40\x1b[m\x1b[K:\n'}
+[14.416441] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.416538] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.416627] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(\x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, _u32 customCode, const void* data, size_t size) {}\n'}
+[14.416724] (sllidar_ros2) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.416824] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KcustomCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.416913] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, \x1b[01;35m\x1b[K_u32 customCode\x1b[m\x1b[K, const void* data, size_t size) {}\n'}
+[14.416999] (sllidar_ros2) StderrLine: {'line': b'      |                                                             \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.417085] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.417169] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, \x1b[01;35m\x1b[Kconst void* data\x1b[m\x1b[K, size_t size) {}\n'}
+[14.417301] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.417414] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.417503] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.417588] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.417672] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.417757] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrMsg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.418157] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(\x1b[01;35m\x1b[Kint errMsg\x1b[m\x1b[K, _u8 ansType, const void* payload, size_t size) {}\n'}
+[14.418330] (sllidar_ros2) StderrLine: {'line': b'      |                                      \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[14.418431] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.418527] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, \x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, const void* payload, size_t size) {}\n'}
+[14.418630] (sllidar_ros2) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.418719] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.418817] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, \x1b[01;35m\x1b[Kconst void* payload\x1b[m\x1b[K, size_t size) {}\n'}
+[14.418904] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.418992] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.419078] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.419164] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.447773] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.448032] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.448160] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.448266] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.448363] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:39\x1b[m\x1b[K:\n'}
+[14.448458] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.448553] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.448644] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.448731] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.448818] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.448909] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.448999] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.449088] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:39\x1b[m\x1b[K:\n'}
+[14.449181] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.449275] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.449371] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.449455] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_hqnode.cpp:40\x1b[m\x1b[K:\n'}
+[14.449606] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.449727] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.449827] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(\x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, _u32 customCode, const void* data, size_t size) {}\n'}
+[14.449976] (sllidar_ros2) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.450075] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KcustomCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.450163] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, \x1b[01;35m\x1b[K_u32 customCode\x1b[m\x1b[K, const void* data, size_t size) {}\n'}
+[14.450259] (sllidar_ros2) StderrLine: {'line': b'      |                                                             \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.450344] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.450437] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, \x1b[01;35m\x1b[Kconst void* data\x1b[m\x1b[K, size_t size) {}\n'}
+[14.450525] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.450616] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.450704] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.450789] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.450880] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.450967] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrMsg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.451058] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(\x1b[01;35m\x1b[Kint errMsg\x1b[m\x1b[K, _u8 ansType, const void* payload, size_t size) {}\n'}
+[14.451141] (sllidar_ros2) StderrLine: {'line': b'      |                                      \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[14.451225] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.451311] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, \x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, const void* payload, size_t size) {}\n'}
+[14.451394] (sllidar_ros2) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.451476] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.451559] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, \x1b[01;35m\x1b[Kconst void* payload\x1b[m\x1b[K, size_t size) {}\n'}
+[14.451684] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.451792] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.451879] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.451963] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.461191] (-) TimerEvent: {}
+[14.477494] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.477781] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.477885] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.477975] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.478064] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:39\x1b[m\x1b[K:\n'}
+[14.478151] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.478242] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.478324] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.478412] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.478498] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.478577] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.478659] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.478737] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:39\x1b[m\x1b[K:\n'}
+[14.478815] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.478895] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.478977] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.479054] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.cpp:40\x1b[m\x1b[K:\n'}
+[14.479131] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.479209] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:52:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.479287] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(\x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, _u32 customCode, const void* data, size_t size) {}\n'}
+[14.479364] (sllidar_ros2) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.479441] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KcustomCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.479523] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, \x1b[01;35m\x1b[K_u32 customCode\x1b[m\x1b[K, const void* data, size_t size) {}\n'}
+[14.479764] (sllidar_ros2) StderrLine: {'line': b'      |                                                             \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.479868] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.479967] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, \x1b[01;35m\x1b[Kconst void* data\x1b[m\x1b[K, size_t size) {}\n'}
+[14.480060] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.480161] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:103:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.480254] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.480341] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.480428] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.480516] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:42:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrMsg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.480603] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(\x1b[01;35m\x1b[Kint errMsg\x1b[m\x1b[K, _u8 ansType, const void* payload, size_t size) {}\n'}
+[14.480688] (sllidar_ros2) StderrLine: {'line': b'      |                                      \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[14.480773] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:54:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.480859] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, \x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, const void* payload, size_t size) {}\n'}
+[14.480943] (sllidar_ros2) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.481034] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:75:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.481123] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, \x1b[01;35m\x1b[Kconst void* payload\x1b[m\x1b[K, size_t size) {}\n'}
+[14.481204] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.481287] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.481373] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.481521] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.561660] (-) TimerEvent: {}
+[14.563365] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[14.563838] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[14.563984] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.564083] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.564178] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:39\x1b[m\x1b[K:\n'}
+[14.564269] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.564360] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.564446] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.564562] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[14.564673] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[14.564766] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[14.564863] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunnpacker_commondef.h:41\x1b[m\x1b[K,\n'}
+[14.564960] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:39\x1b[m\x1b[K:\n'}
+[14.565049] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.565139] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.565295] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.565434] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:40\x1b[m\x1b[K:\n'}
+[14.565613] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.565746] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:52:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.565861] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(\x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, _u32 customCode, const void* data, size_t size) {}\n'}
+[14.565970] (sllidar_ros2) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.566066] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KcustomCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.566177] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, \x1b[01;35m\x1b[K_u32 customCode\x1b[m\x1b[K, const void* data, size_t size) {}\n'}
+[14.566265] (sllidar_ros2) StderrLine: {'line': b'      |                                                             \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.566352] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.566448] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, \x1b[01;35m\x1b[Kconst void* data\x1b[m\x1b[K, size_t size) {}\n'}
+[14.566545] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.566635] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:54:103:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.566726] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.566813] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.566899] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.566983] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:42:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrMsg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.567066] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(\x1b[01;35m\x1b[Kint errMsg\x1b[m\x1b[K, _u8 ansType, const void* payload, size_t size) {}\n'}
+[14.567154] (sllidar_ros2) StderrLine: {'line': b'      |                                      \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[14.567242] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:54:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.567326] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, \x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, const void* payload, size_t size) {}\n'}
+[14.567409] (sllidar_ros2) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.567490] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:75:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.567579] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, \x1b[01;35m\x1b[Kconst void* payload\x1b[m\x1b[K, size_t size) {}\n'}
+[14.567732] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[14.567833] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/../dataunpacker.h:56:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.567921] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[14.568006] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.568088] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid sl::internal::unpacker::UnpackerHandler_DenseCapsuleNode::_onScanNodeDenseCapsuleData(rplidar_response_dense_capsule_measurement_nodes_t&, sl::internal::LIDARSampleDataUnpackerInner*)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.568184] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/unpacker/handler_capsules.cpp:763:30:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Ktype qualifiers ignored on cast result type [\x1b[01;35m\x1b[K-Wignored-qualifiers\x1b[m\x1b[K]\n'}
+[14.568272] (sllidar_ros2) StderrLine: {'line': b'  763 |             const int dist = \x1b[01;35m\x1b[Kstatic_cast<const int>(_cached_previous_dense_capsuledata.cabins[pos].distance)\x1b[m\x1b[K;\n'}
+[14.568413] (sllidar_ros2) StderrLine: {'line': b'      |                              \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.662192] (-) TimerEvent: {}
+[14.766339] (-) TimerEvent: {}
+[14.871427] (-) TimerEvent: {}
+[14.891561] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41\x1b[m\x1b[K,\n'}
+[14.891841] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.891955] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_serial_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.892072] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.892178] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.892272] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.892353] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.892432] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_serial_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.892508] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.892595] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.892673] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.909310] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41\x1b[m\x1b[K,\n'}
+[14.909563] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.909676] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.909775] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.909874] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.909966] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.910058] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.910151] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.910246] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.910348] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.910450] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.910549] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid sl::UdpChannel::setStatus(_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.910644] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_udp_channel.cpp:112:29:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kflag\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.910734] (sllidar_ros2) StderrLine: {'line': b'  112 |         void setStatus(\x1b[01;35m\x1b[K_u32 flag\x1b[m\x1b[K){}\n'}
+[14.910824] (sllidar_ros2) StderrLine: {'line': b'      |                        \x1b[01;35m\x1b[K~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.920584] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41\x1b[m\x1b[K,\n'}
+[14.920736] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.920781] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.920818] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.920858] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.920899] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.920933] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[14.920966] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:33\x1b[m\x1b[K:\n'}
+[14.920998] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[14.921071] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[14.921110] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[14.921145] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid sl::TcpChannel::setStatus(_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.921183] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_tcp_channel.cpp:109:29:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kflag\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[14.921218] (sllidar_ros2) StderrLine: {'line': b'  109 |         void setStatus(\x1b[01;35m\x1b[K_u32 flag\x1b[m\x1b[K){}\n'}
+[14.921254] (sllidar_ros2) StderrLine: {'line': b'      |                        \x1b[01;35m\x1b[K~~~~~^~~~\x1b[m\x1b[K\n'}
+[14.973906] (-) TimerEvent: {}
+[15.078362] (-) TimerEvent: {}
+[15.183452] (-) TimerEvent: {}
+[15.231075] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[15.231356] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[15.231471] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[15.231572] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:35\x1b[m\x1b[K:\n'}
+[15.231672] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[15.231764] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[15.231851] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[15.231939] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[15.232028] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[15.232115] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[15.232204] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:35\x1b[m\x1b[K:\n'}
+[15.232295] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[15.232398] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[15.232493] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[15.232576] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidarprotocol_codec.cpp:49\x1b[m\x1b[K:\n'}
+[15.232658] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.232758] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.232917] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(\x1b[01;35m\x1b[Ku_result errCode\x1b[m\x1b[K) {}\n'}
+[15.233021] (sllidar_ros2) StderrLine: {'line': b'      |                                       \x1b[01;35m\x1b[K~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[15.286027] (-) TimerEvent: {}
+[15.391172] (-) TimerEvent: {}
+[15.496294] (-) TimerEvent: {}
+[15.601238] (-) TimerEvent: {}
+[15.706893] (-) TimerEvent: {}
+[15.761371] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_protocol.h:36\x1b[m\x1b[K,\n'}
+[15.761603] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:39\x1b[m\x1b[K,\n'}
+[15.761697] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[15.761783] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:33\x1b[m\x1b[K:\n'}
+[15.761867] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[15.761953] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[15.762034] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[15.762115] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar_cmd.h:36\x1b[m\x1b[K,\n'}
+[15.762194] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/rplidar.h:40\x1b[m\x1b[K,\n'}
+[15.762273] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sdkcommon.h:49\x1b[m\x1b[K,\n'}
+[15.762352] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:33\x1b[m\x1b[K:\n'}
+[15.762439] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[15.762520] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[15.762659] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[15.762745] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:50\x1b[m\x1b[K:\n'}
+[15.762827] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onCustomSampleDataDecoded(_u8, _u32, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.762917] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:52:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.763002] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(\x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, _u32 customCode, const void* data, size_t size) {}\n'}
+[15.763082] (sllidar_ros2) StderrLine: {'line': b'      |                                                \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[15.763160] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KcustomCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.763241] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, \x1b[01;35m\x1b[K_u32 customCode\x1b[m\x1b[K, const void* data, size_t size) {}\n'}
+[15.763320] (sllidar_ros2) StderrLine: {'line': b'      |                                                             \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.763398] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:90:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.763477] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, \x1b[01;35m\x1b[Kconst void* data\x1b[m\x1b[K, size_t size) {}\n'}
+[15.763554] (sllidar_ros2) StderrLine: {'line': b'      |                                                                              \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[15.763631] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:54:103:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.763708] (sllidar_ros2) StderrLine: {'line': b'   54 |         virtual void onCustomSampleDataDecoded(_u8 ansType, _u32 customCode, const void* data, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[15.763786] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                                \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[15.763862] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::LIDARSampleDataListener::onDecodingError(int, _u8, const void*, size_t)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.763937] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:42:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrMsg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.764016] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(\x1b[01;35m\x1b[Kint errMsg\x1b[m\x1b[K, _u8 ansType, const void* payload, size_t size) {}\n'}
+[15.764091] (sllidar_ros2) StderrLine: {'line': b'      |                                      \x1b[01;35m\x1b[K~~~~^~~~~~\x1b[m\x1b[K\n'}
+[15.764164] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:54:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KansType\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.764240] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, \x1b[01;35m\x1b[K_u8 ansType\x1b[m\x1b[K, const void* payload, size_t size) {}\n'}
+[15.764314] (sllidar_ros2) StderrLine: {'line': b'      |                                                  \x1b[01;35m\x1b[K~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[15.764388] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:75:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.764467] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, \x1b[01;35m\x1b[Kconst void* payload\x1b[m\x1b[K, size_t size) {}\n'}
+[15.764541] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[15.764614] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/dataunpacker/dataunpacker.h:56:91:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ksize\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.764737] (sllidar_ros2) StderrLine: {'line': b'   56 |         virtual void onDecodingError(int errMsg, _u8 ansType, const void* payload, \x1b[01;35m\x1b[Ksize_t size\x1b[m\x1b[K) {}\n'}
+[15.764820] (sllidar_ros2) StderrLine: {'line': b'      |                                                                                    \x1b[01;35m\x1b[K~~~~~~~^~~~\x1b[m\x1b[K\n'}
+[15.764897] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:51\x1b[m\x1b[K:\n'}
+[15.765031] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual void sl::internal::IAsyncProtocolCodec::onChannelError(u_result)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.765180] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_async_transceiver.h:90:48:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KerrCode\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.765324] (sllidar_ros2) StderrLine: {'line': b'   90 |         virtual void   onChannelError(\x1b[01;35m\x1b[Ku_result errCode\x1b[m\x1b[K) {}\n'}
+[15.765406] (sllidar_ros2) StderrLine: {'line': b'      |                                       \x1b[01;35m\x1b[K~~~~~~~~~^~~~~~~\x1b[m\x1b[K\n'}
+[15.765481] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual sl_result sl::SlamtecLidarDriver::reset(sl_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.765558] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:511:32:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KtimeoutInMs\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.765639] (sllidar_ros2) StderrLine: {'line': b'  511 |         sl_result reset(\x1b[01;35m\x1b[Ksl_u32 timeoutInMs = DEFAULT_TIMEOUT\x1b[m\x1b[K)\n'}
+[15.765770] (sllidar_ros2) StderrLine: {'line': b'      |                         \x1b[01;35m\x1b[K~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.765849] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual sl_result sl::SlamtecLidarDriver::startScan(bool, bool, sl_u32, sl::LidarScanMode*)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.765927] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:586:69:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Koptions\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.766004] (sllidar_ros2) StderrLine: {'line': b'  586 |         sl_result startScan(bool force, bool useTypicalScan, \x1b[01;35m\x1b[Ksl_u32 options = 0\x1b[m\x1b[K, LidarScanMode* outUsedScanMode = nullptr)\n'}
+[15.766080] (sllidar_ros2) StderrLine: {'line': b'      |                                                              \x1b[01;35m\x1b[K~~~~~~~^~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.766154] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual sl_result sl::SlamtecLidarDriver::stop(sl_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.766228] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:763:31:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimeout\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.766300] (sllidar_ros2) StderrLine: {'line': b'  763 |         sl_result stop(\x1b[01;35m\x1b[Ksl_u32 timeout = DEFAULT_TIMEOUT\x1b[m\x1b[K)\n'}
+[15.766373] (sllidar_ros2) StderrLine: {'line': b'      |                        \x1b[01;35m\x1b[K~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.766444] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual sl_result sl::SlamtecLidarDriver::getFrequency(const sl::LidarScanMode&, const sl_lidar_response_measurement_node_hq_t*, size_t, float&)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.766518] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:880:110:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Knodes\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.766591] (sllidar_ros2) StderrLine: {'line': b'  880 |         sl_result getFrequency(const LidarScanMode& scanMode, \x1b[01;35m\x1b[Kconst sl_lidar_response_measurement_node_hq_t* nodes\x1b[m\x1b[K, size_t count, float& frequency)\n'}
+[15.766670] (sllidar_ros2) StderrLine: {'line': b'      |                                                               \x1b[01;35m\x1b[K~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~\x1b[m\x1b[K\n'}
+[15.766742] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvirtual sl_result sl::SlamtecLidarDriver::getMotorInfo(sl::LidarMotorInfo&, sl_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.766863] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1023:66:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KtimeoutInMs\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.766945] (sllidar_ros2) StderrLine: {'line': b' 1023 |         sl_result getMotorInfo(LidarMotorInfo &motorInfo, \x1b[01;35m\x1b[Ksl_u32 timeoutInMs\x1b[m\x1b[K)\n'}
+[15.767018] (sllidar_ros2) StderrLine: {'line': b'      |                                                           \x1b[01;35m\x1b[K~~~~~~~^~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.767090] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Ku_result sl::SlamtecLidarDriver::getScanModeCount(sl_u16&, sl_u32)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.767163] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1199:61:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[KtimeoutInMs\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.767235] (sllidar_ros2) StderrLine: {'line': b' 1199 |         u_result getScanModeCount(sl_u16& modeCount, \x1b[01;35m\x1b[Ksl_u32 timeoutInMs = DEFAULT_TIMEOUT\x1b[m\x1b[K)\n'}
+[15.767310] (sllidar_ros2) StderrLine: {'line': b'      |                                                      \x1b[01;35m\x1b[K~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.767385] (sllidar_ros2) StderrLine: {'line': b'/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp: In instantiation of \xe2\x80\x98\x1b[01m\x1b[Kvoid sl::RawSampleNodeHolder<T>::pushNode(_u64, const T*) [with T = sl_lidar_response_measurement_node_hq_t; _u64 = long unsigned int]\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[15.767459] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:1648:42:\x1b[m\x1b[K   required from here\n'}
+[15.767532] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:202:28:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused parameter \xe2\x80\x98\x1b[01m\x1b[Ktimestamp_uS\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wunused-parameter\x1b[m\x1b[K]\n'}
+[15.767604] (sllidar_ros2) StderrLine: {'line': b'  202 |         void pushNode(\x1b[01;35m\x1b[K_u64 timestamp_uS\x1b[m\x1b[K, const T* node)\n'}
+[15.767676] (sllidar_ros2) StderrLine: {'line': b'      |                       \x1b[01;35m\x1b[K~~~~~^~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.767747] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:\x1b[m\x1b[K At global scope:\n'}
+[15.767818] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:83:17:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kvoid sl::convert(const sl_lidar_response_measurement_node_hq_t&, sl_lidar_response_measurement_node_t&)\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K-Wunused-function\x1b[m\x1b[K]\n'}
+[15.767895] (sllidar_ros2) StderrLine: {'line': b'   83 |     static void \x1b[01;35m\x1b[Kconvert\x1b[m\x1b[K(const sl_lidar_response_measurement_node_hq_t& from, sl_lidar_response_measurement_node_t& to)\n'}
+[15.767967] (sllidar_ros2) StderrLine: {'line': b'      |                 \x1b[01;35m\x1b[K^~~~~~~\x1b[m\x1b[K\n'}
+[15.768038] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:75:17:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kvoid sl::convert(const sl_lidar_response_measurement_node_t&, sl_lidar_response_measurement_node_hq_t&)\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K-Wunused-function\x1b[m\x1b[K]\n'}
+[15.768113] (sllidar_ros2) StderrLine: {'line': b'   75 |     static void \x1b[01;35m\x1b[Kconvert\x1b[m\x1b[K(const sl_lidar_response_measurement_node_t& from, sl_lidar_response_measurement_node_hq_t& to)\n'}
+[15.768185] (sllidar_ros2) StderrLine: {'line': b'      |                 \x1b[01;35m\x1b[K^~~~~~~\x1b[m\x1b[K\n'}
+[15.768262] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/sdk/src/sl_lidar_driver.cpp:70:17:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kvoid sl::printDeprecationWarn(const char*, const char*)\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K-Wunused-function\x1b[m\x1b[K]\n'}
+[15.768335] (sllidar_ros2) StderrLine: {'line': b'   70 |     static void \x1b[01;35m\x1b[KprintDeprecationWarn\x1b[m\x1b[K(const char* fn, const char* replacement)\n'}
+[15.768406] (sllidar_ros2) StderrLine: {'line': b'      |                 \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[15.808813] (-) TimerEvent: {}
+[15.913793] (-) TimerEvent: {}
+[16.018890] (-) TimerEvent: {}
+[16.123358] (-) TimerEvent: {}
+[16.228720] (-) TimerEvent: {}
+[16.334065] (-) TimerEvent: {}
+[16.439178] (-) TimerEvent: {}
+[16.544447] (-) TimerEvent: {}
+[16.649742] (-) TimerEvent: {}
+[16.759886] (-) TimerEvent: {}
+[16.865078] (-) TimerEvent: {}
+[16.970329] (-) TimerEvent: {}
+[17.077020] (-) TimerEvent: {}
+[17.182029] (-) TimerEvent: {}
+[17.287302] (-) TimerEvent: {}
+[17.392549] (-) TimerEvent: {}
+[17.497732] (-) TimerEvent: {}
+[17.602963] (-) TimerEvent: {}
+[17.708169] (-) TimerEvent: {}
+[17.814578] (-) TimerEvent: {}
+[17.919807] (-) TimerEvent: {}
+[18.025072] (-) TimerEvent: {}
+[18.130320] (-) TimerEvent: {}
+[18.234909] (-) TimerEvent: {}
+[18.340196] (-) TimerEvent: {}
+[18.445488] (-) TimerEvent: {}
+[18.550638] (-) TimerEvent: {}
+[18.655855] (-) TimerEvent: {}
+[18.760935] (-) TimerEvent: {}
+[18.866018] (-) TimerEvent: {}
+[18.967590] (-) TimerEvent: {}
+[19.072904] (-) TimerEvent: {}
+[19.178257] (-) TimerEvent: {}
+[19.280449] (-) TimerEvent: {}
+[19.385641] (-) TimerEvent: {}
+[19.490824] (-) TimerEvent: {}
+[19.595897] (-) TimerEvent: {}
+[19.701053] (-) TimerEvent: {}
+[19.805996] (-) TimerEvent: {}
+[19.910998] (-) TimerEvent: {}
+[20.016082] (-) TimerEvent: {}
+[20.121190] (-) TimerEvent: {}
+[20.226256] (-) TimerEvent: {}
+[20.330822] (-) TimerEvent: {}
+[20.435693] (-) TimerEvent: {}
+[20.540696] (-) TimerEvent: {}
+[20.645776] (-) TimerEvent: {}
+[20.750818] (-) TimerEvent: {}
+[20.855853] (-) TimerEvent: {}
+[20.960816] (-) TimerEvent: {}
+[21.065601] (-) TimerEvent: {}
+[21.170655] (-) TimerEvent: {}
+[21.275542] (-) TimerEvent: {}
+[21.319652] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:41\x1b[m\x1b[K,\n'}
+[21.320113] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[21.320316] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar.h:36\x1b[m\x1b[K,\n'}
+[21.320473] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_node.cpp:38\x1b[m\x1b[K:\n'}
+[21.320619] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_protocol.h:66:16:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kdata\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[21.320767] (sllidar_ros2) StderrLine: {'line': b'   66 |     sl_u8 data[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[21.320907] (sllidar_ros2) StderrLine: {'line': b'      |                \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[21.321042] (sllidar_ros2) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_driver.h:54\x1b[m\x1b[K,\n'}
+[21.321176] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar.h:36\x1b[m\x1b[K,\n'}
+[21.321308] (sllidar_ros2) StderrLine: {'line': b'                 from \x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_node.cpp:38\x1b[m\x1b[K:\n'}
+[21.321537] (sllidar_ros2) StderrLine: {'line': b'\x1b[01m\x1b[K/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/./sdk/include/sl_lidar_cmd.h:324:20:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[KISO C++ forbids zero-size array \xe2\x80\x98\x1b[01m\x1b[Kpayload\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K-Wpedantic\x1b[m\x1b[K]\n'}
+[21.321683] (sllidar_ros2) StderrLine: {'line': b'  324 |     sl_u8  payload[\x1b[01;35m\x1b[K0\x1b[m\x1b[K];\n'}
+[21.321819] (sllidar_ros2) StderrLine: {'line': b'      |                    \x1b[01;35m\x1b[K^\x1b[m\x1b[K\n'}
+[21.334990] (sllidar_ros2) StdoutLine: {'line': b'[ 95%] \x1b[32m\x1b[1mLinking CXX executable sllidar_node\x1b[0m\n'}
+[21.377504] (-) TimerEvent: {}
+[21.482533] (-) TimerEvent: {}
+[21.587677] (-) TimerEvent: {}
+[21.692626] (-) TimerEvent: {}
+[21.797718] (-) TimerEvent: {}
+[21.902965] (-) TimerEvent: {}
+[22.008094] (-) TimerEvent: {}
+[22.113175] (-) TimerEvent: {}
+[22.130719] (sllidar_ros2) StdoutLine: {'line': b'[ 95%] Built target sllidar_node\n'}
+[22.214122] (-) TimerEvent: {}
+[22.319091] (-) TimerEvent: {}
+[22.421552] (-) TimerEvent: {}
+[22.526411] (-) TimerEvent: {}
+[22.631406] (-) TimerEvent: {}
+[22.736298] (-) TimerEvent: {}
+[22.841362] (-) TimerEvent: {}
+[22.946384] (-) TimerEvent: {}
+[23.051359] (-) TimerEvent: {}
+[23.157178] (-) TimerEvent: {}
+[23.262361] (-) TimerEvent: {}
+[23.367422] (-) TimerEvent: {}
+[23.471567] (-) TimerEvent: {}
+[23.576536] (-) TimerEvent: {}
+[23.681609] (-) TimerEvent: {}
+[23.786652] (-) TimerEvent: {}
+[23.891603] (-) TimerEvent: {}
+[23.996989] (-) TimerEvent: {}
+[24.101997] (-) TimerEvent: {}
+[24.206891] (-) TimerEvent: {}
+[24.311424] (-) TimerEvent: {}
+[24.415277] (-) TimerEvent: {}
+[24.519371] (-) TimerEvent: {}
+[24.624320] (-) TimerEvent: {}
+[24.729299] (-) TimerEvent: {}
+[24.834272] (-) TimerEvent: {}
+[24.939226] (-) TimerEvent: {}
+[25.044243] (-) TimerEvent: {}
+[25.149328] (-) TimerEvent: {}
+[25.254502] (-) TimerEvent: {}
+[25.359489] (-) TimerEvent: {}
+[25.465490] (-) TimerEvent: {}
+[25.570109] (-) TimerEvent: {}
+[25.675069] (-) TimerEvent: {}
+[25.696744] (sllidar_ros2) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable sllidar_client\x1b[0m\n'}
+[25.775704] (-) TimerEvent: {}
+[25.880563] (-) TimerEvent: {}
+[25.985443] (-) TimerEvent: {}
+[26.090468] (-) TimerEvent: {}
+[26.195409] (-) TimerEvent: {}
+[26.300364] (-) TimerEvent: {}
+[26.405299] (-) TimerEvent: {}
+[26.510314] (-) TimerEvent: {}
+[26.561990] (sllidar_ros2) StdoutLine: {'line': b'[100%] Built target sllidar_client\n'}
+[26.576962] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[26.579394] (sllidar_ros2) JobProgress: {'identifier': 'sllidar_ros2', 'progress': 'install'}
+[26.589593] (sllidar_ros2) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2'], 'cwd': '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'mario'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('WT_PROFILE_ID', '{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}'), ('HOME', '/home/mario'), ('OLDPWD', '/home/mario/OpenCV_VC/ros_ws/src'), ('ROS_PYTHON_VERSION', '3'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'mario'), ('NAME', 'MarioHP'), ('WSL_INTEROP', '/run/WSL/289_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/usr/lib/ccache:/home/mario/GazeboSimulations/ardupilot_airhive/Tools/autotest:/opt/gcc-arm-none-eabi-10-2020-q4-major/bin:/home/mario/.local/bin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/windows/system32:/mnt/c/windows:/mnt/c/windows/System32/Wbem:/mnt/c/windows/System32/WindowsPowerShell/v1.0/:/mnt/c/windows/System32/OpenSSH/:/mnt/c/MinGW/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Siemens/NXStudentEdition2212/CAPITALINTEGRATION/capitalnxremote/:/mnt/c/Program Files/MATLAB/R2023b/bin:/mnt/c/Program Files/HP/HP One Agent:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/MATLAB/R2024b/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/Docker/Docker/resources/bin:/mnt/c/Program Files/Go/bin:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Amazon/AWSCLIV2/:/mnt/c/Program Files/Microchip/xc8/v2.32/bin:/mnt/c/Users/mario/anaconda3:/mnt/c/Users/mario/anaconda3/Library/mingw-w64/bin:/mnt/c/Users/mario/anaconda3/Library/usr/bin:/mnt/c/Users/mario/anaconda3/Library/bin:/mnt/c/Users/mario/anaconda3/Scripts:/mnt/c/Users/mario/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/mario/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/msys64/mingw64/bin:/mnt/c/Users/mario/go/bin:/mnt/c/Users/mario/AppData/Roaming/npm:/snap/bin'), ('WT_SESSION', 'aca4951c-ee9f-4645-a140-07d3dfd96baf'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('PWD', '/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'WT_SESSION:WT_PROFILE_ID:'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[26.596465] (sllidar_ros2) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[26.596997] (sllidar_ros2) StdoutLine: {'line': b'-- Execute custom install script\n'}
+[26.600156] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a1_launch.py\n'}
+[26.610851] (-) TimerEvent: {}
+[26.611570] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m12_launch .py\n'}
+[26.622265] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m7_launch.py\n'}
+[26.631095] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a2m8_launch.py\n'}
+[26.639072] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_a3_launch.py\n'}
+[26.647196] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_c1_launch.py\n'}
+[26.657522] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s1_launch.py\n'}
+[26.671187] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s1_tcp_launch.py\n'}
+[26.681054] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s2_launch.py\n'}
+[26.689237] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s2e_launch.py\n'}
+[26.698300] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_s3_launch.py\n'}
+[26.709251] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/sllidar_t1_launch.py\n'}
+[26.711311] (-) TimerEvent: {}
+[26.719386] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a1_launch.py\n'}
+[26.727449] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m12_launch.py\n'}
+[26.735571] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m7_launch.py\n'}
+[26.745636] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a2m8_launch.py\n'}
+[26.757513] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_a3_launch.py\n'}
+[26.768521] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_c1_launch.py\n'}
+[26.781976] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s1_launch.py\n'}
+[26.794521] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s1_tcp_launch.py\n'}
+[26.806978] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s2_launch.py\n'}
+[26.811844] (-) TimerEvent: {}
+[26.818501] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s2e_launch.py\n'}
+[26.831695] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_s3_launch.py\n'}
+[26.844475] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/launch/view_sllidar_t1_launch.py\n'}
+[26.856145] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/rviz/sllidar_ros2.rviz\n'}
+[26.867267] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_node\n'}
+[26.879836] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/lib/sllidar_ros2/sllidar_client\n'}
+[26.891030] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/ament_index/resource_index/package_run_dependencies/sllidar_ros2\n'}
+[26.901018] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/ament_index/resource_index/parent_prefix_path/sllidar_ros2\n'}
+[26.910815] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/environment/ament_prefix_path.sh\n'}
+[26.912041] (-) TimerEvent: {}
+[26.920846] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/environment/ament_prefix_path.dsv\n'}
+[26.930987] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/environment/path.sh\n'}
+[26.939669] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/environment/path.dsv\n'}
+[26.948111] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.bash\n'}
+[26.955463] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.sh\n'}
+[26.963341] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.zsh\n'}
+[26.971373] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/local_setup.dsv\n'}
+[26.979897] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.dsv\n'}
+[26.987954] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/ament_index/resource_index/packages/sllidar_ros2\n'}
+[26.997054] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[27.005612] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[27.012581] (-) TimerEvent: {}
+[27.013572] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/sllidar_ros2Config.cmake\n'}
+[27.023055] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/cmake/sllidar_ros2Config-version.cmake\n'}
+[27.031624] (sllidar_ros2) StdoutLine: {'line': b'-- Symlinking: /home/mario/OpenCV_VC/ros_ws/install/sllidar_ros2/share/sllidar_ros2/package.xml\n'}
+[27.042042] (sllidar_ros2) CommandEnded: {'returncode': 0}
+[27.057133] (sllidar_ros2) JobEnded: {'identifier': 'sllidar_ros2', 'rc': 0}
+[27.062793] (-) EventReactorShutdown: {}

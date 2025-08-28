@@ -2,7 +2,7 @@ package.xml
 setup.cfg
 setup.py
 lidar_slam_pkg/__init__.py
-lidar_slam_pkg/slam_node.py
+lidar_slam_pkg/closest_object.py
 lidar_slam_pkg.egg-info/PKG-INFO
 lidar_slam_pkg.egg-info/SOURCES.txt
 lidar_slam_pkg.egg-info/dependency_links.txt

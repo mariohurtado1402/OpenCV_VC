@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'slam_node = lidar_slam_pkg.slam_node:main'
+            'closest_object = lidar_slam_pkg.closest_object:main'
         ],
     },
 )
