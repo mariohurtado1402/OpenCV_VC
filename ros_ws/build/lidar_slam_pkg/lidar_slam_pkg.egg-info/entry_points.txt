@@ -1,2 +1,0 @@
-[console_scripts]
-closest_object = lidar_slam_pkg.closest_object:main

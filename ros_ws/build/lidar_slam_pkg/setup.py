@@ -1,1 +1,1 @@
-/home/mario/OpenCV_VC/ros_ws/src/lidar_slam_pkg/setup.py
+/home/user/vc_ws/ros_ws/src/control_pkg/setup.py

@@ -1,1 +1,0 @@
-/home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/launch/sllidar_c1_launch.py

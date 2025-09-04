@@ -1,1 +1,1 @@
-ament_cmake_symlink_install_targets("TARGET_FILES" "/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/sllidar_node" "/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/sllidar_client" "TARGETS" "sllidar_node" "sllidar_client" "RUNTIME_DESTINATION" "lib/sllidar_ros2")
+ament_cmake_symlink_install_targets("TARGET_FILES" "/home/user/vc_ws/ros_ws/build/sllidar_ros2/sllidar_node" "/home/user/vc_ws/ros_ws/build/sllidar_ros2/sllidar_client" "TARGETS" "sllidar_node" "sllidar_client" "RUNTIME_DESTINATION" "lib/sllidar_ros2")

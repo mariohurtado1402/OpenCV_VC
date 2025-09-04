@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2
+CMAKE_SOURCE_DIR = /home/user/vc_ws/ros_ws/src/sllidar_ros2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2
+CMAKE_BINARY_DIR = /home/user/vc_ws/ros_ws/build/sllidar_ros2
 
 # Utility rule file for uninstall.
 
@@ -78,6 +78,6 @@ CMakeFiles/uninstall.dir/clean:
 .PHONY : CMakeFiles/uninstall.dir/clean
 
 CMakeFiles/uninstall.dir/depend:
-	cd /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/user/vc_ws/ros_ws/build/sllidar_ros2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/user/vc_ws/ros_ws/src/sllidar_ros2 /home/user/vc_ws/ros_ws/src/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2/CMakeFiles/uninstall.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/uninstall.dir/depend
 

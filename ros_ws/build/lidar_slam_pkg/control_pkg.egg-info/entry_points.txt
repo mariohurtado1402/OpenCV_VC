@@ -1,0 +1,3 @@
+[console_scripts]
+closest_object = control_pkg.closest_object:main
+
