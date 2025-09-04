@@ -1,0 +1,13 @@
+# Ignorar credenciales y tokens de Google
+credentials.json
+token.json
+
+# Ignorar cachés o archivos temporales
+__pycache__/
+*.pyc
+*.pyo
+*.tmp
+*.log
+
+# Ignorar capturas locales (si algún día las vuelves a habilitar)
+captures/
