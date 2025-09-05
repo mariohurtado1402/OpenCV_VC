@@ -1,0 +1,18 @@
+# Ignorar directorios de colcon/ament
+build/
+install/
+log/
+
+# Archivos temporales de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Archivos de VSCode u otros IDEs
+.vscode/
+.idea/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
