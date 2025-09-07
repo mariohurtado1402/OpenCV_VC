@@ -1,4 +1,5 @@
 from setuptools import setup
+from glob import glob
 
 package_name = 'control_pkg'
 
@@ -10,6 +11,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        ('share/' + package_name + '/launch', glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,7 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'closest_object = control_pkg.closest_object:main'
+            'closest_object = control_pkg.closest_object:main',
+            'color_detection = control_pkg.color_detection_node:main'
         ],
     },
 )

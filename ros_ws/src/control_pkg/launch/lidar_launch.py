@@ -3,16 +3,14 @@ from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from ament_index_python.packages import get_package_share_directory
+
 
 def generate_launch_description():
-    slidar_launch = IncludeLaunchDescription(
+    sllidar_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
-                os.getenv('HOME'),
-                'vc_ws',
-                'ros_ws',
-                'src',
-                'sllidar_ros2',
+                get_package_share_directory('sllidar_ros2'),
                 'launch',
                 'sllidar_c1_launch.py'
             )
@@ -38,13 +36,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        slidar_launch,
+        sllidar_launch,
         closest_object_node,
         color_detection_node
     ])
 
-if __name__ == '__main__':
-    ld = generate_launch_description()
-    ls = launch.LaunchService()
-    ls.include_launch_description(ld)
-    sys.exit(ls.run())
