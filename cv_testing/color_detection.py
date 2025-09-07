@@ -79,7 +79,7 @@ def largest_color_contour(mask):
     return cnt
 
 # ====== Captura de cámara ======
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 if not cap.isOpened():
     raise RuntimeError("No se pudo abrir la cámara")
 
