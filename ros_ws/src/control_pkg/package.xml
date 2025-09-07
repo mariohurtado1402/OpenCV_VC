@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>lidar_slam_pkg</name>
+  <name>control_pkg</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Paquete de control para lidar + slam</description>
   <maintainer email="mario.hurtado@udem.edu">mario</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache-2.0</license>
 
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
@@ -21,3 +21,4 @@
     <build_type>ament_python</build_type>
   </export>
 </package>
+

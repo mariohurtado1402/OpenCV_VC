@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 
+
 class ClosestObject(Node):
     def __init__(self):
         super().__init__('closest_object_node')
@@ -50,3 +51,4 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+

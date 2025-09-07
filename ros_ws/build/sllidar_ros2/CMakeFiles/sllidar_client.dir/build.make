@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/user/vc_ws/ros_ws/src/sllidar_ros2
+CMAKE_SOURCE_DIR = /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/user/vc_ws/ros_ws/build/sllidar_ros2
+CMAKE_BINARY_DIR = /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2
 
 # Include any dependencies generated for this target.
 include CMakeFiles/sllidar_client.dir/depend.make
@@ -70,18 +70,18 @@ include CMakeFiles/sllidar_client.dir/progress.make
 include CMakeFiles/sllidar_client.dir/flags.make
 
 CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o: CMakeFiles/sllidar_client.dir/flags.make
-CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o: /home/user/vc_ws/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp
+CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o: /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp
 CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o: CMakeFiles/sllidar_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/user/vc_ws/ros_ws/build/sllidar_ros2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o -MF CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o.d -o CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o -c /home/user/vc_ws/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o -MF CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o.d -o CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.o -c /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp
 
 CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/user/vc_ws/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp > CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp > CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.i
 
 CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/user/vc_ws/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp -o CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2/src/sllidar_client.cpp -o CMakeFiles/sllidar_client.dir/src/sllidar_client.cpp.s
 
 # Object files for target sllidar_client
 sllidar_client_OBJECTS = \
@@ -164,7 +164,7 @@ sllidar_client: /opt/ros/humble/lib/libgeometry_msgs__rosidl_typesupport_c.so
 sllidar_client: /opt/ros/humble/lib/libgeometry_msgs__rosidl_generator_c.so
 sllidar_client: /opt/ros/humble/lib/libstd_msgs__rosidl_generator_py.so
 sllidar_client: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_generator_py.so
-sllidar_client: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+sllidar_client: /usr/lib/aarch64-linux-gnu/libpython3.10.so
 sllidar_client: /opt/ros/humble/lib/libstd_msgs__rosidl_typesupport_c.so
 sllidar_client: /opt/ros/humble/lib/libbuiltin_interfaces__rosidl_typesupport_c.so
 sllidar_client: /opt/ros/humble/lib/libstd_msgs__rosidl_generator_c.so
@@ -179,7 +179,7 @@ sllidar_client: /opt/ros/humble/lib/librcpputils.so
 sllidar_client: /opt/ros/humble/lib/librosidl_runtime_c.so
 sllidar_client: /opt/ros/humble/lib/librcutils.so
 sllidar_client: CMakeFiles/sllidar_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/user/vc_ws/ros_ws/build/sllidar_ros2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable sllidar_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable sllidar_client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sllidar_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -191,6 +191,6 @@ CMakeFiles/sllidar_client.dir/clean:
 .PHONY : CMakeFiles/sllidar_client.dir/clean
 
 CMakeFiles/sllidar_client.dir/depend:
-	cd /home/user/vc_ws/ros_ws/build/sllidar_ros2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/user/vc_ws/ros_ws/src/sllidar_ros2 /home/user/vc_ws/ros_ws/src/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2 /home/user/vc_ws/ros_ws/build/sllidar_ros2/CMakeFiles/sllidar_client.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/src/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2 /home/mario/OpenCV_VC/ros_ws/build/sllidar_ros2/CMakeFiles/sllidar_client.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/sllidar_client.dir/depend
 
