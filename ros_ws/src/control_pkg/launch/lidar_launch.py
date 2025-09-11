@@ -24,20 +24,9 @@ def generate_launch_description():
         output='screen'
     )
 
-    color_detection_node = Node(
-        package='control_pkg',
-        executable='color_detection',
-        name='color_detection_node',
-        output='screen',
-        parameters=[
-            {'use_google_drive': False},
-            {'camera_index': 0},
-        ]
-    )
 
     return LaunchDescription([
         sllidar_launch,
-        closest_object_node,
-        color_detection_node
+        closest_object_node
     ])
 
