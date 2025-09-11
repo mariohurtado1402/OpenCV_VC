@@ -5,6 +5,11 @@ import os
 import serial
 from datetime import datetime
 
+# ==== ROS 2 ====
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
 USE_GOOGLE_DRIVE = True
 DRIVE_FOLDER_ID = "1EdP-E2N8aJFVE3lpVX8mbdzueAb6ceeB"
 
@@ -32,6 +37,9 @@ SERIAL_PORT = "/dev/ttyUSB0"
 SERIAL_BAUD = 9600
 ser = None
 
+# Publicación ROS
+ROS_TOPIC = "/cmd/vision"
+
 COLOR_CMD = {
     "Blanco": "F",
     "Rojo":   "B",
@@ -44,18 +52,15 @@ if USE_GOOGLE_DRIVE:
     try:
         from pydrive2.auth import GoogleAuth
         from pydrive2.drive import GoogleDrive
-
         gauth = GoogleAuth()
         if not os.path.exists(CREDENTIALS_FILE):
             raise FileNotFoundError(f"No existe {CREDENTIALS_FILE}.")
         gauth.LoadClientConfigFile(CREDENTIALS_FILE)
-
         if os.path.exists(TOKEN_FILE):
             gauth.LoadCredentialsFile(TOKEN_FILE)
         if not gauth.credentials or gauth.access_token_expired:
             gauth.LocalWebserverAuth()
             gauth.SaveCredentialsFile(TOKEN_FILE)
-
         drive = GoogleDrive(gauth)
         folder = drive.CreateFile({'id': DRIVE_FOLDER_ID})
         folder.FetchMetadata(fields='id,title,mimeType')
@@ -124,18 +129,12 @@ def clean_mask(mask):
     return closed
 
 def detect_colors(hsv_img, center_roi):
-    # Blanco
-    lower_white = np.array([0,   0, 180], dtype=np.uint8)
-    upper_white = np.array([180, 40, 255], dtype=np.uint8)
-
-    # Rojo (dos bandas, con S/V permisivos y tope 179)
-    lower_red1 = np.array([0, 40, 40], dtype=np.uint8)
-    upper_red1 = np.array([12, 255, 255], dtype=np.uint8)
- 
-    # Verde y Azul (también con V un poco más bajo)
-    lower_green = np.array([35, 40, 30], dtype=np.uint8)
-    upper_green = np.array([85, 255,255], dtype=np.uint8)
-
+    lower_white = np.array([0, 0, 180],  dtype=np.uint8)
+    upper_white = np.array([180, 40,255], dtype=np.uint8)
+    lower_red1  = np.array([0, 60, 50],  dtype=np.uint8)   # rojo banda baja (0-12)
+    upper_red1  = np.array([12,255,255], dtype=np.uint8)
+    lower_green = np.array([35, 50, 40], dtype=np.uint8)
+    upper_green = np.array([85,255,255], dtype=np.uint8)
     lower_blue  = np.array([85, 50, 40], dtype=np.uint8)
     upper_blue  = np.array([140,255,255], dtype=np.uint8)
 
@@ -159,7 +158,6 @@ def detect_colors(hsv_img, center_roi):
     }
     return full_masks, center_masks
 
-
 def angle_between(p0, p1, p2):
     v1 = p0 - p1
     v2 = p2 - p1
@@ -169,48 +167,35 @@ def angle_between(p0, p1, p2):
 
 def is_square(cnt):
     area = cv2.contourArea(cnt)
-    if area < AREA_MIN_CONTOUR:
-        return False
+    if area < AREA_MIN_CONTOUR: return False
     peri = cv2.arcLength(cnt, True)
     approx = cv2.approxPolyDP(cnt, EPSILON_POLY_FRAC * peri, True)
-    if len(approx) != 4:
-        return False
-    if not cv2.isContourConvex(approx):
-        return False
-    rect = cv2.minAreaRect(approx)
-    (w, h) = rect[1]
-    if w < 1 or h < 1:
-        return False
+    if len(approx) != 4: return False
+    if not cv2.isContourConvex(approx): return False
+    (w, h) = cv2.minAreaRect(approx)[1]
+    if w < 1 or h < 1: return False
     ar = max(w, h) / (min(w, h) if min(w, h) > 0 else 1)
-    if not (AR_MIN <= ar <= AR_MAX):
-        return False
+    if not (AR_MIN <= ar <= AR_MAX): return False
     pts = approx.reshape(-1, 2).astype(np.float32)
     for i in range(4):
-        p0 = pts[(i - 1) % 4]
-        p1 = pts[i]
-        p2 = pts[(i + 1) % 4]
+        p0, p1, p2 = pts[(i - 1) % 4], pts[i], pts[(i + 1) % 4]
         ang = angle_between(p0, p1, p2)
-        if abs(ang - 90.0) > ANGLE_TOL_DEG:
-            return False
+        if abs(ang - 90.0) > ANGLE_TOL_DEG: return False
     return True
 
 def largest_square_contour(mask):
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     squares = [c for c in contours if is_square(c)]
-    if not squares:
-        return None
+    if not squares: return None
     return max(squares, key=cv2.contourArea)
-
 
 def process_frame(frame, last_saved_time):
     height, width = frame.shape[:2]
     cx, cy = width // 2, height // 2
     box_w = int(width * CENTER_BOX_RATIO)
     box_h = int(height * CENTER_BOX_RATIO)
-    x1 = max(0, cx - box_w // 2)
-    y1 = max(0, cy - box_h // 2)
-    x2 = min(width, cx + box_w // 2)
-    y2 = min(height, cy + box_h // 2)
+    x1 = max(0, cx - box_w // 2); y1 = max(0, cy - box_h // 2)
+    x2 = min(width, cx + box_w // 2); y2 = min(height, cy + box_h // 2)
     center_roi = (x1, y1, x2, y2)
 
     annotated = frame.copy()
@@ -240,12 +225,10 @@ def process_frame(frame, last_saved_time):
         detections.sort(key=lambda d: cv2.contourArea(d[1]), reverse=True)
         color_name, cnt, (cX, cY), _ = detections[0]
         chosen_color = color_name
-
         cv2.drawContours(annotated, [cnt], -1, (255, 0, 0), 2)
         cv2.circle(annotated, (cX, cY), 4, (255, 255, 255), -1)
         cv2.line(annotated, (cx - 10, cy), (cx + 10, cy), (0, 255, 255), 1)
         cv2.line(annotated, (cx, cy - 10), (cx, cy + 10), (0, 255, 255), 1)
-
         if x1 <= cX <= x2 and y1 <= cY <= y2:
             take_snapshot = True
             cv2.putText(annotated, f"{color_name} cuadrado centrado", (10, 30),
@@ -262,21 +245,28 @@ def process_frame(frame, last_saved_time):
 
     return annotated, take_snapshot, last_saved_time, chosen_color
 
+# ====== MAIN ======
 serial_init()
+
+# ROS 2 init y publisher
+rclpy.init()
+ros_node = Node('vision_cmd_pub')
+pub = ros_node.create_publisher(String, ROS_TOPIC, 10)
 
 cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_V4L2)
 if not cap.isOpened():
-    raise RuntimeError(f"No se pudo abrir la cámara en índice {CAMERA_INDEX} con V4L2.")
+    ros_node.get_logger().error(f"No se pudo abrir la cámara en índice {CAMERA_INDEX} con V4L2.")
+    raise RuntimeError("Camara no disponible")
 
 w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 print(f"✅ Cámara abierta (V4L2). Resolución: {w} x {h}")
 
 last_saved_time = 0.0
-last_cmd_sent = None  # <-- nuevo: recordamos el último comando enviado
+last_cmd_sent = None
 
 try:
-    while True:
+    while rclpy.ok():
         ret, frame = cap.read()
         if not ret:
             print("⚠️ No se pudo leer frame de la cámara.")
@@ -284,7 +274,6 @@ try:
 
         annotated, take_snapshot, last_saved_time, chosen_color = process_frame(frame, last_saved_time)
 
-        # Determinar el nuevo comando deseado
         if chosen_color:
             new_cmd = COLOR_CMD.get(chosen_color, "S")
             if take_snapshot and USE_GOOGLE_DRIVE:
@@ -292,15 +281,22 @@ try:
         else:
             new_cmd = "S"
 
-        # Enviar solo si cambió respecto al último enviado
         if new_cmd != last_cmd_sent:
+            # Serial
             serial_send(new_cmd)
+            # ROS publish
+            msg = String()
+            msg.data = new_cmd
+            pub.publish(msg)
+            # (opcional) log solo si no es S
+            if new_cmd != "S":
+                ros_node.get_logger().info(f"/cmd/vision → {new_cmd}")
             last_cmd_sent = new_cmd
 
         cv2.imshow("frame", annotated)
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
+        if (cv2.waitKey(1) & 0xFF) == ord('q'):
             break
+
 finally:
     if ser is not None:
         try:
@@ -309,4 +305,5 @@ finally:
             pass
     cap.release()
     cv2.destroyAllWindows()
-
+    ros_node.destroy_node()
+    rclpy.shutdown()
