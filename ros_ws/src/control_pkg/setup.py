@@ -24,6 +24,8 @@ setup(
         'console_scripts': [
             'closest_object = control_pkg.closest_object:main',
             'color_detection = control_pkg.color_detection_node:main'
+            'lidar_avoid = control_pkg.lidar_avoid:main',
+            'cmd_mux = control_pkg.cmd_mux:main',
         ],
     },
 )

@@ -17,16 +17,24 @@ def generate_launch_description():
         )
     )
 
-    closest_object_node = Node(
-        package='control_pkg',
-        executable='closest_object',
-        name='closest_object_node',
-        output='screen'
-    )
+    lidar_avoid_node = Node(
+            package='control_pkg',
+            executable='laser_avoid',
+            name='laser_avoid',
+            output='screen',
+            parameters=[
+                {'topic': '/scan'},
+                {'stop_dist': 0.30},
+                {'clear_dist': 0.60},
+                {'deadband_deg': 15.0},
+                {'turn_thresh_deg': 35.0},
+                {'avg_window': 7},
+            ]
+        )
 
 
     return LaunchDescription([
         sllidar_launch,
-        closest_object_node
+        lidar_avoid_node
     ])
 
