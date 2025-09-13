@@ -15,91 +15,95 @@ class LidarAvoid(Node):
         # Parámetros
         self.declare_parameter('scan_topic', '/scan')
         self.declare_parameter('cmd_topic', '/cmd/lidar')
-        self.declare_parameter('stop_dist', 0.30)       # m: freno directo si hay algo muy cerca al frente
-        self.declare_parameter('clear_dist', 0.60)      # m: si el máximo es menor a esto, consideramos "todo cerca"
-        self.declare_parameter('deadband_deg', 15.0)    # ±deg alrededor del frente para ir recto
-        self.declare_parameter('avg_window', 7)         # suavizado (ventana impar)
-        # sector frontal para STOP (±ang alrededor de 0°)
-        self.declare_parameter('front_halfwidth_deg', 30.0)
+
+        # distancias
+        self.declare_parameter('stop_dist', 0.30)       # m: STOP si algo muy cerca al frente
+        self.declare_parameter('clear_dist', 0.60)      # (no usada aquí, por si luego amplías lógica)
+
+        # sector frontal
+        self.declare_parameter('front_halfwidth_deg', 30.0)  # ±ang alrededor de frente
+        self.declare_parameter('front_offset_deg', 180.0)    # corrige dónde está tu 0°; 180.0 invierte
+
+        # preprocesado del scan
         self.declare_parameter('discard_n_points', 35)
         self.declare_parameter('min_valid', 0.05)       # m
         self.declare_parameter('max_clip', 6.0)         # m
-        self.declare_parameter('back_up_if_all_close', True)
+
+        # publicación
+        self.declare_parameter('republish_sec', 0.25)   # keepalive: republica como máx cada X s
 
         scan_topic  = self.get_parameter('scan_topic').get_parameter_value().string_value
         cmd_topic   = self.get_parameter('cmd_topic').get_parameter_value().string_value
-        self.stop_d = float(self.get_parameter('stop_dist').value)
-        self.clear_d= float(self.get_parameter('clear_dist').value)
-        self.deadband = math.radians(float(self.get_parameter('deadband_deg').value))
-        self.win = int(self.get_parameter('avg_window').value)
-        if self.win % 2 == 0:
-            self.win += 1
-        self.front_hw = math.radians(float(self.get_parameter('front_halfwidth_deg').value))
+
+        self.stop_d     = float(self.get_parameter('stop_dist').value)
+        self.front_hw   = math.radians(float(self.get_parameter('front_halfwidth_deg').value))
+        self.offset_rad = math.radians(float(self.get_parameter('front_offset_deg').value))
+
         self.discard_n = int(self.get_parameter('discard_n_points').value)
         self.min_valid = float(self.get_parameter('min_valid').value)
         self.max_clip  = float(self.get_parameter('max_clip').value)
-        self.back_up   = bool(self.get_parameter('back_up_if_all_close').value)
+
+        self.republish_sec = float(self.get_parameter('republish_sec').value)
 
         self.pub = self.create_publisher(String, cmd_topic, 10)
         self.sub = self.create_subscription(LaserScan, scan_topic, self.on_scan, 10)
 
         self.last_cmd = None
+        self.last_pub_t = 0.0
         self.get_logger().info(f"LidarAvoid: sub {scan_topic} → pub {cmd_topic}")
 
-    @staticmethod
-    def moving_average_circular(x: np.ndarray, w: int) -> np.ndarray:
-        if w <= 1:
-            return x
-        k = np.ones(w, dtype=np.float32) / w
-        y = np.convolve(np.concatenate([x, x, x]), k, mode='same')
-        return y[len(x):2*len(x)]
-
     def publish_cmd(self, c: str):
-        # Solo permitir STOP desde este nodo
-        if c != 'S':
-            return
-        if c != self.last_cmd:
+        now = self.get_clock().now().nanoseconds / 1e9
+        # publica si cambia o si pasó el keepalive
+        if c != self.last_cmd or (now - self.last_pub_t) >= self.republish_sec:
             self.pub.publish(String(data=c))
             if c != 'S':
                 self.get_logger().info(f"/cmd/lidar → {c}")
             self.last_cmd = c
+            self.last_pub_t = now
 
     def on_scan(self, msg: LaserScan):
         r = np.array(msg.ranges, dtype=np.float32)
+        # saneo
         r[np.isnan(r)] = self.max_clip
         r[np.isinf(r)] = self.max_clip
         r = np.clip(r, self.min_valid, self.max_clip)
 
-        # STOP si algo muy cerca en el frente ±front_hw
-        hw_idx = int(self.front_hw / msg.angle_increment)
-        # índice del frente (ángulo 0)
-        center_idx = int((-msg.angle_min) / msg.angle_increment) % len(r)
-        left = (center_idx - hw_idx) % len(r)
-        right = (center_idx + hw_idx) % len(r)
-        # Sector frontal en orden lineal y filtrado
+        n = len(r)
+        if n == 0:
+            return
+
+        inc = msg.angle_increment
+        if inc == 0.0:
+            return
+
+        # Índice del "frente" = (0 rad + offset - angle_min) / inc
+        center_idx = int(((0.0 + self.offset_rad) - msg.angle_min) / inc) % n
+
+        # semiancho en índices (usa |inc| por seguridad)
+        hw_idx = int(self.front_hw / abs(inc))
+
+        # límites del sector
+        left = (center_idx - hw_idx) % n
+        right = (center_idx + hw_idx) % n
+
         if left <= right:
             sector = r[left:right+1]
         else:
             sector = np.concatenate([r[left:], r[:right+1]])
-        dn = max(0, int(self.discard_n)) if hasattr(self, 'discard_n') else 0
-        if 2*dn < len(sector):
+
+        # descarta puntos extremos para evitar artefactos del borde
+        dn = max(0, self.discard_n)
+        if 2 * dn < len(sector):
             sector = sector[dn:len(sector)-dn]
+
         front_min = float(np.min(sector)) if len(sector) > 0 else self.max_clip
 
+        # Lógica: si hay algo muy cerca → S, si no → F
         if front_min <= self.stop_d:
             self.publish_cmd('S')
-            return
-
-        # Suavizado y búsqueda del ángulo con mayor distancia
-        # (suavizado/elección de ángulo eliminados: este nodo solo STOP)
-        # normaliza a [-pi, pi]
-        # a = ... eliminado
-
-        # Si todo está "cerca", opcionalmente retrocede
-        # retroceso opcional eliminado
-
-        # Decide dirección: cercano al frente → F, si no gira hacia el signo del ángulo
-        # sin publicación de F/L/R: dejar otros nodos decidir
+        else:
+            self.publish_cmd('F')
 
 
 def main():
