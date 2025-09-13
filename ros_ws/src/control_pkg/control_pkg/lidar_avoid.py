@@ -21,6 +21,7 @@ class LidarAvoid(Node):
         self.declare_parameter('avg_window', 7)         # suavizado (ventana impar)
         # sector frontal para STOP (±ang alrededor de 0°)
         self.declare_parameter('front_halfwidth_deg', 30.0)
+        self.declare_parameter('discard_n_points', 35)
         self.declare_parameter('min_valid', 0.05)       # m
         self.declare_parameter('max_clip', 6.0)         # m
         self.declare_parameter('back_up_if_all_close', True)
@@ -34,6 +35,7 @@ class LidarAvoid(Node):
         if self.win % 2 == 0:
             self.win += 1
         self.front_hw = math.radians(float(self.get_parameter('front_halfwidth_deg').value))
+        self.discard_n = int(self.get_parameter('discard_n_points').value)
         self.min_valid = float(self.get_parameter('min_valid').value)
         self.max_clip  = float(self.get_parameter('max_clip').value)
         self.back_up   = bool(self.get_parameter('back_up_if_all_close').value)
@@ -53,6 +55,9 @@ class LidarAvoid(Node):
         return y[len(x):2*len(x)]
 
     def publish_cmd(self, c: str):
+        # Solo permitir STOP desde este nodo
+        if c != 'S':
+            return
         if c != self.last_cmd:
             self.pub.publish(String(data=c))
             if c != 'S':
@@ -71,32 +76,30 @@ class LidarAvoid(Node):
         center_idx = int((-msg.angle_min) / msg.angle_increment) % len(r)
         left = (center_idx - hw_idx) % len(r)
         right = (center_idx + hw_idx) % len(r)
+        # Sector frontal en orden lineal y filtrado
         if left <= right:
-            front_min = float(np.min(r[left:right+1]))
+            sector = r[left:right+1]
         else:
-            front_min = float(min(np.min(r[:right+1]), np.min(r[left:])))
+            sector = np.concatenate([r[left:], r[:right+1]])
+        dn = max(0, int(self.discard_n)) if hasattr(self, 'discard_n') else 0
+        if 2*dn < len(sector):
+            sector = sector[dn:len(sector)-dn]
+        front_min = float(np.min(sector)) if len(sector) > 0 else self.max_clip
 
-        if front_min < self.stop_d:
+        if front_min <= self.stop_d:
             self.publish_cmd('S')
             return
 
         # Suavizado y búsqueda del ángulo con mayor distancia
-        rs = self.moving_average_circular(r, self.win)
-        best_idx = int(np.argmax(rs))
-        best_angle = msg.angle_min + best_idx * msg.angle_increment  # rad
+        # (suavizado/elección de ángulo eliminados: este nodo solo STOP)
         # normaliza a [-pi, pi]
-        a = math.atan2(math.sin(best_angle), math.cos(best_angle))
+        # a = ... eliminado
 
         # Si todo está "cerca", opcionalmente retrocede
-        if self.back_up and float(np.max(rs)) < self.clear_d:
-            self.publish_cmd('B')
-            return
+        # retroceso opcional eliminado
 
         # Decide dirección: cercano al frente → F, si no gira hacia el signo del ángulo
-        if abs(a) <= self.deadband:
-            self.publish_cmd('F')
-        else:
-            self.publish_cmd('L' if a > 0.0 else 'R')
+        # sin publicación de F/L/R: dejar otros nodos decidir
 
 
 def main():

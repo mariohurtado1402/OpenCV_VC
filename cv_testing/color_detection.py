@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import time
 import os
-import serial
 from datetime import datetime
 
 # ==== ROS 2 ====
@@ -33,9 +32,7 @@ ANGLE_TOL_DEG = 18
 UPLOAD_RETRIES = 3
 RETRY_BACKOFF_SEC = 1.5
 
-SERIAL_PORT = "/dev/ttyUSB0"
-SERIAL_BAUD = 9600
-ser = None
+# Serial eliminado: cmd_mux maneja el envío a Arduino
 
 # Publicación ROS
 ROS_TOPIC = "/cmd/vision"
