@@ -27,6 +27,7 @@ def generate_launch_description():
                 {'stop_dist': 0.30},
                 {'clear_dist': 0.60},
                 {'deadband_deg': 15.0},
+                {'front_halfwidth_deg': 30.0},
                 {'avg_window': 7},
             ]
         )

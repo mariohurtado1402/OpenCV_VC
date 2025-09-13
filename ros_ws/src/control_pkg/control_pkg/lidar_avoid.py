@@ -19,7 +19,8 @@ class LidarAvoid(Node):
         self.declare_parameter('clear_dist', 0.60)      # m: si el máximo es menor a esto, consideramos "todo cerca"
         self.declare_parameter('deadband_deg', 15.0)    # ±deg alrededor del frente para ir recto
         self.declare_parameter('avg_window', 7)         # suavizado (ventana impar)
-        self.declare_parameter('front_halfwidth_deg', 20.0)  # sector frontal para stop
+        # sector frontal para STOP (±ang alrededor de 0°)
+        self.declare_parameter('front_halfwidth_deg', 30.0)
         self.declare_parameter('min_valid', 0.05)       # m
         self.declare_parameter('max_clip', 6.0)         # m
         self.declare_parameter('back_up_if_all_close', True)

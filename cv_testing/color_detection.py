@@ -246,7 +246,6 @@ def process_frame(frame, last_saved_time):
     return annotated, take_snapshot, last_saved_time, chosen_color
 
 # ====== MAIN ======
-serial_init()
 
 # ROS 2 init y publisher
 rclpy.init()
@@ -282,8 +281,7 @@ try:
             new_cmd = "S"
 
         if new_cmd != last_cmd_sent:
-            # Serial
-            serial_send(new_cmd)
+            
             # ROS publish
             msg = String()
             msg.data = new_cmd
@@ -298,11 +296,6 @@ try:
             break
 
 finally:
-    if ser is not None:
-        try:
-            ser.close()
-        except:
-            pass
     cap.release()
     cv2.destroyAllWindows()
     ros_node.destroy_node()
