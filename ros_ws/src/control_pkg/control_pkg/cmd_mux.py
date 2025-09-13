@@ -20,7 +20,7 @@ class CmdMux(Node):
         self.declare_parameter('lidar_timeout',  0.6)   # s
         self.declare_parameter('serial_port', '/dev/ttyACM0')
         self.declare_parameter('serial_baud', 115200)
-        self.declare_parameter('print_S', False)        # no spamear S en log
+        self.declare_parameter('print_S', True)        # no spamear S en log
 
         self.vision_topic   = self.get_parameter('vision_topic').get_parameter_value().string_value
         self.lidar_topic    = self.get_parameter('lidar_topic').get_parameter_value().string_value
@@ -114,7 +114,7 @@ class CmdMux(Node):
             # serial
             self.send_serial(cmd)
             if cmd != 'S' or self.print_S:
-                self.get_logger().info(f"FINAL → {cmd}")
+                self.get_logger().info(f"FINAL: {cmd}")
             self.last_sent = cmd
 
 
