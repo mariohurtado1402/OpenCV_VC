@@ -19,15 +19,14 @@ def generate_launch_description():
 
     lidar_avoid_node = Node(
             package='control_pkg',
-            executable='laser_avoid',
-            name='laser_avoid',
+            executable='lidar_avoid',
+            name='lidar_avoid',
             output='screen',
             parameters=[
-                {'topic': '/scan'},
+                {'scan_topic': '/scan'},
                 {'stop_dist': 0.30},
                 {'clear_dist': 0.60},
                 {'deadband_deg': 15.0},
-                {'turn_thresh_deg': 35.0},
                 {'avg_window': 7},
             ]
         )
