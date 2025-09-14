@@ -270,14 +270,13 @@ try:
 
         annotated, take_snapshot, last_saved_time, chosen_color = process_frame(frame, last_saved_time)
 
+        new_cmd = None
         if chosen_color:
-            new_cmd = COLOR_CMD.get(chosen_color, "S")
+            new_cmd = COLOR_CMD.get(chosen_color)
             if take_snapshot and USE_GOOGLE_DRIVE:
                 upload_to_drive(annotated)
-        else:
-            new_cmd = "S"
 
-        if new_cmd != last_cmd_sent:
+        if new_cmd is not None and new_cmd != last_cmd_sent:
             
             # ROS publish
             msg = String()
