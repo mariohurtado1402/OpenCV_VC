@@ -18,11 +18,10 @@ class LidarAvoid(Node):
 
         # distancias
         self.declare_parameter('stop_dist', 0.30)       # m: STOP si algo muy cerca al frente
-        self.declare_parameter('clear_dist', 0.60)      # (no usada aquí, por si luego amplías lógica)
 
         # sector frontal
         self.declare_parameter('front_halfwidth_deg', 30.0)  # ±ang alrededor de frente
-        self.declare_parameter('front_offset_deg', 180.0)    # corrige dónde está tu 0°; 180.0 invierte
+        self.declare_parameter('front_offset_deg', 180.0)    # corrige dónde está tu 0°; 180 invierte
 
         # preprocesado del scan
         self.declare_parameter('discard_n_points', 35)
@@ -30,7 +29,7 @@ class LidarAvoid(Node):
         self.declare_parameter('max_clip', 6.0)         # m
 
         # publicación
-        self.declare_parameter('republish_sec', 0.25)   # keepalive: republica como máx cada X s
+        self.declare_parameter('republish_sec', 0.25)   # keepalive de S mientras persista el obstáculo
 
         scan_topic  = self.get_parameter('scan_topic').get_parameter_value().string_value
         cmd_topic   = self.get_parameter('cmd_topic').get_parameter_value().string_value
@@ -38,11 +37,9 @@ class LidarAvoid(Node):
         self.stop_d     = float(self.get_parameter('stop_dist').value)
         self.front_hw   = math.radians(float(self.get_parameter('front_halfwidth_deg').value))
         self.offset_rad = math.radians(float(self.get_parameter('front_offset_deg').value))
-
-        self.discard_n = int(self.get_parameter('discard_n_points').value)
-        self.min_valid = float(self.get_parameter('min_valid').value)
-        self.max_clip  = float(self.get_parameter('max_clip').value)
-
+        self.discard_n  = int(self.get_parameter('discard_n_points').value)
+        self.min_valid  = float(self.get_parameter('min_valid').value)
+        self.max_clip   = float(self.get_parameter('max_clip').value)
         self.republish_sec = float(self.get_parameter('republish_sec').value)
 
         self.pub = self.create_publisher(String, cmd_topic, 10)
@@ -57,14 +54,12 @@ class LidarAvoid(Node):
         # publica si cambia o si pasó el keepalive
         if c != self.last_cmd or (now - self.last_pub_t) >= self.republish_sec:
             self.pub.publish(String(data=c))
-            if c != 'S':
-                self.get_logger().info(f"/cmd/lidar → {c}")
+            self.get_logger().info(f"/cmd/lidar → {c}")
             self.last_cmd = c
             self.last_pub_t = now
 
     def on_scan(self, msg: LaserScan):
         r = np.array(msg.ranges, dtype=np.float32)
-        # saneo
         r[np.isnan(r)] = self.max_clip
         r[np.isinf(r)] = self.max_clip
         r = np.clip(r, self.min_valid, self.max_clip)
@@ -72,18 +67,14 @@ class LidarAvoid(Node):
         n = len(r)
         if n == 0:
             return
-
         inc = msg.angle_increment
         if inc == 0.0:
             return
 
         # Índice del "frente" = (0 rad + offset - angle_min) / inc
         center_idx = int(((0.0 + self.offset_rad) - msg.angle_min) / inc) % n
-
-        # semiancho en índices (usa |inc| por seguridad)
         hw_idx = int(self.front_hw / abs(inc))
 
-        # límites del sector
         left = (center_idx - hw_idx) % n
         right = (center_idx + hw_idx) % n
 
@@ -92,18 +83,15 @@ class LidarAvoid(Node):
         else:
             sector = np.concatenate([r[left:], r[:right+1]])
 
-        # descarta puntos extremos para evitar artefactos del borde
         dn = max(0, self.discard_n)
         if 2 * dn < len(sector):
             sector = sector[dn:len(sector)-dn]
 
         front_min = float(np.min(sector)) if len(sector) > 0 else self.max_clip
 
-        # Lógica: si hay algo muy cerca → S, si no → F
+        # Solo STOP: publica 'S' si hay obstáculo; si está libre, no publica nada
         if front_min <= self.stop_d:
             self.publish_cmd('S')
-        else:
-            self.publish_cmd('F')
 
 
 def main():
@@ -119,3 +107,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

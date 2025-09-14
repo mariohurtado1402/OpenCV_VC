@@ -18,30 +18,21 @@ class CmdMux(Node):
         self.declare_parameter('lidar_topic',  '/cmd/lidar')
         self.declare_parameter('final_topic',  '/cmd/final')
 
-        # Timeouts (s): cuánto tiempo consideramos "fresco" el último comando recibido
-        self.declare_parameter('vision_timeout', 0.6)
-        self.declare_parameter('lidar_timeout',  0.6)
-
-        # Serial
+        # Serial (según tu pedido)
         self.declare_parameter('serial_port', '/dev/ttyUSB1')
         self.declare_parameter('serial_baud', 9600)
 
-        # Logging
-        self.declare_parameter('print_S', True)  # si True, imprime también los 'S' en el log
+        # Duración del pulso por comando
+        self.declare_parameter('pulse_duration_sec', 3.0)
 
         # Lee parámetros
-        self.vision_topic   = self.get_parameter('vision_topic').get_parameter_value().string_value
-        self.lidar_topic    = self.get_parameter('lidar_topic').get_parameter_value().string_value
-        self.final_topic    = self.get_parameter('final_topic').get_parameter_value().string_value
-        self.vision_timeout = float(self.get_parameter('vision_timeout').value)
-        self.lidar_timeout  = float(self.get_parameter('lidar_timeout').value)
-        self.serial_port    = self.get_parameter('serial_port').get_parameter_value().string_value
-        self.serial_baud    = int(self.get_parameter('serial_baud').value)
-        self.print_S        = bool(self.get_parameter('print_S').value)
+        self.vision_topic = self.get_parameter('vision_topic').get_parameter_value().string_value
+        self.lidar_topic  = self.get_parameter('lidar_topic').get_parameter_value().string_value
+        self.final_topic  = self.get_parameter('final_topic').get_parameter_value().string_value
 
-        # Estado de entradas: (cmd, timestamp)
-        self.last_vision = ('S', 0.0)
-        self.last_lidar  = ('S', 0.0)
+        self.serial_port  = self.get_parameter('serial_port').get_parameter_value().string_value
+        self.serial_baud  = int(self.get_parameter('serial_baud').value)
+        self.pulse_duration = float(self.get_parameter('pulse_duration_sec').value)
 
         # Serial
         self.ser = None
@@ -59,77 +50,86 @@ class CmdMux(Node):
         self.sub_vision = self.create_subscription(String, self.vision_topic, self.cb_vision, 10)
         self.sub_lidar  = self.create_subscription(String, self.lidar_topic,  self.cb_lidar,  10)
 
-        # Loop de decisión
-        self.timer = self.create_timer(0.05, self.tick)  # 20 Hz
+        # Estado de ejecución (acción en curso)
+        self.active_cmd = None          # 'F','B','L','R' o None
+        self.active_until = 0.0
         self.last_sent = None
 
+        # Timer de control
+        self.timer = self.create_timer(0.02, self.tick)  # 50 Hz
+
+        # Envía STOP al iniciar
+        self.force_stop(source="init")
+
         self.get_logger().info(
-            f"cmd_mux escuchando {self.vision_topic} (timeout={self.vision_timeout}s) "
-            f"y {self.lidar_topic} (timeout={self.lidar_timeout}s); publicando en {self.final_topic}"
+            f"cmd_mux escuchando {self.vision_topic} y {self.lidar_topic}; publicando en {self.final_topic}; "
+            f"pulso por comando = {self.pulse_duration}s"
         )
 
     # === Callbacks ===
     def cb_vision(self, msg: String):
         c = msg.data.strip().upper()
+        self.get_logger().info(f"RX vision: '{c}'")
         if c in VALID:
-            self.last_vision = (c, time.time())
+            if c == 'S':
+                self.force_stop(source="vision")
+            else:
+                self.start_action(c, source="vision")
+        else:
+            self.get_logger().warning(f"Comando vision inválido: {c}")
 
     def cb_lidar(self, msg: String):
         c = msg.data.strip().upper()
+        self.get_logger().info(f"RX lidar: '{c}'")
         if c in VALID:
-            self.last_lidar = (c, time.time())
+            if c == 'S':
+                # LIDAR STOP tiene prioridad: interrumpe acción y manda S
+                self.force_stop(source="lidar")
+            else:
+                # Por si algún día LIDAR emite L/R/B/F; no es el caso ahora, pero lo soporta.
+                self.start_action(c, source="lidar")
+        else:
+            self.get_logger().warning(f"Comando lidar inválido: {c}")
 
-    # === Utilidades ===
-    def fresh(self, last_tuple, timeout):
-        _, t = last_tuple
-        return (time.time() - t) <= timeout
+    # === Control de acciones ===
+    def start_action(self, c: str, source: str = ""):
+        """Inicia/renueva una acción por pulse_duration (F/B/L/R)."""
+        now = time.time()
+        self.active_cmd = c
+        self.active_until = now + self.pulse_duration
+        if self.last_sent != c:
+            self._publish_and_send(c, note=f"{source} start ({self.pulse_duration:.1f}s)")
+        # Si el comando es igual al que ya estaba, solo se extiende el tiempo
 
-    def decide(self):
-        v_cmd, _ = self.last_vision
-        l_cmd, _ = self.last_lidar
+    def force_stop(self, source: str = ""):
+        """Fuerza STOP inmediato y limpia acción."""
+        self.active_cmd = None
+        self.active_until = 0.0
+        if self.last_sent != 'S':
+            self._publish_and_send('S', note=f"{source} stop")
 
-        v_fresh = self.fresh(self.last_vision, self.vision_timeout)
-        l_fresh = self.fresh(self.last_lidar,  self.lidar_timeout)
-
-        # 1) Si cualquiera (fresco) pide STOP → S
-        if (v_fresh and v_cmd == 'S') or (l_fresh and l_cmd == 'S'):
-            return 'S'
-
-        # 2) Si LIDAR es fresco y NO dice F (o sea, evasión) → obedece LIDAR
-        if l_fresh and l_cmd in {'L', 'R', 'B'}:
-            return l_cmd
-
-        # 3) Si LIDAR dice F (libre) y VISION es fresco → obedece VISION
-        if l_fresh and l_cmd == 'F' and v_fresh:
-            return v_cmd
-
-        # 4) Si VISION no está fresco → usa LIDAR si está fresco
-        if l_fresh:
-            return l_cmd
-
-        # 5) Si nada fresco → S
-        return 'S'
-
-    def send_serial(self, c: str):
-        if self.ser is None:
+    def tick(self):
+        """Chequea expiración de la acción en curso."""
+        if self.active_cmd is None:
             return
+        if time.time() >= self.active_until:
+            self.force_stop(source="timer")
+
+    # === Salida ===
+    def _publish_and_send(self, c: str, note: str = ""):
+        # Publica /cmd/final
+        self.pub_final.publish(String(data=c))
+        # Serial
         try:
-            self.ser.write((c + "\n").encode('ascii'))
-            self.ser.flush()
+            if self.ser is not None:
+                self.ser.write((c + "\n").encode('ascii'))
+                self.ser.flush()
         except Exception as e:
             self.get_logger().warning(f"Serial error: {e}")
-
-    # === Timer ===
-    def tick(self):
-        cmd = self.decide()
-        if cmd != self.last_sent:
-            # Publica /cmd/final
-            self.pub_final.publish(String(data=cmd))
-            # Envía por serial (si hay)
-            self.send_serial(cmd)
-            if cmd != 'S' or self.print_S:
-                self.get_logger().info(f"FINAL: {cmd}")
-            self.last_sent = cmd
+        # Log
+        suffix = f" [{note}]" if note else ""
+        self.get_logger().info(f"FINAL: {c}{suffix}")
+        self.last_sent = c
 
 
 def main():
