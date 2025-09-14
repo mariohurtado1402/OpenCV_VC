@@ -23,8 +23,8 @@ class CmdMux(Node):
         self.declare_parameter('lidar_timeout',  0.6)
 
         # Serial
-        self.declare_parameter('serial_port', '/dev/ttyACM0')
-        self.declare_parameter('serial_baud', 115200)
+        self.declare_parameter('serial_port', '/dev/ttyUSB1')
+        self.declare_parameter('serial_baud', 9600)
 
         # Logging
         self.declare_parameter('print_S', True)  # si True, imprime también los 'S' en el log
