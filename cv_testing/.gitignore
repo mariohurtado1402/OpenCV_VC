@@ -11,3 +11,5 @@ __pycache__/
 
 # Ignorar capturas locales (si algún día las vuelves a habilitar)
 captures/
+evidence/
+assets/
