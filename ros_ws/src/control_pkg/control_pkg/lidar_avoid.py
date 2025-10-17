@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import math
 import numpy as np
 
@@ -12,24 +14,24 @@ class LidarAvoid(Node):
     def __init__(self):
         super().__init__('lidar_avoid')
 
-        # Parámetros
+        # Parameters
         self.declare_parameter('scan_topic', '/scan')
         self.declare_parameter('cmd_topic', '/cmd/lidar')
 
-        # distancias
-        self.declare_parameter('stop_dist', 0.30)       # m: STOP si algo muy cerca al frente
+        # Distances
+        self.declare_parameter('stop_dist', 0.30)       # m: STOP if something too close in front
 
-        # sector frontal
-        self.declare_parameter('front_halfwidth_deg', 30.0)  # ±ang alrededor de frente
-        self.declare_parameter('front_offset_deg', 180.0)    # corrige dónde está tu 0°; 180 invierte
+        # Front sector
+        self.declare_parameter('front_halfwidth_deg', 30.0)  # ±angle around front
+        self.declare_parameter('front_offset_deg', 180.0)    # correct where 0° is; 180 reverses
 
-        # preprocesado del scan
+        # Preprocess scan
         self.declare_parameter('discard_n_points', 35)
         self.declare_parameter('min_valid', 0.05)       # m
         self.declare_parameter('max_clip', 6.0)         # m
 
-        # publicación
-        self.declare_parameter('republish_sec', 0.25)   # keepalive de S mientras persista el obstáculo
+        # Publish frequency
+        self.declare_parameter('republish_sec', 0.25)   # keepalive of S while the obstacle persists
 
         scan_topic  = self.get_parameter('scan_topic').get_parameter_value().string_value
         cmd_topic   = self.get_parameter('cmd_topic').get_parameter_value().string_value
@@ -51,7 +53,6 @@ class LidarAvoid(Node):
 
     def publish_cmd(self, c: str):
         now = self.get_clock().now().nanoseconds / 1e9
-        # publica si cambia o si pasó el keepalive
         if c != self.last_cmd or (now - self.last_pub_t) >= self.republish_sec:
             self.pub.publish(String(data=c))
             self.get_logger().info(f"/cmd/lidar → {c}")
@@ -71,7 +72,6 @@ class LidarAvoid(Node):
         if inc == 0.0:
             return
 
-        # Índice del "frente" = (0 rad + offset - angle_min) / inc
         center_idx = int(((0.0 + self.offset_rad) - msg.angle_min) / inc) % n
         hw_idx = int(self.front_hw / abs(inc))
 
@@ -89,10 +89,11 @@ class LidarAvoid(Node):
 
         front_min = float(np.min(sector)) if len(sector) > 0 else self.max_clip
 
-        # Solo STOP: publica 'S' si hay obstáculo; si está libre, no publica nada
         if front_min <= self.stop_d:
-            self.publish_cmd('S')
-
+            self.publish_cmd('S')  # Stop if obstacle detected
+        else:
+            self.publish_cmd('F')  # Move forward if no obstacle
+        
 
 def main():
     rclpy.init()
