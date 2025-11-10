@@ -74,7 +74,6 @@ class VisionTracker(Node):
       - Preset HSV para pelota de tenis + auto-calibración opcional al arrancar
       - HUD con estado BUSCANDO/SIGUIENDO, FPS, y dirección
       - Captura local cuando el objetivo permanece centrado N frames
-      - Subida opcional de la captura a Google Drive (PyDrive2)
     """
 
     def __init__(self):
@@ -115,15 +114,6 @@ class VisionTracker(Node):
         self.declare_parameter('center_frames_for_capture', 10)  # N frames centrado
         self.declare_parameter('capture_cooldown_sec', 3.0)      # enfriamiento entre capturas
 
-        # Google Drive (opcional)
-        self.declare_parameter('use_drive', True)
-        self.declare_parameter('drive_folder_id', '1EdP-E2N8aJFVE3lpVX8mbdzueAb6ceeB')
-        # ajusta estas rutas:
-        self.declare_parameter('credentials_file', '/home/mario/OpenCV_VC/cv_testing/credentials.json')
-        self.declare_parameter('token_file', '/home/mario/OpenCV_VC/cv_testing/token.json')
-        self.declare_parameter('upload_retries', 3)
-        self.declare_parameter('retry_backoff_sec', 1.5)
-
         # ---- Leer parámetros
         self.vision_topic = self.get_parameter('vision_topic').get_parameter_value().string_value
         self.camera_device_id = self._get_param_any('camera_device_id')
@@ -154,14 +144,6 @@ class VisionTracker(Node):
         self.center_frames_for_capture = int(self.get_parameter('center_frames_for_capture').value)
         self.capture_cooldown_sec = float(self.get_parameter('capture_cooldown_sec').value)
 
-        # Google Drive cfg
-        self.use_drive = bool(self.get_parameter('use_drive').value)
-        self.drive_folder_id = self.get_parameter('drive_folder_id').get_parameter_value().string_value
-        self.credentials_file = self.get_parameter('credentials_file').get_parameter_value().string_value
-        self.token_file = self.get_parameter('token_file').get_parameter_value().string_value
-        self.upload_retries = int(self.get_parameter('upload_retries').value)
-        self.retry_backoff_sec = float(self.get_parameter('retry_backoff_sec').value)
-
         # ---- Estado
         self.IS_RASPI_CAMERA = is_raspberry_camera()
         self.track_points = deque(maxlen=self.trail_len)
@@ -179,11 +161,6 @@ class VisionTracker(Node):
         # Contadores de captura
         self.centered_counter = 0
         self.last_capture_t = 0.0
-
-        # Drive handle
-        self.drive = None
-        if self.use_drive:
-            self._init_drive()
 
         # ---- ROS pub
         self.pub_cmd = self.create_publisher(String, self.vision_topic, 10)
@@ -211,71 +188,6 @@ class VisionTracker(Node):
         # ---- Timer principal
         period = 1.0 / max(1.0, self.publish_hz)
         self.timer = self.create_timer(period, self.tick)
-
-    # ---- Google Drive ----
-    def _init_drive(self):
-        try:
-            from pydrive2.auth import GoogleAuth
-            from pydrive2.drive import GoogleDrive
-        except Exception as e:
-            self.get_logger().warning(f"PyDrive2 no disponible: {e}. Subida deshabilitada.")
-            self.use_drive = False
-            return
-
-        try:
-            if not os.path.exists(self.credentials_file):
-                raise FileNotFoundError(f"Credenciales no encontradas: {self.credentials_file}")
-
-            gauth = GoogleAuth()
-            gauth.LoadClientConfigFile(self.credentials_file)
-
-            if os.path.exists(self.token_file):
-                gauth.LoadCredentialsFile(self.token_file)
-
-            if (not gauth.credentials) or gauth.access_token_expired:
-                # Esto abrirá el navegador la primera vez para autorizar
-                gauth.LocalWebserverAuth()
-                gauth.SaveCredentialsFile(self.token_file)
-
-            self.drive = GoogleDrive(gauth)
-
-            # Verifica carpeta
-            folder = self.drive.CreateFile({'id': self.drive_folder_id})
-            folder.FetchMetadata(fields='id,title,mimeType')
-            if folder['mimeType'] != 'application/vnd.google-apps.folder':
-                raise ValueError("drive_folder_id no corresponde a una carpeta.")
-            self.get_logger().info("Drive listo: carpeta verificada.")
-        except Exception as e:
-            self.get_logger().warning(f"No se pudo inicializar Drive: {e}. Subida deshabilitada.")
-            self.use_drive = False
-            self.drive = None
-
-    def _upload_to_drive(self, local_path, meta_desc=""):
-        if not self.use_drive or self.drive is None:
-            return False
-        try:
-            filename = os.path.basename(local_path)
-            last_err = None
-            for i in range(1, self.upload_retries + 1):
-                try:
-                    f = self.drive.CreateFile({
-                        'title': filename,
-                        'parents': [{'id': self.drive_folder_id}],
-                        'description': meta_desc
-                    })
-                    f.SetContentFile(local_path)
-                    f.Upload()
-                    self.get_logger().info(f"[Drive] Subida exitosa: {filename}")
-                    return True
-                except Exception as e:
-                    last_err = e
-                    if i < self.upload_retries:
-                        time.sleep(self.retry_backoff_sec * i)
-            self.get_logger().warning(f"[Drive] Falló subir {filename}: {last_err}")
-            return False
-        except Exception as e:
-            self.get_logger().warning(f"[Drive] Error inesperado subiendo {local_path}: {e}")
-            return False
 
     # ---- Auto-calibración tenis ----
     def _autocalibrate_tennis_from_frame(self, frame_bgr):
@@ -469,19 +381,9 @@ class VisionTracker(Node):
                 path = f"capture_{ts}.jpg"
                 cv2.imwrite(path, vis)
                 self.last_capture_t = now
+                # Evita guardar muchas veces seguidas por la misma estancia centrada
                 self.centered_counter = 0
-                # Meta simple (coordenadas y hsv usados)
-                cx_meta = self.smoothed_center[0] if self.smoothed_center else -1
-                cy_meta = self.smoothed_center[1] if self.smoothed_center else -1
-                meta_desc = (
-                    f"timestamp={ts}, cx={cx_meta}, cy={cy_meta}, "
-                    f"hsv_min={tuple(int(x) for x in self.HSV_MIN)}, "
-                    f"hsv_max={tuple(int(x) for x in self.HSV_MAX)}"
-                )
                 self.get_logger().info(f"[Capture] Guardada: {path}")
-                # Subida a Drive (opcional)
-                if self.use_drive and self.drive is not None:
-                    self._upload_to_drive(path, meta_desc=meta_desc)
 
         # HUD + FPS
         self.put_hud(vis, self.smoothed_center, err, direction_msg, status)
@@ -496,6 +398,7 @@ class VisionTracker(Node):
         ros_now = self.get_clock().now().nanoseconds / 1e9
         if (out_cmd != self.last_cmd) or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
             self.pub_cmd.publish(String(data=out_cmd))
+            # Log simple (evitar spam excesivo)
             if out_cmd != self.last_cmd:
                 self.get_logger().info(f"/cmd/vision → {out_cmd}")
             self.last_cmd = out_cmd
