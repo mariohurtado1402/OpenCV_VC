@@ -1,0 +1,6 @@
+# /Users/fermin/pruebasOpenCV/data.yaml
+path: /Users/mario/opencv_vc/cv_testing/dataset/captures/run_2025-11-06_16-35-03
+train: images/train
+val:   images/val
+names:
+  0: pieza
