@@ -11,7 +11,8 @@ find_package(OpenCV REQUIRED)
 find_package(OpenMP REQUIRED)
 find_package(ncnn REQUIRED)
 
-add_executable(main main.cpp)
+# Fuente movida dentro del paquete ROS2 yolo_pkg
+add_executable(main ros_ws/src/yolo_pkg/src/main.cpp)
 
 target_link_libraries(main
     PRIVATE
@@ -19,4 +20,3 @@ target_link_libraries(main
     OpenMP::OpenMP_CXX
     ncnn
 )
-
