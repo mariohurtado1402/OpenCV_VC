@@ -1,0 +1,3 @@
+/home/mario/OpenCV_VC/build/CMakeFiles/main.dir
+/home/mario/OpenCV_VC/build/CMakeFiles/edit_cache.dir
+/home/mario/OpenCV_VC/build/CMakeFiles/rebuild_cache.dir

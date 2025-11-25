@@ -64,7 +64,6 @@ class VisionTracker(Node):
       - Preset HSV para pelota de tenis + auto-calibración opcional al arrancar
       - HUD con estado BUSCANDO/SIGUIENDO, FPS, y dirección
       - Captura local cuando el objetivo permanece centrado N frames
-      - Subida opcional de la captura a Google Drive (PyDrive2)
     """
 
     def __init__(self):
@@ -95,6 +94,9 @@ class VisionTracker(Node):
         self.declare_parameter('publish_hz', 20.0)
         self.declare_parameter('keepalive_sec', 0.30)
 
+        # Captura local
+        self.declare_parameter('center_frames_for_capture', 10)  # N frames centrado
+        self.declare_parameter('capture_cooldown_sec', 3.0)      # enfriamiento entre capturas
         self.declare_parameter('center_frames_for_capture', 10)
         self.declare_parameter('capture_cooldown_sec', 3.0)
 
@@ -429,6 +431,7 @@ class VisionTracker(Node):
                 path = f"capture_{ts}.jpg"
                 cv2.imwrite(path, vis)
                 self.last_capture_t = now
+                # Evita guardar muchas veces seguidas por la misma estancia centrada
                 self.centered_counter = 0
 
                 cx_meta = self.smoothed_center[0] if self.smoothed_center else -1
@@ -454,6 +457,7 @@ class VisionTracker(Node):
         ros_now = self.get_clock().now().nanoseconds / 1e9
         if (out_cmd != self.last_cmd) or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
             self.pub_cmd.publish(String(data=out_cmd))
+            # Log simple (evitar spam excesivo)
             if out_cmd != self.last_cmd:
                 self.get_logger().info(f"/cmd/vision → {out_cmd}")
             self.last_cmd = out_cmd
