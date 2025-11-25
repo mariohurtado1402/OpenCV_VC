@@ -3,6 +3,7 @@ import sys
 import time
 from collections import deque
 from datetime import datetime
+from typing import List, Tuple
 
 import cv2
 import numpy as np
@@ -11,132 +12,82 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-try:
-    from utils.picamera_utils import is_raspberry_camera, get_picamera
-except Exception:
-
-    def is_raspberry_camera():
-        return False
-    def get_picamera(w, h):
-        raise RuntimeError("Raspi camera utils not available")
-
 VALID = {'F', 'B', 'L', 'R', 'S'}
 
-def rgb2hsv_compat(r, g, b):
-    """RGB [0..255] -> OpenCV HSV (H:[0..179], S:[0..255], V:[0..255])"""
-    r, g, b = r/255.0, g/255.0, b/255.0
-    mx = max(r, g, b); mn = min(r, g, b); df = mx - mn
-    if df == 0:
-        h = 0
-    elif mx == r:
-        h = (60 * ((g-b)/df) + 360) % 360
-    elif mx == g:
-        h = (60 * ((b-r)/df) + 120) % 360
-    else:
-        h = (60 * ((r-g)/df) + 240) % 360
-    s = 0 if mx == 0 else df/mx
-    v = mx
-    return (int(h/2), int(s*255), int(v*255))
 
-def auto_range_from_samples(samples, h_tol, s_tol, v_tol):
-    """Crea HSV min/max desde muestras con tolerancias, acotado a rangos válidos."""
-    h_vals = [h for h, s, v in samples]
-    s_vals = [s for h, s, v in samples]
-    v_vals = [v for h, s, v in samples]
-    minh = max(0, min(h_vals) - h_tol)
-    maxh = min(179, max(h_vals) + h_tol)
-    mins = max(0, min(s_vals) - s_tol)
-    maxs = min(255, max(s_vals) + s_tol)
-    minv = max(0, min(v_vals) - v_tol)
-    maxv = min(255, max(v_vals) + v_tol)
-    return np.array((minh, mins, minv), dtype=np.uint8), np.array((maxh, maxs, maxv), dtype=np.uint8)
+def remove_local_ncnn_from_path():
+    """Avoid picking the source tree at ~/ncnn/python instead of the pip wheel."""
+    sys.path = [p for p in sys.path if not p.endswith("/ncnn/python")]
+
 
 class VisionTracker(Node):
     """
-    Rastreador de color con OpenCV que publica comandos a /cmd/vision:
+    Rastreador por detección (YOLO NCNN) que publica comandos a /cmd/vision:
       - 'S' si no hay objetivo
       - 'F' si está centrado (avanzar)
       - 'L' si el objetivo está a la izquierda
       - 'R' si el objetivo está a la derecha
-
-    Incluye:
-      - Preset HSV para pelota de tenis + auto-calibración opcional al arrancar
-      - HUD con estado BUSCANDO/SIGUIENDO, FPS, y dirección
-      - Captura local cuando el objetivo permanece centrado N frames
     """
 
     def __init__(self):
         super().__init__('vision_tracker')
 
+        # Tópicos y cámara
         self.declare_parameter('vision_topic', '/cmd/vision')
-
         self.declare_parameter('camera_device_id', 0)
         self.declare_parameter('image_width', 854)
         self.declare_parameter('image_height', 480)
         self.declare_parameter('camera_fps', 30)
 
-        self.declare_parameter('tennis_preset_enable', True)
-        self.declare_parameter('tennis_hsv_min', [20, 80, 80])
-        self.declare_parameter('tennis_hsv_max', [45, 255, 255])
-        self.declare_parameter('h_tol', 12)
-        self.declare_parameter('s_tol', 60)
-        self.declare_parameter('v_tol', 60)
+        # Modelo YOLO (NCNN)
+        self.declare_parameter('yolo_param', '/home/mario/OpenCV_VC/best.param')
+        self.declare_parameter('yolo_bin', '/home/mario/OpenCV_VC/best.bin')
+        self.declare_parameter('model_input_size', 640)
+        self.declare_parameter('conf_thresh', 0.30)
+        self.declare_parameter('nms_thresh', 0.45)
+        self.declare_parameter('class_names', ['obj0', 'obj1', 'obj3'])
+        self.declare_parameter('yolo_threads', 4)
 
-        self.declare_parameter('open_kernel', 3)
-        self.declare_parameter('close_kernel', 5)
-
-        self.declare_parameter('min_blob_area', 150)
+        # Lógica de seguimiento
         self.declare_parameter('trail_len', 32)
         self.declare_parameter('smooth_alpha', 0.25)
         self.declare_parameter('center_tol_px', 60)
-
         self.declare_parameter('publish_hz', 20.0)
         self.declare_parameter('keepalive_sec', 0.30)
 
-        # Captura local
-        self.declare_parameter('center_frames_for_capture', 10)  # N frames centrado
-        self.declare_parameter('capture_cooldown_sec', 3.0)      # enfriamiento entre capturas
+        # Capturas
         self.declare_parameter('center_frames_for_capture', 10)
         self.declare_parameter('capture_cooldown_sec', 3.0)
-
         self.declare_parameter('use_drive', True)
         self.declare_parameter('drive_folder_id', '1EdP-E2N8aJFVE3lpVX8mbdzueAb6ceeB')
-
         self.declare_parameter('credentials_file', '/home/mario/OpenCV_VC/cv_testing/credentials.json')
         self.declare_parameter('token_file', '/home/mario/OpenCV_VC/cv_testing/token.json')
         self.declare_parameter('upload_retries', 3)
         self.declare_parameter('retry_backoff_sec', 1.5)
 
+        # Parámetros -> atributos
         self.vision_topic = self.get_parameter('vision_topic').get_parameter_value().string_value
         self.camera_device_id = self._get_param_any('camera_device_id')
-        self.image_width  = int(self.get_parameter('image_width').value)
+        self.image_width = int(self.get_parameter('image_width').value)
         self.image_height = int(self.get_parameter('image_height').value)
-        self.camera_fps   = int(self.get_parameter('camera_fps').value)
+        self.camera_fps = int(self.get_parameter('camera_fps').value)
 
-        self.TENNIS_PRESET_ENABLE = bool(self.get_parameter('tennis_preset_enable').value)
-        tennis_min = self.get_parameter('tennis_hsv_min').value
-        tennis_max = self.get_parameter('tennis_hsv_max').value
-        self.H_TOL = int(self.get_parameter('h_tol').value)
-        self.S_TOL = int(self.get_parameter('s_tol').value)
-        self.V_TOL = int(self.get_parameter('v_tol').value)
+        self.model_param_path = self.get_parameter('yolo_param').get_parameter_value().string_value
+        self.model_bin_path = self.get_parameter('yolo_bin').get_parameter_value().string_value
+        self.model_input_size = int(self.get_parameter('model_input_size').value)
+        self.conf_thresh = float(self.get_parameter('conf_thresh').value)
+        self.nms_thresh = float(self.get_parameter('nms_thresh').value)
+        self.yolo_threads = int(self.get_parameter('yolo_threads').value)
+        self.class_names = list(self.get_parameter('class_names').value)
 
-        k_open = int(self.get_parameter('open_kernel').value)
-        k_close = int(self.get_parameter('close_kernel').value)
-        self.KERNEL_OPEN  = np.ones((max(1, k_open), max(1, k_open)), np.uint8)
-        self.KERNEL_CLOSE = np.ones((max(1, k_close), max(1, k_close)), np.uint8)
-
-        self.min_blob_area = int(self.get_parameter('min_blob_area').value)
         self.trail_len = int(self.get_parameter('trail_len').value)
         self.smooth_alpha = float(self.get_parameter('smooth_alpha').value)
         self.center_tol_px = int(self.get_parameter('center_tol_px').value)
-
         self.publish_hz = float(self.get_parameter('publish_hz').value)
         self.keepalive_sec = float(self.get_parameter('keepalive_sec').value)
 
         self.center_frames_for_capture = int(self.get_parameter('center_frames_for_capture').value)
         self.capture_cooldown_sec = float(self.get_parameter('capture_cooldown_sec').value)
-
         self.use_drive = bool(self.get_parameter('use_drive').value)
         self.drive_folder_id = self.get_parameter('drive_folder_id').get_parameter_value().string_value
         self.credentials_file = self.get_parameter('credentials_file').get_parameter_value().string_value
@@ -144,47 +95,60 @@ class VisionTracker(Node):
         self.upload_retries = int(self.get_parameter('upload_retries').value)
         self.retry_backoff_sec = float(self.get_parameter('retry_backoff_sec').value)
 
-        self.IS_RASPI_CAMERA = is_raspberry_camera()
+        # Estado
         self.track_points = deque(maxlen=self.trail_len)
-        self.picked_hsv = []
-        self.frame_for_click = None
         self.smoothed_center = None
-        self.fps = 0.0
         self.last_cmd = None
         self.last_pub_t = 0.0
-
-        self.HSV_MIN = np.array(tennis_min, dtype=np.uint8)
-        self.HSV_MAX = np.array(tennis_max, dtype=np.uint8)
-
         self.centered_counter = 0
         self.last_capture_t = 0.0
+        self.fps = 0.0
+        self.num_classes = None
 
+        # Inicialización
+        self.IS_RASPI_CAMERA = self._is_raspberry_camera()
         self.drive = None
         if self.use_drive:
             self._init_drive()
 
-        self.pub_cmd = self.create_publisher(String, self.vision_topic, 10)
+        self._load_yolo()
 
+        self.pub_cmd = self.create_publisher(String, self.vision_topic, 10)
         self.cap, backend = self.open_capture()
         self.get_logger().info(f"[Vision] Backend: {backend}")
-        cv2.namedWindow('frame', cv2.WINDOW_AUTOSIZE)
-        cv2.namedWindow('mask', cv2.WINDOW_AUTOSIZE)
-        cv2.setMouseCallback('frame', self.on_mouse_click, None)
 
-        if self.TENNIS_PRESET_ENABLE:
-            ok_grab = False
-            for _ in range(3):
-                frame0 = self.read_frame()
-                if frame0 is not None:
-                    ok_grab = True
-                    if self._autocalibrate_tennis_from_frame(frame0):
-                        break
-                time.sleep(0.05)
-            if not ok_grab:
-                self.get_logger().warning("No frame for auto-calib; using tennis preset as-is.")
+        cv2.namedWindow('frame', cv2.WINDOW_AUTOSIZE)
 
         period = 1.0 / max(1.0, self.publish_hz)
         self.timer = self.create_timer(period, self.tick)
+
+    # ---------------------- Inicialización ---------------------- #
+    def _load_yolo(self):
+        remove_local_ncnn_from_path()
+        try:
+            import ncnn
+        except Exception as e:
+            raise RuntimeError(f"No se pudo importar ncnn: {e}")
+
+        if not os.path.exists(self.model_param_path) or not os.path.exists(self.model_bin_path):
+            raise FileNotFoundError(f"Modelos YOLO no encontrados: {self.model_param_path}, {self.model_bin_path}")
+
+        self.ncnn = ncnn
+        self.net = ncnn.Net()
+        self.net.opt.use_vulkan_compute = False
+        self.net.opt.num_threads = max(1, self.yolo_threads)
+        self.net.opt.use_packing_layout = True
+        self.net.opt.use_sgemm_convolution = True
+        self.net.opt.use_winograd_convolution = True
+        self.net.opt.use_fp16_storage = True
+        self.net.opt.use_fp16_arithmetic = False
+
+        if self.net.load_param(self.model_param_path):
+            raise RuntimeError(f"Error cargando param {self.model_param_path}")
+        if self.net.load_model(self.model_bin_path):
+            raise RuntimeError(f"Error cargando bin {self.model_bin_path}")
+
+        self.get_logger().info(f"[YOLO] Modelo cargado ({self.model_param_path})")
 
     def _init_drive(self):
         try:
@@ -201,17 +165,13 @@ class VisionTracker(Node):
 
             gauth = GoogleAuth()
             gauth.LoadClientConfigFile(self.credentials_file)
-
             if os.path.exists(self.token_file):
                 gauth.LoadCredentialsFile(self.token_file)
-
             if (not gauth.credentials) or gauth.access_token_expired:
-
                 gauth.LocalWebserverAuth()
                 gauth.SaveCredentialsFile(self.token_file)
 
             self.drive = GoogleDrive(gauth)
-
             folder = self.drive.CreateFile({'id': self.drive_folder_id})
             folder.FetchMetadata(fields='id,title,mimeType')
             if folder['mimeType'] != 'application/vnd.google-apps.folder':
@@ -249,139 +209,195 @@ class VisionTracker(Node):
             self.get_logger().warning(f"[Drive] Error inesperado subiendo {local_path}: {e}")
             return False
 
-    def _autocalibrate_tennis_from_frame(self, frame_bgr):
-        """Busca el tono 'tenis' en un rango amplio y ajusta HSV_MIN/MAX automáticamente."""
-        hsv = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2HSV)
-
-        broad_min = np.array([18, 70, 70], dtype=np.uint8)
-        broad_max = np.array([55, 255, 255], dtype=np.uint8)
-        mask = cv2.inRange(hsv, broad_min, broad_max)
-
-        count = int(cv2.countNonZero(mask))
-        if count < 500:
+    def _is_raspberry_camera(self):
+        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        try:
+            from utils.picamera_utils import is_raspberry_camera, get_picamera  # noqa
+            self._get_picamera = get_picamera
+            return is_raspberry_camera()
+        except Exception:
+            self._get_picamera = None
             return False
-
-        H = hsv[:, :, 0][mask > 0].astype(np.int32)
-        S = hsv[:, :, 1][mask > 0].astype(np.int32)
-        V = hsv[:, :, 2][mask > 0].astype(np.int32)
-
-        hist, _ = np.histogram(H, bins=180, range=(0, 180))
-        peak_h = int(np.argmax(hist))
-
-        s_sorted = np.sort(S); v_sorted = np.sort(V)
-        s_lo = s_sorted[max(0, int(0.10 * len(s_sorted)))]
-        v_lo = v_sorted[max(0, int(0.10 * len(v_sorted)))]
-
-        hmin = max(0, peak_h - self.H_TOL)
-        hmax = min(179, peak_h + self.H_TOL)
-        smin = max(0, int(0.8 * s_lo))
-        vmin = max(0, int(0.8 * v_lo))
-
-        self.HSV_MIN = np.array([hmin, smin, vmin], dtype=np.uint8)
-        self.HSV_MAX = np.array([hmax, 255, 255], dtype=np.uint8)
-
-        self.get_logger().info(
-            f"[AutoCalib] H≈{peak_h} → HSV: {tuple(self.HSV_MIN)}..{tuple(self.HSV_MAX)} (n={count})"
-        )
-        return True
 
     def open_capture(self):
         if self.IS_RASPI_CAMERA:
-            cam = get_picamera(self.image_width, self.image_height)
+            cam = self._get_picamera(self.image_width, self.image_height)
             cam.start()
             return cam, "RASPI"
-        else:
-            cap = cv2.VideoCapture(self.camera_device_id, cv2.CAP_V4L2)
-            if not cap.isOpened():
-                cap = cv2.VideoCapture(self.camera_device_id)
-            if not cap.isOpened():
-                raise IOError(f"Cannot open camera {self.camera_device_id}")
-            cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.image_width)
-            cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.image_height)
-            cap.set(cv2.CAP_PROP_FPS, self.camera_fps)
-            cap.set(cv2.CAP_PROP_CONVERT_RGB, 1)
-            return cap, "V4L2/ANY"
+        cap = cv2.VideoCapture(self.camera_device_id, cv2.CAP_V4L2)
+        if not cap.isOpened():
+            cap = cv2.VideoCapture(self.camera_device_id)
+        if not cap.isOpened():
+            raise IOError(f"Cannot open camera {self.camera_device_id}")
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.image_width)
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.image_height)
+        cap.set(cv2.CAP_PROP_FPS, self.camera_fps)
+        cap.set(cv2.CAP_PROP_CONVERT_RGB, 1)
+        return cap, "V4L2/ANY"
 
     def read_frame(self):
         if self.IS_RASPI_CAMERA:
             return self.cap.capture_array()
-        else:
-            ret, frame = self.cap.read()
-            if not ret:
-                return None
-            return frame
+        ret, frame = self.cap.read()
+        if not ret:
+            return None
+        return frame
 
-    def on_mouse_click(self, event, x, y, flags, userdata):
-        if event == cv2.EVENT_LBUTTONUP and self.frame_for_click is not None:
-            bgr = self.frame_for_click[y, x].tolist()
-            rgb = (bgr[2], bgr[1], bgr[0])
-            color_hsv = rgb2hsv_compat(*rgb)
-            self.picked_hsv.append(color_hsv)
-            self.HSV_MIN, self.HSV_MAX = auto_range_from_samples(
-                self.picked_hsv, self.H_TOL, self.S_TOL, self.V_TOL
-            )
-            self.get_logger().info(
-                f"[Pick] RGB={rgb} → HSV={color_hsv} | New HSV range: {tuple(self.HSV_MIN)}..{tuple(self.HSV_MAX)}"
-            )
+    def _get_param_any(self, name):
+        return self.get_parameter(name).value
 
+    # ---------------------- Detección ---------------------- #
+    def letterbox(self, image: np.ndarray, size: int) -> Tuple[np.ndarray, float, Tuple[int, int]]:
+        h, w = image.shape[:2]
+        scale = min(size / w, size / h)
+        new_w, new_h = int(round(w * scale)), int(round(h * scale))
+        resized = cv2.resize(image, (new_w, new_h), interpolation=cv2.INTER_LINEAR)
+        pad_w, pad_h = size - new_w, size - new_h
+        top, bottom = pad_h // 2, pad_h - pad_h // 2
+        left, right = pad_w // 2, pad_w - pad_w // 2
+        padded = cv2.copyMakeBorder(resized, top, bottom, left, right, cv2.BORDER_CONSTANT, value=(114, 114, 114))
+        return padded, scale, (left, top)
+
+    def run_yolo(self, frame_bgr: np.ndarray):
+        img, scale, (pad_x, pad_y) = self.letterbox(frame_bgr, self.model_input_size)
+        ncnn = self.ncnn
+
+        # ncnn espera BGR, normalizado 0-1
+        mat = ncnn.Mat.from_pixels(img.tobytes(), ncnn.Mat.PixelType.PIXEL_BGR, img.shape[1], img.shape[0])
+        mat.substract_mean_normalize([], [1 / 255.0, 1 / 255.0, 1 / 255.0])
+
+        ex = self.net.create_extractor()
+        ex.input('in0', mat)
+        ret, out = ex.extract('out0')
+        if ret != 0:
+            self.get_logger().warning(f"YOLO extract falló (ret={ret})")
+            return []
+
+        preds = np.array(out)  # (7, 8400) => (num_attrs, num_candidates)
+        num_attrs, num_candidates = preds.shape
+        if num_attrs < 6:
+            return []
+        # Formato esperado: [cx, cy, w, h, obj, cls0, cls1, ...]
+        boxes_xywh = preds[:4, :].T
+        obj = preds[4, :]
+        cls_scores = preds[5:, :]
+        if self.num_classes is None:
+            self.num_classes = cls_scores.shape[0]
+            if not self.class_names or len(self.class_names) != self.num_classes:
+                self.class_names = [f"cls{i}" for i in range(self.num_classes)]
+            self.get_logger().info(f"[YOLO] Clases detectadas: {self.num_classes}")
+
+        cls_best = cls_scores.argmax(axis=0)
+        cls_conf = cls_scores.max(axis=0)
+        conf = obj * cls_conf
+
+        keep = conf > self.conf_thresh
+        if not np.any(keep):
+            return []
+
+        boxes_xywh = boxes_xywh[keep]
+        conf = conf[keep]
+        cls_best = cls_best[keep]
+
+        boxes_xyxy = self.xywh_to_xyxy(boxes_xywh, scale, pad_x, pad_y, frame_bgr.shape[1], frame_bgr.shape[0])
+        detections = []
+        for box, score, cls_id in zip(boxes_xyxy, conf, cls_best):
+            detections.append({
+                "bbox": box,  # x1,y1,x2,y2
+                "score": float(score),
+                "cls": int(cls_id),
+                "label": self.class_names[int(cls_id)] if int(cls_id) < len(self.class_names) else f"cls{cls_id}",
+            })
+        return self.non_max_suppression(detections, self.nms_thresh)
+
+    def xywh_to_xyxy(self, boxes: np.ndarray, scale: float, pad_x: int, pad_y: int, orig_w: int, orig_h: int):
+        xyxy = np.zeros_like(boxes)
+        xyxy[:, 0] = boxes[:, 0] - boxes[:, 2] * 0.5  # x1
+        xyxy[:, 1] = boxes[:, 1] - boxes[:, 3] * 0.5  # y1
+        xyxy[:, 2] = boxes[:, 0] + boxes[:, 2] * 0.5  # x2
+        xyxy[:, 3] = boxes[:, 1] + boxes[:, 3] * 0.5  # y2
+
+        # Deshacer letterbox
+        xyxy[:, [0, 2]] -= pad_x
+        xyxy[:, [1, 3]] -= pad_y
+        xyxy[:, :4] /= scale
+
+        # Clampeo a frame original
+        xyxy[:, 0] = np.clip(xyxy[:, 0], 0, orig_w - 1)
+        xyxy[:, 1] = np.clip(xyxy[:, 1], 0, orig_h - 1)
+        xyxy[:, 2] = np.clip(xyxy[:, 2], 0, orig_w - 1)
+        xyxy[:, 3] = np.clip(xyxy[:, 3], 0, orig_h - 1)
+        return xyxy
+
+    def non_max_suppression(self, dets: List[dict], nms_thresh: float) -> List[dict]:
+        if not dets:
+            return []
+        dets = sorted(dets, key=lambda d: d["score"], reverse=True)
+        kept = []
+        while dets:
+            cur = dets.pop(0)
+            kept.append(cur)
+            dets = [d for d in dets if self.iou(cur["bbox"], d["bbox"]) < nms_thresh]
+        return kept
+
+    @staticmethod
+    def iou(box1, box2):
+        x1, y1, x2, y2 = box1
+        xa1, ya1, xa2, ya2 = box2
+        inter_x1 = max(x1, xa1)
+        inter_y1 = max(y1, ya1)
+        inter_x2 = min(x2, xa2)
+        inter_y2 = min(y2, ya2)
+        inter_w = max(0.0, inter_x2 - inter_x1)
+        inter_h = max(0.0, inter_y2 - inter_y1)
+        inter_area = inter_w * inter_h
+        area1 = max(0.0, x2 - x1) * max(0.0, y2 - y1)
+        area2 = max(0.0, xa2 - xa1) * max(0.0, ya2 - ya1)
+        union = area1 + area2 - inter_area + 1e-6
+        return inter_area / union
+
+    # ---------------------- HUD ---------------------- #
     def put_fps(self, image, fps_val):
         color = (0, 255, 0) if image.ndim == 3 else (255, 255, 255)
-        cv2.putText(image, f"FPS={fps_val:.1f}", (8, 18),
-                    cv2.FONT_HERSHEY_PLAIN, 1, color, 1, cv2.LINE_AA)
+        cv2.putText(image, f"FPS={fps_val:.1f}", (8, 18), cv2.FONT_HERSHEY_PLAIN, 1, color, 1, cv2.LINE_AA)
 
-    def put_hud(self, image, center, err, direction_msg="", status="BUSCANDO"):
-        H, W = image.shape[:2]
-
-        cv2.drawMarker(image, (W//2, H//2), (255, 255, 255), cv2.MARKER_CROSS, 16, 1)
-
-        if center is not None:
-            cv2.circle(image, center, 5, (0, 0, 255), -1)
-            cv2.line(image, (W//2, H//2), center, (255, 0, 0), 1)
-
-        y = 36
+    def put_hud(self, image, status, direction_msg, target_text):
+        y = 32
         for line in [
             f"STATUS: {status}",
-            f"HSV: min={tuple(int(x) for x in self.HSV_MIN)} max={tuple(int(x) for x in self.HSV_MAX)}",
-            (f"err=(dx,dy)={err}" if err is not None else "err=(dx,dy)=(None,None)"),
-            (f"DIRECTION: {direction_msg}" if direction_msg else "DIRECTION:"),
-            "Click en 'frame' para refinar color | ESC para salir",
+            f"DIRECTION: {direction_msg}",
+            f"TARGET: {target_text}",
+            "ESC para salir",
         ]:
             cv2.putText(image, line, (8, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1, cv2.LINE_AA)
             y += 18
 
+    # ---------------------- Loop ---------------------- #
     def tick(self):
         start_t = time.time()
-
         frame = self.read_frame()
         if frame is None:
             self.get_logger().warning("Failed to read frame")
             return
 
-        self.frame_for_click = frame
-        frame_blur = cv2.GaussianBlur(frame, (5, 5), 0)
-        hsv = cv2.cvtColor(frame_blur, cv2.COLOR_BGR2HSV)
+        detections = self.run_yolo(frame)
+        best = detections[0] if detections else None
 
-        mask = cv2.inRange(hsv, self.HSV_MIN, self.HSV_MAX)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, self.KERNEL_OPEN, iterations=1)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, self.KERNEL_CLOSE, iterations=2)
-
-        cnts, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        target_center, bbox = None, None
+        vis = frame.copy()
+        H, W = vis.shape[:2]
+        err = None
+        direction_msg = "LOST"
+        out_cmd = 'S'
         status = "BUSCANDO"
+        centered = False
 
-        if cnts:
-            best = max(cnts, key=cv2.contourArea)
-            area = cv2.contourArea(best)
-            if area > self.min_blob_area:
-                x, y, w, h = cv2.boundingRect(best)
-                bbox = (x, y, w, h)
-                M = cv2.moments(best)
-                if M['m00'] != 0:
-                    cx, cy = int(M['m10']/M['m00']), int(M['m01']/M['m00'])
-                    target_center = (cx, cy)
-                    status = "SIGUIENDO"
+        if best:
+            x1, y1, x2, y2 = best["bbox"]
+            cx = int((x1 + x2) * 0.5)
+            cy = int((y1 + y2) * 0.5)
+            target_center = (cx, cy)
+            status = "SIGUIENDO"
 
-        if target_center is not None:
             if self.smoothed_center is None:
                 self.smoothed_center = target_center
             else:
@@ -389,37 +405,34 @@ class VisionTracker(Node):
                 sy = int((1 - self.smooth_alpha) * self.smoothed_center[1] + self.smooth_alpha * target_center[1])
                 self.smoothed_center = (sx, sy)
             self.track_points.append(self.smoothed_center)
-        else:
-            if len(self.track_points) > 0:
-                self.track_points.append(self.track_points[-1])
 
-        vis = frame.copy()
-        if bbox is not None:
-            x, y, w, h = bbox
-            cv2.rectangle(vis, (x, y), (x+w, y+h), (0, 255, 0), 2)
-        for i in range(1, len(self.track_points)):
-            if self.track_points[i-1] is None or self.track_points[i] is None:
-                continue
-            cv2.line(vis, self.track_points[i-1], self.track_points[i], (0, 200, 255), 2)
-
-        H, W = vis.shape[:2]
-        err = None
-        direction_msg = "LOST"
-        out_cmd = 'S'
-
-        now = time.time()
-        centered = False
-
-        if self.smoothed_center is not None:
-            err = (self.smoothed_center[0] - W//2, self.smoothed_center[1] - H//2)
+            err = (self.smoothed_center[0] - W // 2, self.smoothed_center[1] - H // 2)
             dx = err[0]
             if dx > self.center_tol_px:
-                out_cmd = 'R'; direction_msg = "RIGHT"; centered = False
+                out_cmd = 'R'; direction_msg = "RIGHT"
             elif dx < -self.center_tol_px:
-                out_cmd = 'L'; direction_msg = "LEFT"; centered = False
+                out_cmd = 'L'; direction_msg = "LEFT"
             else:
                 out_cmd = 'F'; direction_msg = "CENTERED→FORWARD"; centered = True
 
+            # Dibujos
+            cv2.rectangle(vis, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
+            label = f"{best['label']} {best['score']:.2f}"
+            cv2.putText(vis, label, (int(x1), max(0, int(y1) - 6)), cv2.FONT_HERSHEY_PLAIN, 1.0, (0, 255, 0), 1)
+            cv2.circle(vis, self.smoothed_center, 5, (0, 0, 255), -1)
+            cv2.line(vis, (W // 2, H // 2), self.smoothed_center, (255, 0, 0), 1)
+        else:
+            self.smoothed_center = None
+            if len(self.track_points) > 0:
+                self.track_points.append(self.track_points[-1])
+
+        for i in range(1, len(self.track_points)):
+            if self.track_points[i - 1] is None or self.track_points[i] is None:
+                continue
+            cv2.line(vis, self.track_points[i - 1], self.track_points[i], (0, 200, 255), 2)
+
+        # Captura cuando está centrado
+        now = time.time()
         if centered and status == "SIGUIENDO":
             self.centered_counter += 1
         else:
@@ -431,33 +444,29 @@ class VisionTracker(Node):
                 path = f"capture_{ts}.jpg"
                 cv2.imwrite(path, vis)
                 self.last_capture_t = now
-                # Evita guardar muchas veces seguidas por la misma estancia centrada
                 self.centered_counter = 0
 
                 cx_meta = self.smoothed_center[0] if self.smoothed_center else -1
                 cy_meta = self.smoothed_center[1] if self.smoothed_center else -1
                 meta_desc = (
                     f"timestamp={ts}, cx={cx_meta}, cy={cy_meta}, "
-                    f"hsv_min={tuple(int(x) for x in self.HSV_MIN)}, "
-                    f"hsv_max={tuple(int(x) for x in self.HSV_MAX)}"
+                    f"best_label={best['label'] if best else 'none'}, best_score={best['score'] if best else 0}"
                 )
                 self.get_logger().info(f"[Capture] Guardada: {path}")
-
                 if self.use_drive and self.drive is not None:
                     self._upload_to_drive(path, meta_desc=meta_desc)
 
-        self.put_hud(vis, self.smoothed_center, err, direction_msg, status)
+        target_text = f"{best['label']} {best['score']:.2f}" if best else "none"
+        self.put_hud(vis, status, direction_msg, target_text)
         dt = time.time() - start_t
         self.fps = 1.0 / dt if dt > 0 else 0.0
         self.put_fps(vis, self.fps)
 
         cv2.imshow('frame', vis)
-        cv2.imshow('mask', mask)
 
         ros_now = self.get_clock().now().nanoseconds / 1e9
         if (out_cmd != self.last_cmd) or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
             self.pub_cmd.publish(String(data=out_cmd))
-            # Log simple (evitar spam excesivo)
             if out_cmd != self.last_cmd:
                 self.get_logger().info(f"/cmd/vision → {out_cmd}")
             self.last_cmd = out_cmd
@@ -467,10 +476,7 @@ class VisionTracker(Node):
             self.get_logger().info("ESC pressed — shutting down vision_tracker...")
             rclpy.shutdown()
 
-    def _get_param_any(self, name):
-
-        return self.get_parameter(name).value
-
+    # ---------------------- Cleanup ---------------------- #
     def destroy_node(self):
         try:
             cv2.destroyAllWindows()
@@ -488,6 +494,7 @@ class VisionTracker(Node):
                 pass
         super().destroy_node()
 
+
 def main():
     rclpy.init()
     node = VisionTracker()
@@ -497,6 +504,7 @@ def main():
         pass
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
