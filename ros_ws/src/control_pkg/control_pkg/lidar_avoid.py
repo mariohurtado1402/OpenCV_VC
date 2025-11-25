@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import math
 import numpy as np
 
@@ -9,29 +6,23 @@ from rclpy.node import Node
 from sensor_msgs.msg import LaserScan
 from std_msgs.msg import String
 
-
 class LidarAvoid(Node):
     def __init__(self):
         super().__init__('lidar_avoid')
 
-        # Parameters
         self.declare_parameter('scan_topic', '/scan')
         self.declare_parameter('cmd_topic', '/cmd/lidar')
 
-        # Distances
-        self.declare_parameter('stop_dist', 0.30)       # m: STOP if something too close in front
+        self.declare_parameter('stop_dist', 0.30)
 
-        # Front sector
-        self.declare_parameter('front_halfwidth_deg', 30.0)  # ±angle around front
-        self.declare_parameter('front_offset_deg', 180.0)    # correct where 0° is; 180 reverses
+        self.declare_parameter('front_halfwidth_deg', 30.0)
+        self.declare_parameter('front_offset_deg', 180.0)
 
-        # Preprocess scan
         self.declare_parameter('discard_n_points', 35)
-        self.declare_parameter('min_valid', 0.05)       # m
-        self.declare_parameter('max_clip', 6.0)         # m
+        self.declare_parameter('min_valid', 0.05)
+        self.declare_parameter('max_clip', 6.0)
 
-        # Publish frequency
-        self.declare_parameter('republish_sec', 0.25)   # keepalive of S while the obstacle persists
+        self.declare_parameter('republish_sec', 0.25)
 
         scan_topic  = self.get_parameter('scan_topic').get_parameter_value().string_value
         cmd_topic   = self.get_parameter('cmd_topic').get_parameter_value().string_value
@@ -90,10 +81,9 @@ class LidarAvoid(Node):
         front_min = float(np.min(sector)) if len(sector) > 0 else self.max_clip
 
         if front_min <= self.stop_d:
-            self.publish_cmd('S')  # Stop if obstacle detected
+            self.publish_cmd('S')
         else:
-            self.publish_cmd('F')  # Move forward if no obstacle
-        
+            self.publish_cmd('F')
 
 def main():
     rclpy.init()
@@ -105,7 +95,5 @@ def main():
     node.destroy_node()
     rclpy.shutdown()
 
-
 if __name__ == '__main__':
     main()
-

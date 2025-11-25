@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import os
 import sys
 import time
@@ -14,22 +11,16 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
 
-# -------------------------------------------------------
-# Add src directory to the path (tu comportamiento original)
-# -------------------------------------------------------
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 try:
     from utils.picamera_utils import is_raspberry_camera, get_picamera
 except Exception:
-    # Fallback si no están las utils de la Raspi
+
     def is_raspberry_camera():
         return False
     def get_picamera(w, h):
         raise RuntimeError("Raspi camera utils not available")
 
-# ----------------------------
-# Helpers / defaults
-# ----------------------------
 VALID = {'F', 'B', 'L', 'R', 'S'}
 
 def rgb2hsv_compat(r, g, b):
@@ -61,7 +52,6 @@ def auto_range_from_samples(samples, h_tol, s_tol, v_tol):
     maxv = min(255, max(v_vals) + v_tol)
     return np.array((minh, mins, minv), dtype=np.uint8), np.array((maxh, maxs, maxv), dtype=np.uint8)
 
-
 class VisionTracker(Node):
     """
     Rastreador de color con OpenCV que publica comandos a /cmd/vision:
@@ -79,42 +69,45 @@ class VisionTracker(Node):
     def __init__(self):
         super().__init__('vision_tracker')
 
-        # ===== Parámetros =====
         self.declare_parameter('vision_topic', '/cmd/vision')
 
-        # Cámara
-        self.declare_parameter('camera_device_id', 0)          # o '/dev/video0'
+        self.declare_parameter('camera_device_id', 0)
         self.declare_parameter('image_width', 854)
         self.declare_parameter('image_height', 480)
         self.declare_parameter('camera_fps', 30)
 
-        # Preset / Auto-calibración para pelota de tenis
         self.declare_parameter('tennis_preset_enable', True)
-        self.declare_parameter('tennis_hsv_min', [20, 80, 80])     # amarillo-verdoso
+        self.declare_parameter('tennis_hsv_min', [20, 80, 80])
         self.declare_parameter('tennis_hsv_max', [45, 255, 255])
         self.declare_parameter('h_tol', 12)
         self.declare_parameter('s_tol', 60)
         self.declare_parameter('v_tol', 60)
 
-        # Morfología
-        self.declare_parameter('open_kernel', 3)    # 3x3
-        self.declare_parameter('close_kernel', 5)   # 5x5
+        self.declare_parameter('open_kernel', 3)
+        self.declare_parameter('close_kernel', 5)
 
-        # Tracking & UI
         self.declare_parameter('min_blob_area', 150)
         self.declare_parameter('trail_len', 32)
-        self.declare_parameter('smooth_alpha', 0.25)   # 0..1
-        self.declare_parameter('center_tol_px', 60)    # tolerancia dx para "centrado → F"
+        self.declare_parameter('smooth_alpha', 0.25)
+        self.declare_parameter('center_tol_px', 60)
 
-        # Publicación / Keepalive
         self.declare_parameter('publish_hz', 20.0)
         self.declare_parameter('keepalive_sec', 0.30)
 
         # Captura local
         self.declare_parameter('center_frames_for_capture', 10)  # N frames centrado
         self.declare_parameter('capture_cooldown_sec', 3.0)      # enfriamiento entre capturas
+        self.declare_parameter('center_frames_for_capture', 10)
+        self.declare_parameter('capture_cooldown_sec', 3.0)
 
-        # ---- Leer parámetros
+        self.declare_parameter('use_drive', True)
+        self.declare_parameter('drive_folder_id', '1EdP-E2N8aJFVE3lpVX8mbdzueAb6ceeB')
+
+        self.declare_parameter('credentials_file', '/home/mario/OpenCV_VC/cv_testing/credentials.json')
+        self.declare_parameter('token_file', '/home/mario/OpenCV_VC/cv_testing/token.json')
+        self.declare_parameter('upload_retries', 3)
+        self.declare_parameter('retry_backoff_sec', 1.5)
+
         self.vision_topic = self.get_parameter('vision_topic').get_parameter_value().string_value
         self.camera_device_id = self._get_param_any('camera_device_id')
         self.image_width  = int(self.get_parameter('image_width').value)
@@ -144,7 +137,13 @@ class VisionTracker(Node):
         self.center_frames_for_capture = int(self.get_parameter('center_frames_for_capture').value)
         self.capture_cooldown_sec = float(self.get_parameter('capture_cooldown_sec').value)
 
-        # ---- Estado
+        self.use_drive = bool(self.get_parameter('use_drive').value)
+        self.drive_folder_id = self.get_parameter('drive_folder_id').get_parameter_value().string_value
+        self.credentials_file = self.get_parameter('credentials_file').get_parameter_value().string_value
+        self.token_file = self.get_parameter('token_file').get_parameter_value().string_value
+        self.upload_retries = int(self.get_parameter('upload_retries').value)
+        self.retry_backoff_sec = float(self.get_parameter('retry_backoff_sec').value)
+
         self.IS_RASPI_CAMERA = is_raspberry_camera()
         self.track_points = deque(maxlen=self.trail_len)
         self.picked_hsv = []
@@ -154,25 +153,24 @@ class VisionTracker(Node):
         self.last_cmd = None
         self.last_pub_t = 0.0
 
-        # Rango HSV inicial (preset tenis)
         self.HSV_MIN = np.array(tennis_min, dtype=np.uint8)
         self.HSV_MAX = np.array(tennis_max, dtype=np.uint8)
 
-        # Contadores de captura
         self.centered_counter = 0
         self.last_capture_t = 0.0
 
-        # ---- ROS pub
+        self.drive = None
+        if self.use_drive:
+            self._init_drive()
+
         self.pub_cmd = self.create_publisher(String, self.vision_topic, 10)
 
-        # ---- Cámara
         self.cap, backend = self.open_capture()
         self.get_logger().info(f"[Vision] Backend: {backend}")
         cv2.namedWindow('frame', cv2.WINDOW_AUTOSIZE)
         cv2.namedWindow('mask', cv2.WINDOW_AUTOSIZE)
         cv2.setMouseCallback('frame', self.on_mouse_click, None)
 
-        # Auto-calibración opcional en el arranque (a partir de 1-3 frames)
         if self.TENNIS_PRESET_ENABLE:
             ok_grab = False
             for _ in range(3):
@@ -185,32 +183,91 @@ class VisionTracker(Node):
             if not ok_grab:
                 self.get_logger().warning("No frame for auto-calib; using tennis preset as-is.")
 
-        # ---- Timer principal
         period = 1.0 / max(1.0, self.publish_hz)
         self.timer = self.create_timer(period, self.tick)
 
-    # ---- Auto-calibración tenis ----
+    def _init_drive(self):
+        try:
+            from pydrive2.auth import GoogleAuth
+            from pydrive2.drive import GoogleDrive
+        except Exception as e:
+            self.get_logger().warning(f"PyDrive2 no disponible: {e}. Subida deshabilitada.")
+            self.use_drive = False
+            return
+
+        try:
+            if not os.path.exists(self.credentials_file):
+                raise FileNotFoundError(f"Credenciales no encontradas: {self.credentials_file}")
+
+            gauth = GoogleAuth()
+            gauth.LoadClientConfigFile(self.credentials_file)
+
+            if os.path.exists(self.token_file):
+                gauth.LoadCredentialsFile(self.token_file)
+
+            if (not gauth.credentials) or gauth.access_token_expired:
+
+                gauth.LocalWebserverAuth()
+                gauth.SaveCredentialsFile(self.token_file)
+
+            self.drive = GoogleDrive(gauth)
+
+            folder = self.drive.CreateFile({'id': self.drive_folder_id})
+            folder.FetchMetadata(fields='id,title,mimeType')
+            if folder['mimeType'] != 'application/vnd.google-apps.folder':
+                raise ValueError("drive_folder_id no corresponde a una carpeta.")
+            self.get_logger().info("Drive listo: carpeta verificada.")
+        except Exception as e:
+            self.get_logger().warning(f"No se pudo inicializar Drive: {e}. Subida deshabilitada.")
+            self.use_drive = False
+            self.drive = None
+
+    def _upload_to_drive(self, local_path, meta_desc=""):
+        if not self.use_drive or self.drive is None:
+            return False
+        try:
+            filename = os.path.basename(local_path)
+            last_err = None
+            for i in range(1, self.upload_retries + 1):
+                try:
+                    f = self.drive.CreateFile({
+                        'title': filename,
+                        'parents': [{'id': self.drive_folder_id}],
+                        'description': meta_desc
+                    })
+                    f.SetContentFile(local_path)
+                    f.Upload()
+                    self.get_logger().info(f"[Drive] Subida exitosa: {filename}")
+                    return True
+                except Exception as e:
+                    last_err = e
+                    if i < self.upload_retries:
+                        time.sleep(self.retry_backoff_sec * i)
+            self.get_logger().warning(f"[Drive] Falló subir {filename}: {last_err}")
+            return False
+        except Exception as e:
+            self.get_logger().warning(f"[Drive] Error inesperado subiendo {local_path}: {e}")
+            return False
+
     def _autocalibrate_tennis_from_frame(self, frame_bgr):
         """Busca el tono 'tenis' en un rango amplio y ajusta HSV_MIN/MAX automáticamente."""
         hsv = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2HSV)
-        # Rango amplio para “tennis-like”
+
         broad_min = np.array([18, 70, 70], dtype=np.uint8)
         broad_max = np.array([55, 255, 255], dtype=np.uint8)
         mask = cv2.inRange(hsv, broad_min, broad_max)
 
         count = int(cv2.countNonZero(mask))
-        if count < 500:  # muy pocos píxeles: mantén el preset
+        if count < 500:
             return False
 
         H = hsv[:, :, 0][mask > 0].astype(np.int32)
         S = hsv[:, :, 1][mask > 0].astype(np.int32)
         V = hsv[:, :, 2][mask > 0].astype(np.int32)
 
-        # Pico del histograma de H
         hist, _ = np.histogram(H, bins=180, range=(0, 180))
         peak_h = int(np.argmax(hist))
 
-        # Medianas parciales de S,V (10–90 percentil) para robustez
         s_sorted = np.sort(S); v_sorted = np.sort(V)
         s_lo = s_sorted[max(0, int(0.10 * len(s_sorted)))]
         v_lo = v_sorted[max(0, int(0.10 * len(v_sorted)))]
@@ -228,7 +285,6 @@ class VisionTracker(Node):
         )
         return True
 
-    # ---- Cámara ----
     def open_capture(self):
         if self.IS_RASPI_CAMERA:
             cam = get_picamera(self.image_width, self.image_height)
@@ -255,7 +311,6 @@ class VisionTracker(Node):
                 return None
             return frame
 
-    # ---- UI / clicks ----
     def on_mouse_click(self, event, x, y, flags, userdata):
         if event == cv2.EVENT_LBUTTONUP and self.frame_for_click is not None:
             bgr = self.frame_for_click[y, x].tolist()
@@ -276,13 +331,13 @@ class VisionTracker(Node):
 
     def put_hud(self, image, center, err, direction_msg="", status="BUSCANDO"):
         H, W = image.shape[:2]
-        # Centro de imagen
+
         cv2.drawMarker(image, (W//2, H//2), (255, 255, 255), cv2.MARKER_CROSS, 16, 1)
-        # Centro objetivo
+
         if center is not None:
             cv2.circle(image, center, 5, (0, 0, 255), -1)
             cv2.line(image, (W//2, H//2), center, (255, 0, 0), 1)
-        # Texto
+
         y = 36
         for line in [
             f"STATUS: {status}",
@@ -294,7 +349,6 @@ class VisionTracker(Node):
             cv2.putText(image, line, (8, y), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1, cv2.LINE_AA)
             y += 18
 
-    # ---- Bucle principal ----
     def tick(self):
         start_t = time.time()
 
@@ -327,7 +381,6 @@ class VisionTracker(Node):
                     target_center = (cx, cy)
                     status = "SIGUIENDO"
 
-        # Suavizado del centro
         if target_center is not None:
             if self.smoothed_center is None:
                 self.smoothed_center = target_center
@@ -340,7 +393,6 @@ class VisionTracker(Node):
             if len(self.track_points) > 0:
                 self.track_points.append(self.track_points[-1])
 
-        # Visual
         vis = frame.copy()
         if bbox is not None:
             x, y, w, h = bbox
@@ -355,7 +407,6 @@ class VisionTracker(Node):
         direction_msg = "LOST"
         out_cmd = 'S'
 
-        # Decidir comando y control de captura
         now = time.time()
         centered = False
 
@@ -369,7 +420,6 @@ class VisionTracker(Node):
             else:
                 out_cmd = 'F'; direction_msg = "CENTERED→FORWARD"; centered = True
 
-        # Contador de frames centrado y captura con cooldown
         if centered and status == "SIGUIENDO":
             self.centered_counter += 1
         else:
@@ -383,9 +433,19 @@ class VisionTracker(Node):
                 self.last_capture_t = now
                 # Evita guardar muchas veces seguidas por la misma estancia centrada
                 self.centered_counter = 0
+
+                cx_meta = self.smoothed_center[0] if self.smoothed_center else -1
+                cy_meta = self.smoothed_center[1] if self.smoothed_center else -1
+                meta_desc = (
+                    f"timestamp={ts}, cx={cx_meta}, cy={cy_meta}, "
+                    f"hsv_min={tuple(int(x) for x in self.HSV_MIN)}, "
+                    f"hsv_max={tuple(int(x) for x in self.HSV_MAX)}"
+                )
                 self.get_logger().info(f"[Capture] Guardada: {path}")
 
-        # HUD + FPS
+                if self.use_drive and self.drive is not None:
+                    self._upload_to_drive(path, meta_desc=meta_desc)
+
         self.put_hud(vis, self.smoothed_center, err, direction_msg, status)
         dt = time.time() - start_t
         self.fps = 1.0 / dt if dt > 0 else 0.0
@@ -394,7 +454,6 @@ class VisionTracker(Node):
         cv2.imshow('frame', vis)
         cv2.imshow('mask', mask)
 
-        # Publicar si cambió o por keepalive
         ros_now = self.get_clock().now().nanoseconds / 1e9
         if (out_cmd != self.last_cmd) or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
             self.pub_cmd.publish(String(data=out_cmd))
@@ -404,13 +463,12 @@ class VisionTracker(Node):
             self.last_cmd = out_cmd
             self.last_pub_t = ros_now
 
-        # Salir con ESC
         if cv2.waitKey(1) & 0xFF == 27:
             self.get_logger().info("ESC pressed — shutting down vision_tracker...")
             rclpy.shutdown()
 
     def _get_param_any(self, name):
-        # Devuelve el valor tipado de ROS2 directamente.
+
         return self.get_parameter(name).value
 
     def destroy_node(self):
@@ -430,7 +488,6 @@ class VisionTracker(Node):
                 pass
         super().destroy_node()
 
-
 def main():
     rclpy.init()
     node = VisionTracker()
@@ -441,7 +498,5 @@ def main():
     node.destroy_node()
     rclpy.shutdown()
 
-
 if __name__ == '__main__':
     main()
-
