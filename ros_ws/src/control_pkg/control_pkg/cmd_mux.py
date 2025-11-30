@@ -14,7 +14,7 @@ class CmdMux(Node):
         self.declare_parameter('lidar_topic',  '/cmd/lidar')
         self.declare_parameter('final_topic',  '/cmd/final')
 
-        self.declare_parameter('serial_port', '/dev/arduino_nano')
+        self.declare_parameter('serial_port', '/dev/arduino')
         self.declare_parameter('serial_baud', 9600)
         self.declare_parameter('pulse_duration_sec', 3.0)
 
@@ -41,7 +41,7 @@ class CmdMux(Node):
         self.active_cmd = None
         self.active_until = 0.0
         self.last_sent = None
-        self.lidar_stop_active = False
+        self.lidar_allowed = True  # True=verde, False=rojo
 
         self.timer = self.create_timer(0.02, self.tick)
 
@@ -54,17 +54,16 @@ class CmdMux(Node):
 
     def cb_vision(self, msg: String):
         """Handle vision commands."""
-        if self.lidar_stop_active:
-            self.get_logger().info("LIDAR is in STOP state, ignoring vision command.")
-            return
-
         c = msg.data.strip().upper()
         self.get_logger().info(f"RX vision: '{c}'")
         if c in VALID:
             if c == 'S':
                 self.force_stop(source="vision")
-            else:
-                self.start_action(c, source="vision")
+                return
+            if not self.lidar_allowed:
+                self.get_logger().info("LIDAR reports STOP; ignoring vision command.")
+                return
+            self.start_action(c, source="vision")
         else:
             self.get_logger().warning(f"Invalid vision command: {c}")
 
@@ -73,12 +72,14 @@ class CmdMux(Node):
         c = msg.data.strip().upper()
         if c in VALID:
             if c == 'S':
+                self.lidar_allowed = False
                 self.force_stop(source="lidar")
             elif c == 'F':
-                self.lidar_stop_active = False
-                self.start_action('F', source="lidar")
+                # Luz verde: solo habilita, no envía comando
+                self.lidar_allowed = True
             else:
-                self.start_action(c, source="lidar")
+                # Otros comandos del lidar se ignoran
+                self.get_logger().info(f"Ignoring lidar cmd {c}, only S/F expected.")
         else:
             self.get_logger().warning(f"Invalid lidar command: {c}")
 
@@ -96,8 +97,6 @@ class CmdMux(Node):
         self.active_until = 0.0
         if self.last_sent != 'S':
             self._publish_and_send('S', note=f"{source} stop")
-            if source == "lidar":
-                self.lidar_stop_active = True
 
     def tick(self):
         """Check if the current action has expired."""

@@ -26,8 +26,9 @@ setup(
             'color_detection = control_pkg.color_detection_node:main',
             'lidar_avoid = control_pkg.lidar_avoid:main',
             'cmd_mux = control_pkg.cmd_mux:main',
-            'color_tracking = control_pkg.cv_object_tracking_color:main'
+            'color_tracking = control_pkg.cv_object_tracking_color:main',
+            'metrics_bridge = control_pkg.metrics_bridge:main',
+            'serial_bridge = control_pkg.serial_bridge:main'
         ],
     },
 )
-

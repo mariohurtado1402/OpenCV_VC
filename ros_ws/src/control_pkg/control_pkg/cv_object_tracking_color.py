@@ -10,9 +10,14 @@ import numpy as np
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool, Float32
+from std_msgs.msg import Float32MultiArray
 
 VALID = {'F', 'B', 'L', 'R', 'S'}
+try:
+    import RPi.GPIO as GPIO
+except Exception:
+    GPIO = None
 
 
 def remove_local_ncnn_from_path():
@@ -35,15 +40,15 @@ class VisionTracker(Node):
         # Tópicos y cámara
         self.declare_parameter('vision_topic', '/cmd/vision')
         self.declare_parameter('camera_device_id', 0)
-        self.declare_parameter('image_width', 854)
+        self.declare_parameter('image_width', 640)
         self.declare_parameter('image_height', 480)
         self.declare_parameter('camera_fps', 30)
 
         # Modelo YOLO (NCNN)
-        self.declare_parameter('yolo_param', '/home/mario/OpenCV_VC/best.param')
-        self.declare_parameter('yolo_bin', '/home/mario/OpenCV_VC/best.bin')
-        self.declare_parameter('model_input_size', 640)
-        self.declare_parameter('conf_thresh', 0.30)
+        self.declare_parameter('yolo_param', '/home/mario/OpenCV_VC/ros_ws/src/yolo_pkg/models/best.param')
+        self.declare_parameter('yolo_bin', '/home/mario/OpenCV_VC/ros_ws/src/yolo_pkg/models/best.bin')
+        self.declare_parameter('model_input_size', 480)
+        self.declare_parameter('conf_thresh', 0.60)
         self.declare_parameter('nms_thresh', 0.45)
         self.declare_parameter('class_names', ['obj0', 'obj1', 'obj3'])
         self.declare_parameter('yolo_threads', 4)
@@ -54,6 +59,15 @@ class VisionTracker(Node):
         self.declare_parameter('center_tol_px', 60)
         self.declare_parameter('publish_hz', 20.0)
         self.declare_parameter('keepalive_sec', 0.30)
+        self.declare_parameter('search_rotation_sec', 4)
+        self.declare_parameter('search_direction', 'L')
+        self.declare_parameter('ladder_forward_sec', 2.0)
+        self.declare_parameter('ladder_turn_sec', 3)
+        self.declare_parameter('ladder_repeats', 3)
+        self.declare_parameter('ladder_expand_step_sec', 0.0)
+        self.declare_parameter('disable_camera', False)
+        self.declare_parameter('use_gpio_start', False)
+        self.declare_parameter('gpio_pin', 17)
 
         # Capturas
         self.declare_parameter('center_frames_for_capture', 10)
@@ -85,6 +99,21 @@ class VisionTracker(Node):
         self.center_tol_px = int(self.get_parameter('center_tol_px').value)
         self.publish_hz = float(self.get_parameter('publish_hz').value)
         self.keepalive_sec = float(self.get_parameter('keepalive_sec').value)
+        self.search_rotation_sec = float(self.get_parameter('search_rotation_sec').value)
+        self.search_direction = self.get_parameter('search_direction').get_parameter_value().string_value.upper()
+        if self.search_direction not in ('L', 'R'):
+            self.get_logger().warning(f"search_direction inválido '{self.search_direction}', usando 'L'")
+            self.search_direction = 'L'
+        self.ladder_forward_sec = float(self.get_parameter('ladder_forward_sec').value)
+        self.ladder_turn_sec = float(self.get_parameter('ladder_turn_sec').value)
+        self.ladder_repeats = int(self.get_parameter('ladder_repeats').value)
+        self.ladder_expand_step_sec = float(self.get_parameter('ladder_expand_step_sec').value)
+        self.disable_camera = bool(self.get_parameter('disable_camera').value)
+        self.use_gpio_start = bool(self.get_parameter('use_gpio_start').value)
+        self.gpio_pin = int(self.get_parameter('gpio_pin').value)
+        self.use_start_topic = False  # se activará al recibir datos de /start_gate
+        self.start_ready = True
+        self.battery_level = -1.0
 
         self.center_frames_for_capture = int(self.get_parameter('center_frames_for_capture').value)
         self.capture_cooldown_sec = float(self.get_parameter('capture_cooldown_sec').value)
@@ -104,6 +133,20 @@ class VisionTracker(Node):
         self.last_capture_t = 0.0
         self.fps = 0.0
         self.num_classes = None
+        self.search_started_at = None  # se inicia en el primer tick
+        self.search_completed = False
+        self.ladder_plan = deque()
+        self.ladder_active = False
+        self.ladder_cmd = None
+        self.ladder_cmd_until = 0.0
+        self.ladder_iteration = 0
+        self.last_target_log_t = 0.0
+        self.target_log_interval = 0.8
+        self.gpio_ready = not self.use_gpio_start
+        self.gpio_value_fd = None
+        self.gpio_mode = "none"  # "rpi" o "sysfs"
+        if self.use_gpio_start:
+            self._init_gpio_gate()
 
         # Inicialización
         self.IS_RASPI_CAMERA = self._is_raspberry_camera()
@@ -111,10 +154,17 @@ class VisionTracker(Node):
         if self.use_drive:
             self._init_drive()
 
-        self._load_yolo()
+        if not self.disable_camera:
+            self._load_yolo()
+            self.cap, backend = self.open_capture()
+        else:
+            self.cap = None
+            backend = "DISABLED"
 
         self.pub_cmd = self.create_publisher(String, self.vision_topic, 10)
-        self.cap, backend = self.open_capture()
+        self.sub_start = self.create_subscription(Bool, '/start_gate', self._cb_start_gate, 10)
+        self.sub_batt = self.create_subscription(Float32, '/battery', self._cb_batt, 10)
+        self.pub_stats = self.create_publisher(Float32MultiArray, '/vision/stats', 10)
         self.get_logger().info(f"[Vision] Backend: {backend}")
 
         cv2.namedWindow('frame', cv2.WINDOW_AUTOSIZE)
@@ -124,6 +174,8 @@ class VisionTracker(Node):
 
     # ---------------------- Inicialización ---------------------- #
     def _load_yolo(self):
+        if self.disable_camera:
+            return
         remove_local_ncnn_from_path()
         try:
             import ncnn
@@ -220,6 +272,8 @@ class VisionTracker(Node):
             return False
 
     def open_capture(self):
+        if self.disable_camera:
+            return None, "DISABLED"
         if self.IS_RASPI_CAMERA:
             cam = self._get_picamera(self.image_width, self.image_height)
             cam.start()
@@ -236,6 +290,8 @@ class VisionTracker(Node):
         return cap, "V4L2/ANY"
 
     def read_frame(self):
+        if self.disable_camera:
+            return np.zeros((self.image_height, self.image_width, 3), dtype=np.uint8)
         if self.IS_RASPI_CAMERA:
             return self.cap.capture_array()
         ret, frame = self.cap.read()
@@ -259,6 +315,8 @@ class VisionTracker(Node):
         return padded, scale, (left, top)
 
     def run_yolo(self, frame_bgr: np.ndarray):
+        if self.disable_camera:
+            return []
         img, scale, (pad_x, pad_y) = self.letterbox(frame_bgr, self.model_input_size)
         ncnn = self.ncnn
 
@@ -375,6 +433,26 @@ class VisionTracker(Node):
     # ---------------------- Loop ---------------------- #
     def tick(self):
         start_t = time.time()
+        if self.use_start_topic and not self.start_ready:
+            ros_now = self.get_clock().now().nanoseconds / 1e9
+            if (self.last_cmd != 'S') or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
+                self.pub_cmd.publish(String(data='S'))
+                self.last_cmd = 'S'
+                self.last_pub_t = ros_now
+            return
+
+        if self.use_gpio_start and not self.gpio_ready and not self.use_start_topic:
+            if self._read_gpio_high():
+                self.gpio_ready = True
+                self.get_logger().info("GPIO gate en HIGH: iniciando lógica de visión.")
+            else:
+                ros_now = self.get_clock().now().nanoseconds / 1e9
+                if (self.last_cmd != 'S') or ((ros_now - self.last_pub_t) >= self.keepalive_sec):
+                    self.pub_cmd.publish(String(data='S'))
+                    self.last_cmd = 'S'
+                    self.last_pub_t = ros_now
+                return
+
         frame = self.read_frame()
         if frame is None:
             self.get_logger().warning("Failed to read frame")
@@ -390,6 +468,36 @@ class VisionTracker(Node):
         out_cmd = 'S'
         status = "BUSCANDO"
         centered = False
+
+        now = time.time()
+        if self.search_started_at is None:
+            self.search_started_at = now
+            self.get_logger().info("[Vision] Búsqueda 360 iniciada.")
+
+        searching = False
+        if not self.search_completed:
+            searching = (now - self.search_started_at) < self.search_rotation_sec
+            if not searching:
+                self.search_completed = True
+                self.get_logger().info("[Vision] Búsqueda 360 completada, entrando en seguimiento normal.")
+        if searching:
+            out_cmd = self.search_direction
+            dir_label = "LEFT" if self.search_direction == 'L' else "RIGHT"
+            direction_msg = f"SEARCH ROTATING {dir_label}"
+            status = "BUSCANDO 360"
+
+        ladder_override = False
+        if self.search_completed and not self.ladder_active and best is None:
+            # inicia ladder plan si no hay detección
+            self._reset_ladder_plan()
+            ladder_override = self._advance_ladder(now)
+        elif self.ladder_active:
+            ladder_override = self._advance_ladder(now)
+
+        if ladder_override:
+            out_cmd = self.ladder_cmd
+            direction_msg = f"LADDER {out_cmd}"
+            status = "BUSCANDO AMPLIO"
 
         if best:
             x1, y1, x2, y2 = best["bbox"]
@@ -408,12 +516,16 @@ class VisionTracker(Node):
 
             err = (self.smoothed_center[0] - W // 2, self.smoothed_center[1] - H // 2)
             dx = err[0]
-            if dx > self.center_tol_px:
-                out_cmd = 'R'; direction_msg = "RIGHT"
-            elif dx < -self.center_tol_px:
-                out_cmd = 'L'; direction_msg = "LEFT"
+            if searching:
+                out_cmd = self.search_direction
+                direction_msg = f"SEARCH ROTATING {self.search_direction}"
             else:
-                out_cmd = 'F'; direction_msg = "CENTERED→FORWARD"; centered = True
+                if dx > self.center_tol_px:
+                    out_cmd = 'R'; direction_msg = "RIGHT"
+                elif dx < -self.center_tol_px:
+                    out_cmd = 'L'; direction_msg = "LEFT"
+                else:
+                    out_cmd = 'F'; direction_msg = "CENTERED→FORWARD"; centered = True
 
             # Dibujos
             cv2.rectangle(vis, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
@@ -421,10 +533,12 @@ class VisionTracker(Node):
             cv2.putText(vis, label, (int(x1), max(0, int(y1) - 6)), cv2.FONT_HERSHEY_PLAIN, 1.0, (0, 255, 0), 1)
             cv2.circle(vis, self.smoothed_center, 5, (0, 0, 255), -1)
             cv2.line(vis, (W // 2, H // 2), self.smoothed_center, (255, 0, 0), 1)
+            self._log_target(best, err, out_cmd, searching)
         else:
             self.smoothed_center = None
             if len(self.track_points) > 0:
                 self.track_points.append(self.track_points[-1])
+            # Si no hay detección, mantener estado de ladder si está activo
 
         for i in range(1, len(self.track_points)):
             if self.track_points[i - 1] is None or self.track_points[i] is None:
@@ -432,7 +546,6 @@ class VisionTracker(Node):
             cv2.line(vis, self.track_points[i - 1], self.track_points[i], (0, 200, 255), 2)
 
         # Captura cuando está centrado
-        now = time.time()
         if centered and status == "SIGUIENDO":
             self.centered_counter += 1
         else:
@@ -476,6 +589,13 @@ class VisionTracker(Node):
             self.get_logger().info("ESC pressed — shutting down vision_tracker...")
             rclpy.shutdown()
 
+        # Publicar métricas en /vision/stats
+        stats_msg = Float32MultiArray()
+        latency = (1.0 / self.fps) if self.fps > 0 else 0.0
+        obj_count = float(min(len(detections), 3))
+        stats_msg.data = [float(self.fps), float(latency), float(self.battery_level), obj_count]
+        self.pub_stats.publish(stats_msg)
+
     # ---------------------- Cleanup ---------------------- #
     def destroy_node(self):
         try:
@@ -492,7 +612,140 @@ class VisionTracker(Node):
                 self.cap.release()
             except Exception:
                 pass
+        if self.use_gpio_start:
+            self._cleanup_gpio()
         super().destroy_node()
+
+    def _cb_start_gate(self, msg: Bool):
+        self.start_ready = bool(msg.data)
+        # activar uso de start_topic en cuanto llegue el primer dato
+        self.use_start_topic = True
+
+    def _cb_batt(self, msg: Float32):
+        self.battery_level = float(msg.data)
+
+    # ---------------------- GPIO helpers ---------------------- #
+    def _init_gpio_gate(self):
+        # Intenta RPi.GPIO primero
+        if GPIO is not None:
+            try:
+                GPIO.setmode(GPIO.BCM)
+                GPIO.setup(self.gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+                self.gpio_mode = "rpi"
+                self.get_logger().info(f"GPIO gate (RPi.GPIO) en pin {self.gpio_pin}. Esperando nivel alto.")
+                return
+            except Exception as e:
+                self.get_logger().warning(f"No se pudo inicializar RPi.GPIO: {e}. Probando sysfs.")
+
+        # Fallback a sysfs
+        try:
+            gpio_dir = f"/sys/class/gpio/gpio{self.gpio_pin}"
+            if not os.path.exists(gpio_dir):
+                with open("/sys/class/gpio/export", "w") as f:
+                    f.write(str(self.gpio_pin))
+            # direction puede tardar en aparecer
+            for _ in range(5):
+                try:
+                    with open(os.path.join(gpio_dir, "direction"), "w") as f:
+                        f.write("in")
+                    break
+                except Exception:
+                    time.sleep(0.1)
+            self.gpio_value_fd = open(os.path.join(gpio_dir, "value"), "r")
+            self.gpio_mode = "sysfs"
+            self.get_logger().info(f"GPIO gate (sysfs) en pin {self.gpio_pin}. Esperando nivel alto.")
+        except Exception as e:
+            self.get_logger().warning(f"No se pudo inicializar GPIO (sysfs): {e}. Gate deshabilitado.")
+            self.gpio_ready = True
+
+    def _read_gpio_high(self):
+        if self.gpio_mode == "rpi":
+            try:
+                return GPIO.input(self.gpio_pin) == GPIO.HIGH
+            except Exception as e:
+                self.get_logger().warning(f"Lectura GPIO falló: {e}. Deshabilitando gate.")
+                self.gpio_ready = True
+                return True
+        if self.gpio_mode == "sysfs" and self.gpio_value_fd:
+            try:
+                self.gpio_value_fd.seek(0)
+                val = self.gpio_value_fd.read().strip()
+                return val == "1"
+            except Exception as e:
+                self.get_logger().warning(f"Lectura sysfs GPIO falló: {e}. Deshabilitando gate.")
+                self.gpio_ready = True
+                return True
+        return True  # si no hay gate, dejar pasar
+
+    def _cleanup_gpio(self):
+        if self.gpio_mode == "rpi" and GPIO is not None:
+            try:
+                GPIO.cleanup()
+            except Exception:
+                pass
+        if self.gpio_mode == "sysfs" and self.gpio_value_fd:
+            try:
+                self.gpio_value_fd.close()
+            except Exception:
+                pass
+
+    def _log_target(self, det, err, cmd, searching):
+        """Throttle logging of target center and command."""
+        now = time.time()
+        if (now - self.last_target_log_t) < self.target_log_interval:
+            return
+        cx = int((det["bbox"][0] + det["bbox"][2]) * 0.5)
+        cy = int((det["bbox"][1] + det["bbox"][3]) * 0.5)
+        if err is None:
+            ex = ey = 0
+        else:
+            ex, ey = err
+        mode = "BUSQUEDA" if searching else "SEGUIMIENTO"
+        self.get_logger().info(
+            f"[Vision] {mode}: objetivo en px=({cx},{cy}), err=({ex},{ey}), cmd={cmd}"
+        )
+        self.last_target_log_t = now
+
+    # ---------------------- Ladder search ---------------------- #
+    def _reset_ladder_plan(self):
+        """Crea un plan de búsqueda escalonada (escalera)."""
+        self.ladder_plan.clear()
+        fwd = max(0.1, self.ladder_forward_sec)
+        turn = max(0.1, self.ladder_turn_sec)
+        repeats = max(1, self.ladder_repeats)
+        for i in range(repeats):
+            # Patrón: F, L, R=2*L, L (queda orientado al frente original)
+            self.ladder_plan.append(('F', fwd))
+            self.ladder_plan.append(('L', turn))
+            self.ladder_plan.append(('R', 2 * turn))
+            self.ladder_plan.append(('L', turn))
+            fwd += max(0.0, self.ladder_expand_step_sec)  # opcional expansión
+        self.ladder_active = True
+        self.ladder_cmd = None
+        self.ladder_cmd_until = 0.0
+        self.ladder_iteration = 0
+        self.get_logger().info(
+            f"[Vision] Ladder search iniciada: forward={self.ladder_forward_sec}s, "
+            f"turn={self.ladder_turn_sec}s, repeats={repeats}, expand={self.ladder_expand_step_sec}s"
+        )
+
+    def _advance_ladder(self, now: float) -> bool:
+        """Avanza el plan escalonado según el tiempo; devuelve True si hay comando activo."""
+        if not self.ladder_active:
+            return False
+        # Si se agotó el tiempo del comando actual, tomar el siguiente
+        if now >= self.ladder_cmd_until:
+            if not self.ladder_plan:
+                # plan terminado
+                self.ladder_active = False
+                self.ladder_cmd = None
+                return False
+            cmd, duration = self.ladder_plan.popleft()
+            self.ladder_cmd = cmd
+            self.ladder_cmd_until = now + duration
+            self.ladder_iteration += 1
+            self.get_logger().info(f"[Vision] Ladder cmd {self.ladder_iteration}: {cmd} for {duration:.2f}s")
+        return True
 
 
 def main():

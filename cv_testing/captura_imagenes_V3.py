@@ -127,7 +127,7 @@ class Annotator:
 
 def main():
     ap = argparse.ArgumentParser(description="Captura con anotación y guardado TRAIN+VAL")
-    ap.add_argument("--dataset", default="/Users/mario/opencv_vc/cv_testing/dataset")
+    ap.add_argument("--dataset", default="/home/mario/OpenCV_VC/cv_testing/dataset")
     ap.add_argument("--class_id", type=int, default=0)
     ap.add_argument("--cam", type=int, default=0)
     ap.add_argument("--session", default=None)

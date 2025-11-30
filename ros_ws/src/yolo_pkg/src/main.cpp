@@ -4,6 +4,9 @@
 #include <mutex>
 #include <vector>
 #include <filesystem>
+#include <set>
+#include <cstdlib>
+#include <fstream>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -14,18 +17,35 @@
 #include <opencv2/opencv.hpp>
 #include "net.h"
 #include "cpu.h"
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>
 
 // ----------------------------
 // CONFIG
 // ----------------------------
 #define DEVICE "/dev/video0"
-#define WIDTH 1280
-#define HEIGHT 720
-#define CROP_SIZE 640
+#define WIDTH 640
+#define HEIGHT 480
+#define CROP_SIZE 480  // recortamos a 480x480 (modelo entrenado a 480)
 
 // Umbrales para filtrar detecciones basura
 const float CONF_THRESHOLD = 0.45f;
 const float NMS_THRESHOLD = 0.50f;
+const int CENTER_TOL_PX = 60;
+const float SMOOTH_ALPHA = 0.25f;
+const double PUBLISH_HZ = 20.0;
+const double KEEPALIVE_SEC = 0.30;
+const double SEARCH_ROTATION_SEC = 4.0;
+const char SEARCH_DIRECTION = 'L'; // 'L' o 'R'
+const double LADDER_FORWARD_SEC = 3.0;
+const double LADDER_TURN_SEC = 2.0;
+const int LADDER_REPEATS = 3;
+const double LADDER_EXPAND_STEP_SEC = 0.0;
+const int MAX_CAPTURES = 3;  // detener tras capturar 3 clases distintas
+const char* DRIVE_UPLOADER = "/home/mario/OpenCV_VC/cv_testing/upload_to_drive.py";
+const char* CAPTURE_DIR = "/home/mario/OpenCV_VC/ros_ws";
+const int GPIO_GATE_PIN = 17;  // BCM pin para habilitar lógica cuando está en HIGH
 
 // Estructura para guardar detecciones
 struct Object {
@@ -42,29 +62,80 @@ struct Buffer {
 std::atomic<bool> running(true);
 std::mutex frameMutex;
 cv::Mat latestFrame;
+bool gpio_initialized = false;
+int gpio_value_fd = -1;
+
+bool init_gpio_gate(int pin) {
+    namespace fs = std::filesystem;
+    fs::path export_path("/sys/class/gpio/export");
+    fs::path gpio_dir = fs::path("/sys/class/gpio") / ("gpio" + std::to_string(pin));
+    fs::path direction_path = gpio_dir / "direction";
+    fs::path value_path = gpio_dir / "value";
+
+    auto write_file = [](const fs::path& p, const std::string& v) {
+        std::ofstream f(p);
+        if (!f.is_open()) return false;
+        f << v;
+        return true;
+    };
+
+    if (!fs::exists(gpio_dir)) {
+        if (!write_file(export_path, std::to_string(pin))) {
+            std::cerr << "[GPIO] No se pudo exportar pin " << pin << "\n";
+            return false;
+        }
+    }
+    // Puede que exportar tarde, reintentar direction
+    for (int i = 0; i < 5; ++i) {
+        if (write_file(direction_path, "in")) break;
+        usleep(100000);
+    }
+
+    gpio_value_fd = ::open(value_path.c_str(), O_RDONLY);
+    if (gpio_value_fd < 0) {
+        std::cerr << "[GPIO] No se pudo abrir value para pin " << pin << "\n";
+        return false;
+    }
+    return true;
+}
+
+bool read_gpio_high() {
+    if (gpio_value_fd < 0) return true; // si falla, deja pasar
+    lseek(gpio_value_fd, 0, SEEK_SET);
+    char buf;
+    if (read(gpio_value_fd, &buf, 1) != 1) return true;
+    return buf == '1';
+}
 
 // Buscar los modelos cerca del ejecutable (install/lib/yolo_pkg) o en share/yolo_pkg/models
 std::filesystem::path resolve_model_path(const std::string& filename) {
     namespace fs = std::filesystem;
     fs::path exe_path = fs::read_symlink("/proc/self/exe");
     fs::path exe_dir = exe_path.parent_path();
+    fs::path src_dir = fs::path(__FILE__).parent_path().parent_path(); // .../yolo_pkg/src -> package root
+    const char* env_dir = std::getenv("YOLO_MODEL_DIR");
 
     std::vector<fs::path> candidates = {
         exe_dir / filename,
         exe_dir / "models" / filename,
         exe_dir / ".." / ".." / "share" / "yolo_pkg" / "models" / filename,
+        exe_dir / ".." / ".." / ".." / "share" / "yolo_pkg" / "models" / filename, // symlink install case
+        src_dir / "models" / filename,
         fs::current_path() / filename
     };
+    if (env_dir && *env_dir) {
+        candidates.insert(candidates.begin(), fs::path(env_dir) / filename);
+    }
 
     for (const auto& p : candidates) {
         if (fs::exists(p)) return fs::weakly_canonical(p);
     }
+    std::cerr << "No se encontró el modelo " << filename << ". Probados:\n";
+    for (const auto& p : candidates) std::cerr << "  " << p << "\n";
     return fs::path(filename);
 }
 
-// ======================================================
-// CAPTURE THREAD (Igual que antes)
-// ======================================================
+
 void captureThread() {
     int fd = open(DEVICE, O_RDWR);
     if (fd < 0) {
@@ -112,9 +183,11 @@ void captureThread() {
         cv::Mat frame = cv::imdecode(jpegData, cv::IMREAD_COLOR);
 
         if (!frame.empty()) {
-            int startX = std::max(0, (frame.cols - CROP_SIZE) / 2);
-            int startY = std::max(0, (frame.rows - CROP_SIZE) / 2);
-            cv::Rect roi(startX, startY, CROP_SIZE, CROP_SIZE);
+            // Asegura un recorte cuadrado válido incluso si la cámara no es 1:1
+            const int roi_size = std::min({frame.cols, frame.rows, CROP_SIZE});
+            int startX = std::max(0, (frame.cols - roi_size) / 2);
+            int startY = std::max(0, (frame.rows - roi_size) / 2);
+            cv::Rect roi(startX, startY, roi_size, roi_size);
             cv::Mat square = frame(roi).clone();
             
             std::lock_guard<std::mutex> lock(frameMutex);
@@ -134,8 +207,19 @@ void captureThread() {
 ncnn::Net yolo;
 
 int main() {
-    const std::filesystem::path param_path = resolve_model_path("best.param");
-    const std::filesystem::path bin_path   = resolve_model_path("best.bin");
+    rclcpp::init(0, nullptr);
+    auto node = std::make_shared<rclcpp::Node>("yolo_tracker");
+    auto pub_cmd = node->create_publisher<std_msgs::msg::String>("/cmd/vision", 10);
+    auto pub_stats = node->create_publisher<std_msgs::msg::Float32MultiArray>("/vision/stats", 10);
+    gpio_initialized = init_gpio_gate(GPIO_GATE_PIN);
+
+    // Prefer new 480x480 export; fallback a best.param/bin
+    std::filesystem::path param_path = resolve_model_path("best.param");
+    std::filesystem::path bin_path   = resolve_model_path("best.bin");
+    if (!std::filesystem::exists(param_path) || !std::filesystem::exists(bin_path)) {
+        param_path = resolve_model_path("best.param");
+        bin_path   = resolve_model_path("best.bin");
+    }
 
     // 1. Cargar Modelo
     yolo.opt.num_threads = 4;
@@ -155,8 +239,21 @@ int main() {
     int count = 0;
     double tStart = cv::getTickCount();
 
-    // Nombres de tus 3 clases (EDÍTALA SEGÚN TU MODELO)
-    const std::vector<std::string> class_names = {"Clase0", "Clase1", "Clase2"};
+    std::vector<std::string> class_names = {"Dinosaurio"};
+
+    // Seguimiento/búsqueda
+    bool search_completed = false;
+    auto search_start = std::chrono::steady_clock::now();
+    bool ladder_active = false;
+    std::deque<std::pair<char, double>> ladder_plan;
+    char ladder_cmd = 'S';
+    auto ladder_cmd_until = std::chrono::steady_clock::now();
+    cv::Point smoothed_center(-1, -1);
+    char last_cmd_sent = '\0';
+    auto last_pub = std::chrono::steady_clock::now();
+    rclcpp::Rate loop_rate(PUBLISH_HZ);
+    std::set<std::string> captured_labels;
+    bool stop_requested = false;
 
     while (running) {
         cv::Mat frame;
@@ -177,55 +274,68 @@ int main() {
             ncnn::Mat out;
             ex.extract("out0", out);
 
+            // Validar la forma del tensor de salida antes de indexar
+            if (out.empty() || out.h < 5 || out.w == 0) {
+                std::cerr << "Salida inesperada del modelo. dims=" << out.dims
+                          << " w=" << out.w << " h=" << out.h << " c=" << out.c << "\n";
+                cv::imshow("Deteccion YOLO", frame);
+                if (cv::waitKey(1) == 27) running = false;
+                continue;
+            }
+
             // ----------------------------------------------------
-            // POST-PROCESAMIENTO (Decodificar 8400x7)
+            // POST-PROCESAMIENTO (decodifica salida dinámica)
             // ----------------------------------------------------
             std::vector<Object> objects;
-            
-            // out.h = 7 (4 coords + 3 clases), out.w = 8400 anchors
-            float* ptr_x = out.row(0); // cx
-            float* ptr_y = out.row(1); // cy
-            float* ptr_w = out.row(2); // w
-            float* ptr_h = out.row(3); // h
-            
-            // Las clases empiezan en la fila 4
-            // Como tienes 3 clases, revisamos filas 4, 5 y 6
-            
-            for (int i = 0; i < out.w; i++) {
-                // Encontrar la clase con mayor probabilidad
-                float max_score = -1000.f;
-                int label = -1;
-
-                // Iteramos sobre las 3 clases
-                for (int k = 0; k < 3; k++) {
-                   float score = out.row(4 + k)[i];
-                   if (score > max_score) {
-                       max_score = score;
-                       label = k;
-                   }
+            const int num_classes = out.h - 4; // filas = 4 coords + clases
+            if (num_classes <= 0) {
+                std::cerr << "Salida inesperada: num_classes <= 0 (h=" << out.h << ")\n";
+            } else {
+                // Rellena nombres si el modelo tiene más clases de las declaradas
+                if ((int)class_names.size() < num_classes) {
+                    for (int i = class_names.size(); i < num_classes; ++i) {
+                        class_names.push_back("Clase" + std::to_string(i));
+                    }
                 }
 
-                if (max_score >= CONF_THRESHOLD) {
-                    float cx = ptr_x[i] * frame.cols; // des-normalizar si es necesario, pero YOLOv8 suele dar pixel coords
-                    float cy = ptr_y[i] * frame.rows; 
-                    float w  = ptr_w[i] * frame.cols; 
-                    float h  = ptr_h[i] * frame.rows;
+                float* ptr_x = out.row(0); // cx
+                float* ptr_y = out.row(1); // cy
+                float* ptr_w = out.row(2); // w
+                float* ptr_h = out.row(3); // h
 
-                    // NOTA: Si tu modelo fue exportado sin normalizar, quita "* frame.cols". 
-                    // Si las cajas salen gigantes, es porque el modelo ya entrega pixeles y no 0-1.
-                    // Probaremos asumiendo pixeles directos primero:
-                    
-                    /* Si las cajas son enormes, usa esto: */
-                    cx = ptr_x[i]; cy = ptr_y[i]; w = ptr_w[i]; h = ptr_h[i];
+                for (int i = 0; i < out.w; i++) {
+                    float max_score = -1000.f;
+                    int label = 0;
 
-                    Object obj;
-                    obj.rect.x = cx - w / 2;
-                    obj.rect.y = cy - h / 2;
-                    obj.rect.width = w;
-                    obj.rect.height = h;
-                    obj.label = label;
-                    obj.prob = max_score;
-                    objects.push_back(obj);
+                    if (num_classes == 1) {
+                        max_score = out.row(4)[i];
+                        label = 0;
+                    } else {
+                        for (int k = 0; k < num_classes; k++) {
+                            float score = out.row(4 + k)[i];
+                            if (score > max_score) {
+                                max_score = score;
+                                label = k;
+                            }
+                        }
+                    }
+
+                    if (max_score >= CONF_THRESHOLD) {
+                        // El modelo ya entrega coordenadas en pixeles (por pnnx anchors); no re-escalar.
+                        float cx = ptr_x[i];
+                        float cy = ptr_y[i];
+                        float w  = ptr_w[i];
+                        float h  = ptr_h[i];
+
+                        Object obj;
+                        obj.rect.x = cx - w / 2;
+                        obj.rect.y = cy - h / 2;
+                        obj.rect.width = w;
+                        obj.rect.height = h;
+                        obj.label = label;
+                        obj.prob = max_score;
+                        objects.push_back(obj);
+                    }
                 }
             }
 
@@ -240,23 +350,168 @@ int main() {
             cv::dnn::NMSBoxes(bboxes, scores, CONF_THRESHOLD, NMS_THRESHOLD, indices);
 
             // ----------------------------------------------------
-            // DIBUJAR
+            // LOGICA DE SEGUIMIENTO / BUSQUEDA
             // ----------------------------------------------------
-            for (int idx : indices) {
-                const Object& obj = objects[idx];
-                cv::rectangle(frame, obj.rect, cv::Scalar(0, 255, 0), 2);
-                
-                std::string text = class_names[obj.label] + " " + cv::format("%.2f", obj.prob);
-                
-                int baseLine = 0;
-                cv::Size labelSize = cv::getTextSize(text, cv::FONT_HERSHEY_SIMPLEX, 0.5, 1, &baseLine);
-                cv::rectangle(frame, cv::Rect(cv::Point(obj.rect.x, obj.rect.y - labelSize.height),
-                                              cv::Size(labelSize.width, labelSize.height + baseLine)),
-                              cv::Scalar(0, 255, 0), -1);
-                              
-                cv::putText(frame, text, cv::Point(obj.rect.x, obj.rect.y),
-                            cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 0, 0), 1);
+            auto now = std::chrono::steady_clock::now();
+            bool searching = false;
+            if (!search_completed) {
+                double elapsed = std::chrono::duration<double>(now - search_start).count();
+                searching = elapsed < SEARCH_ROTATION_SEC;
+                if (!searching) {
+                    search_completed = true;
+                    ladder_active = false;
+                    ladder_plan.clear();
+                    std::cout << "[Vision] Búsqueda 360 completada, iniciando ladder si no hay objetivo.\n";
+                }
             }
+
+            // Ladder plan management
+            auto ensure_ladder = [&](double forward_sec, double turn_sec, int repeats, double expand_step) {
+                if (ladder_active) return;
+                ladder_plan.clear();
+                double fwd = forward_sec;
+                for (int i = 0; i < repeats; ++i) {
+                    ladder_plan.push_back({'F', fwd});
+                    ladder_plan.push_back({'L', turn_sec});
+                    ladder_plan.push_back({'R', 2 * turn_sec});
+                    ladder_plan.push_back({'L', turn_sec});
+                    fwd += std::max(0.0, expand_step);
+                }
+                ladder_active = true;
+                ladder_cmd = 'S';
+                ladder_cmd_until = now;
+                std::cout << "[Vision] Ladder iniciada\n";
+            };
+
+            auto advance_ladder = [&](auto tnow) {
+                if (!ladder_active) return false;
+                if (tnow >= ladder_cmd_until) {
+                    if (ladder_plan.empty()) {
+                        ladder_active = false;
+                        ladder_cmd = 'S';
+                        return false;
+                    }
+                    auto [c, dur] = ladder_plan.front();
+                    ladder_plan.pop_front();
+                    ladder_cmd = c;
+                    auto dur_cast = std::chrono::duration_cast<std::chrono::steady_clock::duration>(
+                        std::chrono::duration<double>(dur));
+                    ladder_cmd_until = tnow + dur_cast;
+                    std::cout << "[Vision] Ladder cmd " << c << " " << dur << "s\n";
+                }
+                return true;
+            };
+
+            char out_cmd = 'S';
+            bool has_det = !indices.empty();
+
+            // Gate por GPIO: si no está en HIGH, mandar S y no procesar seguimiento/búsqueda
+            if (!read_gpio_high()) {
+                ladder_active = false;
+                ladder_plan.clear();
+                has_det = false;
+                out_cmd = 'S';
+            }
+
+            if (stop_requested) {
+                out_cmd = 'S';
+                ladder_active = false;
+                ladder_plan.clear();
+            } else
+            if (has_det) {
+                const Object& obj = objects[indices[0]];
+                int cx = static_cast<int>(obj.rect.x + obj.rect.width * 0.5f);
+                int cy = static_cast<int>(obj.rect.y + obj.rect.height * 0.5f);
+                if (smoothed_center.x < 0) smoothed_center = cv::Point(cx, cy);
+                smoothed_center.x = static_cast<int>((1 - SMOOTH_ALPHA) * smoothed_center.x + SMOOTH_ALPHA * cx);
+                smoothed_center.y = static_cast<int>((1 - SMOOTH_ALPHA) * smoothed_center.y + SMOOTH_ALPHA * cy);
+
+                int dx = smoothed_center.x - (frame.cols / 2);
+                std::string cls = (obj.label >= 0 && obj.label < (int)class_names.size())
+                                    ? class_names[obj.label]
+                                    : ("Clase" + std::to_string(obj.label));
+                // Ignorar clases ya capturadas
+                if (captured_labels.count(cls) > 0) {
+                    has_det = false;
+                } else {
+                    if (searching) {
+                        out_cmd = SEARCH_DIRECTION;
+                    } else {
+                        if (std::abs(dx) <= CENTER_TOL_PX) {
+                            // Centrado: capturar, subir, marcar y reiniciar búsqueda
+                            std::string ts = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count());
+                            std::string filename = std::string("capture_") + cls + "_" + ts + ".jpg";
+                            std::string fullpath = std::string(CAPTURE_DIR) + "/" + filename;
+                            try {
+                                cv::imwrite(fullpath, frame);
+                                std::cout << "[Capture] Guardada " << fullpath << "\n";
+                                std::string cmd = std::string("python3 ") + DRIVE_UPLOADER + " \"" + fullpath + "\"";
+                                int rc = std::system(cmd.c_str());
+                                std::cout << "[Capture] Upload rc=" << rc << "\n";
+                            } catch (const std::exception& e) {
+                                std::cerr << "[Capture] Error guardando/subiendo: " << e.what() << "\n";
+                            }
+                            captured_labels.insert(cls);
+                            if ((int)captured_labels.size() >= MAX_CAPTURES) {
+                                stop_requested = true;
+                                std::cout << "[Capture] Max capturas alcanzado, deteniendo.\n";
+                            } else {
+                                // Reinicia búsqueda amplia
+                                search_completed = false;
+                                search_start = now;
+                                ladder_active = false;
+                                ladder_plan.clear();
+                            }
+                            // Reinicia búsqueda amplia
+                            out_cmd = 'S';
+                        } else if (dx > CENTER_TOL_PX) out_cmd = 'R';
+                        else if (dx < -CENTER_TOL_PX) out_cmd = 'L';
+                        else out_cmd = 'S';
+                    }
+
+                    ladder_active = false;
+                    ladder_plan.clear();
+
+                    std::cout << "[YOLO] Detectado " << cls
+                              << " prob=" << obj.prob
+                              << " cmd=" << out_cmd
+                              << " center=(" << cx << "," << cy << ")\n";
+                }
+            } else {
+                // Sin detección
+                if (!searching && search_completed && !stop_requested) {
+                    ensure_ladder(LADDER_FORWARD_SEC, LADDER_TURN_SEC, LADDER_REPEATS, LADDER_EXPAND_STEP_SEC);
+                    if (advance_ladder(now)) {
+                        out_cmd = ladder_cmd;
+                    }
+                }
+                if (searching) {
+                    out_cmd = SEARCH_DIRECTION;
+                }
+            }
+
+            // Publicar comando con keepalive
+            auto publish_cmd = [&](char c) {
+                auto msg = std_msgs::msg::String();
+                msg.data = std::string(1, c);
+                pub_cmd->publish(msg);
+            };
+
+            double since_last = std::chrono::duration<double>(now - last_pub).count();
+            if (out_cmd != last_cmd_sent || since_last >= KEEPALIVE_SEC) {
+                publish_cmd(out_cmd);
+                last_cmd_sent = out_cmd;
+                last_pub = now;
+                std::cout << "[CMD] /cmd/vision -> " << out_cmd << "\n";
+            }
+
+            // Publicar métricas
+            std_msgs::msg::Float32MultiArray stats;
+            float latency = (fps > 0) ? (1.0f / static_cast<float>(fps)) : 0.0f;
+            float battery = -1.0f; // placeholder
+            float obj_count = static_cast<float>(std::min<int>(indices.size(), 3));
+            stats.data = {static_cast<float>(fps), latency, battery, obj_count};
+            pub_stats->publish(stats);
 
             // FPS
             count++;
@@ -264,18 +519,31 @@ int main() {
             if ((tNow - tStart) / cv::getTickFrequency() >= 1.0) {
                 fps = count / ((tNow - tStart) / cv::getTickFrequency());
                 count = 0; tStart = tNow;
+                std::cout << "[YOLO] FPS=" << fps << "\n";
             }
-            cv::putText(frame, "FPS: " + std::to_string((int)fps), cv::Point(10, 30), 
-                        cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 2);
 
+            // Visualización básica
+            for (int idx : indices) {
+                const Object& obj = objects[idx];
+                cv::rectangle(frame, obj.rect, cv::Scalar(0, 255, 0), 2);
+                std::string cls = (obj.label >= 0 && obj.label < (int)class_names.size())
+                                    ? class_names[obj.label]
+                                    : ("Clase" + std::to_string(obj.label));
+                std::string text = cls + " " + cv::format("%.2f", obj.prob);
+                cv::putText(frame, text, cv::Point(obj.rect.x, obj.rect.y - 4),
+                            cv::FONT_HERSHEY_SIMPLEX, 0.5, cv::Scalar(0, 255, 0), 1);
+            }
             cv::imshow("Deteccion YOLO", frame);
+            if (cv::waitKey(1) == 27) {
+                running = false;
+            }
         }
 
-        if (cv::waitKey(1) == 27) { // ESC para salir
-            running = false;
-        }
+        rclcpp::spin_some(node);
+        loop_rate.sleep();
     }
 
     camThread.join();
+    rclcpp::shutdown();
     return 0;
 }
