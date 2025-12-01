@@ -12,6 +12,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         ('share/' + package_name + '/launch', glob('launch/*.py')),
+        ('share/' + package_name + '/config', glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -28,7 +29,8 @@ setup(
             'cmd_mux = control_pkg.cmd_mux:main',
             'color_tracking = control_pkg.cv_object_tracking_color:main',
             'metrics_bridge = control_pkg.metrics_bridge:main',
-            'serial_bridge = control_pkg.serial_bridge:main'
+            'serial_bridge = control_pkg.serial_bridge:main',
+            'map_to_png = control_pkg.map_to_png:main'
         ],
     },
 )

@@ -20,6 +20,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/float32_multi_array.hpp>
+#include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/float32.hpp>
 
 // ----------------------------
 // CONFIG
@@ -45,7 +47,7 @@ const double LADDER_EXPAND_STEP_SEC = 0.0;
 const int MAX_CAPTURES = 3;  // detener tras capturar 3 clases distintas
 const char* DRIVE_UPLOADER = "/home/mario/OpenCV_VC/cv_testing/upload_to_drive.py";
 const char* CAPTURE_DIR = "/home/mario/OpenCV_VC/ros_ws";
-const int GPIO_GATE_PIN = 17;  // BCM pin para habilitar lógica cuando está en HIGH
+// Gate opcional por topic /start_gate (Bool); si es false se mantiene en S
 
 // Estructura para guardar detecciones
 struct Object {
@@ -62,50 +64,9 @@ struct Buffer {
 std::atomic<bool> running(true);
 std::mutex frameMutex;
 cv::Mat latestFrame;
-bool gpio_initialized = false;
-int gpio_value_fd = -1;
-
-bool init_gpio_gate(int pin) {
-    namespace fs = std::filesystem;
-    fs::path export_path("/sys/class/gpio/export");
-    fs::path gpio_dir = fs::path("/sys/class/gpio") / ("gpio" + std::to_string(pin));
-    fs::path direction_path = gpio_dir / "direction";
-    fs::path value_path = gpio_dir / "value";
-
-    auto write_file = [](const fs::path& p, const std::string& v) {
-        std::ofstream f(p);
-        if (!f.is_open()) return false;
-        f << v;
-        return true;
-    };
-
-    if (!fs::exists(gpio_dir)) {
-        if (!write_file(export_path, std::to_string(pin))) {
-            std::cerr << "[GPIO] No se pudo exportar pin " << pin << "\n";
-            return false;
-        }
-    }
-    // Puede que exportar tarde, reintentar direction
-    for (int i = 0; i < 5; ++i) {
-        if (write_file(direction_path, "in")) break;
-        usleep(100000);
-    }
-
-    gpio_value_fd = ::open(value_path.c_str(), O_RDONLY);
-    if (gpio_value_fd < 0) {
-        std::cerr << "[GPIO] No se pudo abrir value para pin " << pin << "\n";
-        return false;
-    }
-    return true;
-}
-
-bool read_gpio_high() {
-    if (gpio_value_fd < 0) return true; // si falla, deja pasar
-    lseek(gpio_value_fd, 0, SEEK_SET);
-    char buf;
-    if (read(gpio_value_fd, &buf, 1) != 1) return true;
-    return buf == '1';
-}
+bool start_ready = true;
+bool use_start_topic = false;
+float battery_level = -1.0f;
 
 // Buscar los modelos cerca del ejecutable (install/lib/yolo_pkg) o en share/yolo_pkg/models
 std::filesystem::path resolve_model_path(const std::string& filename) {
@@ -211,7 +172,15 @@ int main() {
     auto node = std::make_shared<rclcpp::Node>("yolo_tracker");
     auto pub_cmd = node->create_publisher<std_msgs::msg::String>("/cmd/vision", 10);
     auto pub_stats = node->create_publisher<std_msgs::msg::Float32MultiArray>("/vision/stats", 10);
-    gpio_initialized = init_gpio_gate(GPIO_GATE_PIN);
+    auto sub_start = node->create_subscription<std_msgs::msg::Bool>("/start_gate", 10,
+        [](std_msgs::msg::Bool::SharedPtr msg){
+            start_ready = msg->data;
+            use_start_topic = true;
+        });
+    auto sub_batt = node->create_subscription<std_msgs::msg::Float32>("/battery", 10,
+        [](std_msgs::msg::Float32::SharedPtr msg){
+            battery_level = msg->data;
+        });
 
     // Prefer new 480x480 export; fallback a best.param/bin
     std::filesystem::path param_path = resolve_model_path("best.param");
@@ -254,6 +223,7 @@ int main() {
     rclcpp::Rate loop_rate(PUBLISH_HZ);
     std::set<std::string> captured_labels;
     bool stop_requested = false;
+    float max_seen_count = 0.0f;
 
     while (running) {
         cv::Mat frame;
@@ -405,8 +375,8 @@ int main() {
             char out_cmd = 'S';
             bool has_det = !indices.empty();
 
-            // Gate por GPIO: si no está en HIGH, mandar S y no procesar seguimiento/búsqueda
-            if (!read_gpio_high()) {
+            // Gate por /start_gate: si no está listo, mandar S y no procesar
+            if (use_start_topic && !start_ready) {
                 ladder_active = false;
                 ladder_plan.clear();
                 has_det = false;
@@ -508,8 +478,12 @@ int main() {
             // Publicar métricas
             std_msgs::msg::Float32MultiArray stats;
             float latency = (fps > 0) ? (1.0f / static_cast<float>(fps)) : 0.0f;
-            float battery = -1.0f; // placeholder
-            float obj_count = static_cast<float>(std::min<int>(indices.size(), 3));
+            float battery = battery_level;
+            float current_seen = static_cast<float>(std::min<int>(indices.size(), 3));
+            float captures_seen = static_cast<float>(std::min<int>((int)captured_labels.size(), 3));
+            if (current_seen > max_seen_count) max_seen_count = current_seen;
+            if (captures_seen > max_seen_count) max_seen_count = captures_seen;
+            float obj_count = max_seen_count;
             stats.data = {static_cast<float>(fps), latency, battery, obj_count};
             pub_stats->publish(stats);
 

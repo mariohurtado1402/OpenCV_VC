@@ -11,7 +11,7 @@ from std_msgs.msg import Float32MultiArray
 class MetricsBridge(Node):
     def __init__(self):
         super().__init__('metrics_bridge')
-        self.declare_parameter('host', '172.32.179.132')
+        self.declare_parameter('host', '192.168.100.55')
         self.declare_parameter('port', 5000)
         self.declare_parameter('api_path', '/data')
         self.declare_parameter('timeout_sec', 2.0)
